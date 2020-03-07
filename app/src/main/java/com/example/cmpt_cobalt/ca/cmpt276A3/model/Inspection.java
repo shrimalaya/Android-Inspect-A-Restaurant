@@ -1,5 +1,13 @@
 package com.example.cmpt_cobalt.ca.cmpt276A3.model;
 
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 public class Inspection {
     private String trackingNumber;
     private String inspectionDate;
@@ -17,6 +25,40 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = violations;
+    }
+
+    //https://www.baeldung.com/java-date-difference
+    public String dateFormatter() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+        String[] indexToMonth = new DateFormatSymbols().getMonths();
+
+        String rawInspectionDate = this.getInspectionDate();
+
+        Date inspectionDate = sdf.parse(rawInspectionDate);
+        Date currentDate = new Date();
+
+        long diffInMS = Math.abs(currentDate.getTime() - inspectionDate.getTime());
+        long diffInDay = TimeUnit.DAYS.convert(diffInMS, TimeUnit.MILLISECONDS);
+
+        //https://stackoverflow.com/questions/36370895/getyear-getmonth-getday-are-deprecated-in-calendar-what-to-use-then
+        //Need calendar because Java is daf.
+        Calendar inspectionCalendar = Calendar.getInstance();
+        inspectionCalendar.setTime(inspectionDate);
+
+        if (diffInDay <= 1){
+            return diffInDay + "Day";
+        }
+        else if (diffInDay <= 30){
+            return diffInDay + " Days";
+        }
+        else if (diffInDay <= 365){
+            return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                    + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH);
+        }
+        else {
+            return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                    + " " + inspectionCalendar.get(Calendar.YEAR);
+        }
     }
 
     public String getTrackingNumber() {
