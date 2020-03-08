@@ -101,10 +101,4 @@ public class Restaurant {
         return tracking + ' '
                 + name;
     }
-
-    /* TODO: 1. Address
-             2. List of Inspections
-             3. getInspection()
-             4. getViolation()
-     */
 }
