@@ -5,4 +5,5 @@ public class RestaurantManager {
     // Implemented as SINGLETON
     // 1. AddRestaurant()
     // 2. getRestaurant()
+    // 3. getInstance()
 }
