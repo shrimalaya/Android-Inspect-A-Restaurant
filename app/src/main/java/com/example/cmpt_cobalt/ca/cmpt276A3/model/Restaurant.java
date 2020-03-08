@@ -93,10 +93,4 @@ public class Restaurant {
         return inspections.get(inspection);
 
     }
-
-    /* TODO: 1. Address
-             2. List of Inspections
-             3. getInspection()
-             4. getViolation()
-     */
 }
