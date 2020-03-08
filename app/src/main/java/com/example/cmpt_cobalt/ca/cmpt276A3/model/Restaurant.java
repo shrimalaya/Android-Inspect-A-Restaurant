@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.ca.cmpt276A3.model;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 public class Restaurant {
@@ -92,6 +94,12 @@ public class Restaurant {
     public Inspection getInspection(int inspection) {
         return inspections.get(inspection);
 
+    }
+
+    @Override
+    public String toString() {
+        return tracking + ' '
+                + name;
     }
 
     /* TODO: 1. Address
