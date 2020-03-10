@@ -3,6 +3,8 @@ package com.example.cmpt_cobalt.ca.cmpt276A3.model;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,9 +13,13 @@ public class RestaurantManager implements Iterable<Restaurant>{
 
     public void add(Restaurant restaurant) {restaurants.add(restaurant);}
 
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
     /*
-    Singleton Support
-     */
+        Singleton Support
+         */
     private static RestaurantManager instance;
 
     private RestaurantManager() {
@@ -38,6 +44,13 @@ public class RestaurantManager implements Iterable<Restaurant>{
 
                 instance.add(restaurant);
             }
+
+            Collections.sort(instance.getRestaurants(), new Comparator<Restaurant>() {
+                @Override
+                public int compare(Restaurant o1, Restaurant o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
 
 
         }
