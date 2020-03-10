@@ -3,6 +3,8 @@ package com.example.cmpt_cobalt.ca.cmpt276A3.model;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Restaurant {
 
@@ -24,6 +26,34 @@ public class Restaurant {
         this.tracking = tracking;
         this.icon = icon;
         this.inspections = new ArrayList<>();
+
+        populateInspections();
+    }
+
+    private void populateInspections() {
+        ParseCSV csv = new ParseCSV("/Users/devinlu/Desktop/inspectionreports_itr1.csv");
+
+        // start at 1 to skip titles
+        for (int i = 1; i < csv.getRowSize(); i++) {
+            if (csv.getVal(i, 0) == this.tracking) {
+                Inspection inspect = new Inspection(csv.getVal(i, 0),
+                                                    csv.getVal(i, 1),
+                                                    csv.getVal(i, 2),
+                                                    Integer.valueOf(csv.getVal(i, 3)),
+                                                    Integer.valueOf(csv.getVal(i, 4)),
+                                                    csv.getVal(i, 5),
+                                                    csv.getVal(i, 6));
+
+                inspections.add(inspect);
+            }
+        }
+
+        Collections.sort(inspections, new Comparator<Inspection>() {
+            @Override
+            public int compare(Inspection o1, Inspection o2) {
+                return o1.getInspectionDate().compareTo(o2.getInspectionDate());
+            }
+        });
     }
 
     public String getName() {
