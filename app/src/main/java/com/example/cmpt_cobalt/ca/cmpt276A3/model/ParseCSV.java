@@ -38,4 +38,12 @@ public class ParseCSV {
     public String getVal(int row, int col) {
         return values.get(row).get(col);
     }
+
+    public int getRowSize() {
+        return values.size();
+    }
+
+    public int getColSize() {
+        return values.get(0).size();
+    }
 }
