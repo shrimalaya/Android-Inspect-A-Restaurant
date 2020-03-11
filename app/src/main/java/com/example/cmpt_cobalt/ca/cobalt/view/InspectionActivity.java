@@ -1,10 +1,10 @@
-package com.example.cmpt_cobalt.ca.cmpt276A3.view;
+package com.example.cmpt_cobalt.ca.cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.cmpt_cobalt.ca.cmpt276A3.model.Inspection;
+import com.example.cmpt_cobalt.ca.cobalt.model.Inspection;
 
 import androidx.appcompat.app.AppCompatActivity;
 
