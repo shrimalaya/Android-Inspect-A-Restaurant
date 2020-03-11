@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         // Build Adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String> (
                 this,           // Context for view
-                R.layout.restaurant_list,     // Layout to use
+                R.layout.layout_listview,     // Layout to use
                 restaurantStrings);               // Items to be displayed
 
         // Configure the list view
