@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/violations"
-        app:layout_constraintEnd_toEndOf="@+id/textView8"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
@@ -125,15 +125,6 @@
         app:layout_constraintTop_toBottomOf="@+id/numNonCritical" />
 
     <TextView
-        android:id="@+id/violations"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/hazardRating"
-        app:layout_constraintTop_toBottomOf="@+id/hazardRating" />
-
-    <TextView
         android:id="@+id/inspectionDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -141,4 +132,12 @@
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/trackingNumber"
         app:layout_constraintTop_toBottomOf="@+id/trackingNumber" />
+
+    <ListView
+        android:id="@+id/violationsList"
+        android:layout_width="409dp"
+        android:layout_height="409dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 </androidx.constraintlayout.widget.ConstraintLayout>
