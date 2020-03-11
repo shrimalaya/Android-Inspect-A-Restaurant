@@ -41,7 +41,6 @@ public class Inspection {
         long diffInDay = TimeUnit.DAYS.convert(diffInMS, TimeUnit.MILLISECONDS);
 
         //https://stackoverflow.com/questions/36370895/getyear-getmonth-getday-are-deprecated-in-calendar-what-to-use-then
-        //Need calendar because Java is daf.
         Calendar inspectionCalendar = Calendar.getInstance();
         inspectionCalendar.setTime(inspectionDate);
 
