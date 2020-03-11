@@ -10,15 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ca.cobalt.view.InspectionActivity"
+            android:name=".view.InspectionActivity"
             android:label="@string/title_activity_inspection"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ca.cobalt.view.RestaurantActivity"
+            android:name=".view.RestaurantActivity"
             android:label="@string/title_activity_restaurant"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ca.cobalt.view.MainActivity"
+            android:name=".view.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
