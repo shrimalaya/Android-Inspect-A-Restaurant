@@ -4,4 +4,14 @@
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="title_activity_inspection">Inspection</string>
     <string name="txt_select_a_restaurant">Select a restaurant to see inspections:</string>
+
+    <!--Inspection Details Screen-->
+    <string name="trackingNumber">Tracking Number:</string>
+    <string name="inspectionDate">Inspection Date:</string>
+    <string name="inspectionType">Inspection Type:</string>
+    <string name="numCritical">Number of Critical Issues:</string>
+    <string name="numNonCritical">Number of Non Critical Issues:</string>
+    <string name="hazardRating">Harzard Rating</string>
+    <string name="violations">Violations</string>
+
 </resources>
