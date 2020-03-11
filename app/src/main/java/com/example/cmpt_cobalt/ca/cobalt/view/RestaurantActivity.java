@@ -1,14 +1,12 @@
-package com.example.cmpt_cobalt.ca.cmpt276A3.view;
+package com.example.cmpt_cobalt.ca.cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.cmpt_cobalt.ca.cmpt276A3.model.Inspection;
-import com.example.cmpt_cobalt.ca.cmpt276A3.model.Restaurant;
-import com.example.cmpt_cobalt.ca.cmpt276A3.model.RestaurantManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.cmpt_cobalt.ca.cobalt.model.Inspection;
+import com.example.cmpt_cobalt.ca.cobalt.model.Restaurant;
+import com.example.cmpt_cobalt.ca.cobalt.model.RestaurantManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -52,11 +50,10 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private void populateInspectionList() {
         manager = RestaurantManager.getInstance();
-        size = manager.getManagerSize();
-        inspectionStrings = new String[size];
-
         // Process inspections
         processInspections();
+        size = restaurant.getInspectionSize();
+        inspectionStrings = new String[size];
 
         // Start populating string
         int i=0;
@@ -90,7 +87,17 @@ public class RestaurantActivity extends AppCompatActivity {
 
         // Populate the list of inspections for the selected restaurant
         inspectionList = restaurant.getInspections();
+        TextView name = findViewById(R.id.name_resActivity);
+        name.setText(restaurant.getName());
 
+        TextView address = findViewById(R.id.address_resActivity);
+        address.setText(restaurant.getStreetAddress());
+
+        TextView lat = findViewById(R.id.latitude_resActivity);
+        lat.setText(restaurant.getLatAddress() + "");
+
+        TextView lon = findViewById(R.id.longitude_resActivity);
+        lon.setText(restaurant.getLongAddress() + "");
     }
 
     private void registerClickCallback() {

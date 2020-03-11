@@ -1,4 +1,4 @@
-package com.example.cmpt_cobalt.ca.cmpt276A3.model;
+package com.example.cmpt_cobalt.ca.cobalt.model;
 
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -17,6 +17,8 @@ public class Inspection {
     private String hazardRating;
     private String[] violations;
 
+    //TODO: Inspection Date not displayed in proper format (yyyy-mm-dd or yyyy/mm/dd)
+    // TODO: Inspections set in order. Most recent inspection on index = 0.
     public Inspection(
             String trackingNumber,
             String inspectionDate,
