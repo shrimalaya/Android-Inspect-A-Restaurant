@@ -22,5 +22,6 @@ public class InspectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+
     }
 }

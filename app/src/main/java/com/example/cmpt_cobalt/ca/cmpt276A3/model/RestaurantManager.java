@@ -30,7 +30,7 @@ public class RestaurantManager implements Iterable<Restaurant>{
         if(instance == null) {
             instance = new RestaurantManager();
             // need to change the file path
-            ParseCSV csv = new ParseCSV("/Users/devinlu/Desktop/restaurants_itr1.csv");
+            ParseCSV csv = new ParseCSV("/Users/Srimalaya/Downloads/restaurants_itr1.csv");
 
             // start row index at 1 to ignore the titles
             for (int i = 1; i < csv.getRowSize(); i++) {

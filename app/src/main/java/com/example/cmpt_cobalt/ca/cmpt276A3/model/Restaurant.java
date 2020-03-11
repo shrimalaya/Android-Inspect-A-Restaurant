@@ -31,7 +31,7 @@ public class Restaurant {
     }
 
     private void populateInspections() {
-        ParseCSV csv = new ParseCSV("/Users/devinlu/Desktop/inspectionreports_itr1.csv");
+        ParseCSV csv = new ParseCSV("/Users/Srimalaya/Downloads/inspectionreports_itr1.csv");
 
         // start at 1 to skip titles
         for (int i = 1; i < csv.getRowSize(); i++) {
