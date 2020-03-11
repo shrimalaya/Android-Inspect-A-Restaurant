@@ -1,9 +1,12 @@
 package com.example.cmpt_cobalt.ca.cmpt276A3.model;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +19,7 @@ public class ParseCSV {
     // get the values by using passing in row + col into getter method
     // note: need to pass in the complete file path
     public ParseCSV(String filePath) {
+        //InputStream is = getClass().getClassLoader().getResourceAsStream("raw/inspectionreports_itr1.csv");
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
 
@@ -25,7 +29,7 @@ public class ParseCSV {
             }
 
         } catch (FileNotFoundException e) {
-
+            Log.wtf("ParseCSV", "File not found ", e);
             e.printStackTrace();
 
         } catch (IOException e) {

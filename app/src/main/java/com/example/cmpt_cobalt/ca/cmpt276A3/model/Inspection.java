@@ -15,16 +15,23 @@ public class Inspection {
     private int numCritical;
     private int numNonCritical;
     private String hazardRating;
-    private String violations;
+    private String[] violations;
 
-    public Inspection(String trackingNumber, String inspectionDate, String inspectionType, int numCritical, int numNonCritical, String hazardRating, String violations) {
+    public Inspection(
+            String trackingNumber,
+            String inspectionDate,
+            String inspectionType,
+            int numCritical,
+            int numNonCritical,
+            String hazardRating,
+            String violations) {
         this.trackingNumber = trackingNumber;
         this.inspectionDate = inspectionDate;
         this.inspectionType = inspectionType;
         this.numCritical = numCritical;
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
-        this.violations = violations;
+        this.violations = parseViolations(violations);
     }
 
     //https://www.baeldung.com/java-date-difference
@@ -33,7 +40,6 @@ public class Inspection {
         String[] indexToMonth = new DateFormatSymbols().getMonths();
 
         String rawInspectionDate = this.getInspectionDate();
-
         Date inspectionDate = sdf.parse(rawInspectionDate);
         Date currentDate = new Date();
 
@@ -44,12 +50,8 @@ public class Inspection {
         Calendar inspectionCalendar = Calendar.getInstance();
         inspectionCalendar.setTime(inspectionDate);
 
-        if (diffInDay <= 1){
-            return diffInDay + "Day";
-        }
-        else if (diffInDay <= 30){
-            return diffInDay + " Days";
-        }
+        if (diffInDay <= 1){ return diffInDay + "Day"; }
+        else if (diffInDay <= 30){ return diffInDay + " Days"; }
         else if (diffInDay <= 365){
             return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
                     + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH);
@@ -58,6 +60,10 @@ public class Inspection {
             return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
                     + " " + inspectionCalendar.get(Calendar.YEAR);
         }
+    }
+
+    private String[] parseViolations(String rawViolations) {
+        return rawViolations.split("\\|");
     }
 
     public String getTrackingNumber() {
@@ -108,11 +114,18 @@ public class Inspection {
         this.hazardRating = hazardRating;
     }
 
-    public String getViolations() {
+    public String[] getViolations() {
         return this.violations;
     }
 
-    public void setViolations(String violations) {
+    public void setViolations(String[] violations) {
         this.violations = violations;
+    }
+
+    @Override
+    public String toString() {
+        return inspectionDate + ' ' +
+                inspectionType + ' ' +
+                hazardRating;
     }
 }

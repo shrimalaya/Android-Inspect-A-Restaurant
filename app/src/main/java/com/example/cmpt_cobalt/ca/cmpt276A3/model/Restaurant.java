@@ -2,6 +2,7 @@ package com.example.cmpt_cobalt.ca.cmpt276A3.model;
 
 import androidx.annotation.NonNull;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,7 +32,7 @@ public class Restaurant {
     }
 
     private void populateInspections() {
-        ParseCSV csv = new ParseCSV("/Users/Srimalaya/Downloads/inspectionreports_itr1.csv");
+        ParseCSV csv = new ParseCSV("raw/inspectionreports_itr1.csv");
 
         // start at 1 to skip titles
         for (int i = 1; i < csv.getRowSize(); i++) {
@@ -129,6 +130,6 @@ public class Restaurant {
     @Override
     public String toString() {
         return tracking + ' '
-                + name;
+                + name + ' ' + streetAddress;
     }
 }

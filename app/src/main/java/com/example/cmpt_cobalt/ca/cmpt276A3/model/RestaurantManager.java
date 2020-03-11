@@ -2,6 +2,7 @@ package com.example.cmpt_cobalt.ca.cmpt276A3.model;
 
 import androidx.annotation.NonNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,7 +31,7 @@ public class RestaurantManager implements Iterable<Restaurant>{
         if(instance == null) {
             instance = new RestaurantManager();
             // need to change the file path
-            ParseCSV csv = new ParseCSV("/Users/Srimalaya/Downloads/restaurants_itr1.csv");
+            ParseCSV csv = new ParseCSV("raw/restaurants_itr1.csv");
 
             // start row index at 1 to ignore the titles
             for (int i = 1; i < csv.getRowSize(); i++) {
