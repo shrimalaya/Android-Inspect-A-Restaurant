@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.cmpt_cobalt.R;
+
 import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 
@@ -77,6 +78,7 @@ public class InspectionActivity extends AppCompatActivity {
         }
 
         /*Inspection inspection = new Inspection(
+        Inspection inspection = new Inspection(
                 "SDFO-8HKP7E",
                 "20191002",
                 "Routine",

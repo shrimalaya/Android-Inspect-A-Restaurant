@@ -1,6 +1,4 @@
-package com.example.cmpt_cobalt.ca.cmpt276A3.model;
-
-import androidx.annotation.NonNull;
+package com.example.cmpt_cobalt.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,9 +9,13 @@ public class RestaurantManager implements Iterable<Restaurant>{
 
     public void add(Restaurant restaurant) {restaurants.add(restaurant);}
 
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
     /*
     Singleton Support
-     */
+    */
     private static RestaurantManager instance;
 
     private RestaurantManager() {

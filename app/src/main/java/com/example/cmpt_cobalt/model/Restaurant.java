@@ -1,7 +1,6 @@
-package com.example.cmpt_cobalt.ca.cmpt276A3.model;
+package com.example.cmpt_cobalt.model;
 
-import androidx.annotation.NonNull;
-
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Restaurant {
@@ -13,7 +12,7 @@ public class Restaurant {
     private float longAddress;
     private String tracking;
     private String icon;
-    private ArrayList<Inspection> inspections;
+    public ArrayList<Inspection> inspections;
 
     public Restaurant(String name, String streetAddress, String cityAddress, float latAddress, float longAddress, String tracking, String icon) {
         this.name = name;
@@ -24,6 +23,7 @@ public class Restaurant {
         this.tracking = tracking;
         this.icon = icon;
         this.inspections = new ArrayList<>();
+
     }
 
     public String getName() {
@@ -96,9 +96,35 @@ public class Restaurant {
 
     }
 
+    public int getInspectionSize() {
+        return inspections.size();
+    }
+
     @Override
     public String toString() {
-        return tracking + ' '
-                + name;
+        boolean empty = false;
+        Inspection first = new Inspection("", "", "", 0, 0, "", "");
+        if(inspections.isEmpty()){
+            empty = true;
+        } else {
+            first = inspections.get(0);
+        }
+
+        try {
+            if(empty == false) {
+                return tracking + " "
+                        + name + "\n"
+                        + (first.getNumCritical() + first.getNumNonCritical())
+                        + " "
+                        + first.getHazardRating() + " "
+                        + first.dateFormatter();
+            } else {
+                return tracking + " "
+                        + name + "\nNo inspections";
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
