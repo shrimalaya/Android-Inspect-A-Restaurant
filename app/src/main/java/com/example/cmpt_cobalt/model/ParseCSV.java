@@ -1,4 +1,4 @@
-package com.example.cmpt_cobalt.ca.cobalt.model;
+package com.example.cmpt_cobalt.model;
 
 import android.util.Log;
 

@@ -1,12 +1,7 @@
-package com.example.cmpt_cobalt.ca.cobalt.view;
+package com.example.cmpt_cobalt.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.example.cmpt_cobalt.ca.cobalt.model.Inspection;
-import com.example.cmpt_cobalt.ca.cobalt.model.ParseCSV;
-import com.example.cmpt_cobalt.ca.cobalt.model.Restaurant;
-import com.example.cmpt_cobalt.ca.cobalt.model.RestaurantManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.cmpt_cobalt.R;
+import com.example.cmpt_cobalt.model.Inspection;
+import com.example.cmpt_cobalt.model.ParseCSV;
+import com.example.cmpt_cobalt.model.Restaurant;
+import com.example.cmpt_cobalt.model.RestaurantManager;
 
 import java.io.InputStream;
 import java.util.Collections;
