@@ -121,4 +121,11 @@ public class Inspection {
     public void setViolations(String[] violations) {
         this.violations = violations;
     }
+
+    @Override
+    public String toString() {
+        return inspectionDate + ' ' +
+                inspectionType + ' ' +
+                hazardRating;
+    }
 }

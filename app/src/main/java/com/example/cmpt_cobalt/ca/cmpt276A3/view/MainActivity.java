@@ -33,15 +33,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         populateListView();
         registerClickCallback();
     }
@@ -70,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // Build Adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String> (
                 this,           // Context for view
-                R.layout.restaurant_list,     // Layout to use
+                R.layout.layout_listview,     // Layout to use
                 restaurantStrings);               // Items to be displayed
 
         // Configure the list view
@@ -95,5 +86,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }
