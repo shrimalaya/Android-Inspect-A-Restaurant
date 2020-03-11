@@ -9,20 +9,11 @@
     tools:showIn="@layout/activity_inspection">
 
     <TextView
-        android:id="@+id/inspectionDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/trackingNumber"
-        app:layout_constraintTop_toBottomOf="@+id/trackingNumber" />
-
-    <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/trackingNumber"
+        android:text="@string/tracking_number"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/inspectionDate"
+        android:text="@string/inspection_date"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -40,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/inspectionType"
+        android:text="@string/inspection_type"
         app:layout_constraintEnd_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -49,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/numCritical"
+        android:text="@string/num_critical"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -58,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/numNonCritical"
+        android:text="@string/num_non_critical"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -76,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/hazardRating"
+        android:text="@string/hazard_rating"
         app:layout_constraintEnd_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -141,4 +132,13 @@
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/hazardRating"
         app:layout_constraintTop_toBottomOf="@+id/hazardRating" />
+
+    <TextView
+        android:id="@+id/inspectionDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/trackingNumber"
+        app:layout_constraintTop_toBottomOf="@+id/trackingNumber" />
 </androidx.constraintlayout.widget.ConstraintLayout>
