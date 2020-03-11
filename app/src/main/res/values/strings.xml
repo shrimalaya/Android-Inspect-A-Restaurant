@@ -11,7 +11,7 @@
     <string name="inspection_type">Inspection Type:</string>
     <string name="num_critical">Number of Critical Issues:</string>
     <string name="num_non_critical">Number of Non Critical Issues:</string>
-    <string name="hazard_rating">Harzard Rating</string>
+    <string name="hazard_rating">Hazard Rating</string>
     <string name="violations">Violations</string>
 
 </resources>
