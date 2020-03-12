@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             if (csv2.getVal(row, 0).equals(restaurant.getTracking())) {
 
                 if (csv2.getColSize(row) > 7) {
-                    for (int col = 7; col < csv2.getColSize(row); col++) {
+                    for (int col = 6; col < csv2.getColSize(row); col++) {
                         viol += csv2.getVal(row, col);
                     }
 

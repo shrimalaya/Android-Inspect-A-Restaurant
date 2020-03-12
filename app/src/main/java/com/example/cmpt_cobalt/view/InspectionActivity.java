@@ -103,7 +103,6 @@ public class InspectionActivity extends AppCompatActivity {
                 mInspection = temp;
             }
         }
-        mInspection.setRawViolations("205,Critical,Cold potentially hazardous food stored/displayed above 4 Â°C. [s. 14(2)],Not Repeat|209,Not Critical,Food not protected from contamination [s. 12(a)],Not Repeat|301,Critical,Equipment/utensils/food contact surfaces not maintained in sanitary condition [s. 17(1)],Not Repeat|304,Not Critical,Premises not free of pests [s. 26(a)],Not Repeat|305,Not Critical,Conditions observed that may allow entrance/harbouring/breeding of pests [s. 26(b)(c)],Not Repeat|306,Not Critical,Food premises not maintained in a sanitary condition [s. 17(1)],Not Repeat|401,Critical,Adequate handwashing stations not available for employees [s. 21(4)],Not Repeat");
     }
 
     private void violationListView() {
