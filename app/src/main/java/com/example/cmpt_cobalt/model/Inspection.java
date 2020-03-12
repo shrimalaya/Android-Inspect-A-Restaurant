@@ -21,6 +21,7 @@ public class Inspection {
     private int numNonCritical;
     private String hazardRating;
     private String[] violations;
+    private int hazardIcon;
 
     //TODO: Inspection Date not displayed in proper format (yyyy-mm-dd or yyyy/mm/dd)
     public Inspection(
@@ -38,8 +39,16 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
-        this.formattedDate = dateFormatter();
-        this.hazardIcon = assignHazardIcon();
+
+        if(hazardRating.equals("\"Low\"")){
+            this.hazardIcon = android.R.drawable.presence_online;
+        }
+        else if(hazardRating.equals("\"Moderate\"")){
+            this.hazardIcon = android.R.drawable.presence_away;
+        }
+        else if(hazardRating.equals("\"High\"")) {
+            this.hazardIcon = android.R.drawable.presence_busy;
+        }
     }
 
     //https://www.baeldung.com/java-date-difference
@@ -155,8 +164,9 @@ public class Inspection {
         this.violations = violations;
     }
 
-    public int getHazardIcon() { return hazardIcon; }
-
+    public int getHazardIcon() {
+        return hazardIcon;
+    }
 
     @Override
     public String toString() {

@@ -24,6 +24,8 @@
     <string name="main_display_format">Display Format:\n
         Tracking no., Restaurant Name\n
         Critical + Non-Critical, Hazard Level, Most Recent Inspection date</string>
+    <string name="restaurant_display_format">Display Format:\n
+        Critical, Non-Critical, Relative date, Type, Hazard level, icon</string>
 
     <string name="na">N/A</string>
 
