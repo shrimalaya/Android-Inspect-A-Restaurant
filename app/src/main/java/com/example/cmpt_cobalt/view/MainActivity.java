@@ -112,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
         for (int row = 1; row < csv2.getRowSize(); row++) {
             if (csv2.getVal(row, 0).equals(restaurant.getTracking())) {
 
+                // check if there are more than one violation
+                // if so, then append them all together in one string to be
+                // parsed later
                 if (csv2.getColSize(row) > 7) {
                     for (int col = 6; col < csv2.getColSize(row); col++) {
                         viol += csv2.getVal(row, col) + " ";
@@ -126,6 +129,9 @@ public class MainActivity extends AppCompatActivity {
                             csv2.getVal(row, 5),
                             viol);
                     restaurant.inspections.add(inspect);
+                    viol = "";
+
+                    
                 } else {
                     Inspection inspect = new Inspection(
                             csv2.getVal(row, 0),
