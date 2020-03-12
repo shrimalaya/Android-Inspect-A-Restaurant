@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.cmpt_cobalt.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantActivity extends AppCompatActivity {
 
@@ -54,11 +55,13 @@ public class RestaurantActivity extends AppCompatActivity {
         processInspections();
         size = restaurant.getInspectionSize();
         inspectionStrings = new String[size];
+        List<Inspection> inspections = new ArrayList<>();
 
         // Start populating string
         int i=0;
         for(Inspection inspection: inspectionList) {
             inspectionStrings[i++] = inspection.toString();
+            inspections.add(inspection);
         }
 
         // Build Adapter
@@ -72,6 +75,13 @@ public class RestaurantActivity extends AppCompatActivity {
         list.setAdapter(adapter);
     }
 
+    private class CustomAdapter extends ArrayAdapter<Inspection> {
+        public CustomAdapter() {
+            super(RestaurantActivity.this, R.layout.layout_inspection, inspections);
+        }
+    }
+
+    
     private void processInspections() {
         // Receive message from MainActivity
         // Message contains details of selected Restaurant
