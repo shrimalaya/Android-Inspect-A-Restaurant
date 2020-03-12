@@ -2,6 +2,7 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 
 import com.example.cmpt_cobalt.model.Inspection;
@@ -12,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,6 +34,9 @@ public class RestaurantActivity extends AppCompatActivity {
     private static final String EXTRA_MESSAGE = "Extra";
     private String restaurantString;    // Name of calling restaurant object
     private ArrayList<Inspection> inspectionList;
+
+    List<Inspection> inspections = new ArrayList<>();
+
 
     public static Intent makeLaunchIntent(Context c, String message) {
         Intent intent = new Intent(c, RestaurantActivity.class);
@@ -55,7 +61,6 @@ public class RestaurantActivity extends AppCompatActivity {
         processInspections();
         size = restaurant.getInspectionSize();
         inspectionStrings = new String[size];
-        List<Inspection> inspections = new ArrayList<>();
 
         // Start populating string
         int i=0;
@@ -65,6 +70,7 @@ public class RestaurantActivity extends AppCompatActivity {
         }
 
         // Build Adapter
+        /*
         ArrayAdapter<String> adapter = new ArrayAdapter<String> (
                 this,           // Context for view
                 R.layout.layout_listview,     // Layout to use
@@ -73,12 +79,37 @@ public class RestaurantActivity extends AppCompatActivity {
         // Configure the list view
         ListView list = (ListView) findViewById(R.id.restaurant_view);
         list.setAdapter(adapter);
+        */
+
+        ArrayAdapter<Inspection> adapter = new CustomAdapter();
+        ListView list = (ListView) findViewById(R.id.restaurant_view);
+        list.setAdapter(adapter);
     }
 
     private class CustomAdapter extends ArrayAdapter<Inspection> {
         public CustomAdapter() {
             super(RestaurantActivity.this, R.layout.layout_inspection, inspections);
         }
+
+        @Override
+        public View getView (int position, View convertView, ViewGroup parent) {
+
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.layout_inspection, parent, false);
+            }
+
+            Inspection currentInspection = inspections.get(position);
+
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.inspectionimage);
+            imageView.setImageResource(currentInspection.getHazardIcon());
+
+            TextView textView = (TextView) itemView.findViewById(R.id.inspectiontext);
+            textView.setText(inspections.toString());
+
+            return itemView;
+        }
+
     }
 
     
