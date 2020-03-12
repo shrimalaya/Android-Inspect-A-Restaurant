@@ -40,6 +40,7 @@ public class Inspection {
         this.violations = parseViolations(violations);
         this.formattedDate = dateFormatter();
         this.hazardIcon = assignHazardIcon();
+
     }
 
     //https://www.baeldung.com/java-date-difference
