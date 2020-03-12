@@ -106,29 +106,39 @@ public class MainActivity extends AppCompatActivity {
     private void populateWithInspections(Restaurant restaurant) {
         InputStream is2 = getResources().openRawResource(R.raw.inspectionreports_itr1);
         ParseCSV csv2 = new ParseCSV(is2);
+        String viol = "";
 
         // start at 1 to skip titles
-        for (int j = 1; j < csv2.getRowSize(); j++) {
-            if (csv2.getVal(j, 0).equals(restaurant.getTracking())) {
-                Inspection inspect = new Inspection(csv2.getVal(j, 0),
-                        csv2.getVal(j, 1),
-                        csv2.getVal(j, 2),
-                        Integer.valueOf(csv2.getVal(j, 3)),
-                        Integer.valueOf(csv2.getVal(j, 4)),
-                        csv2.getVal(j, 5),
-                        " ");
+        for (int row = 1; row < csv2.getRowSize(); row++) {
+            if (csv2.getVal(row, 0).equals(restaurant.getTracking())) {
 
-                //TODO: Parse Violations - Not working using normal csv2.getVal() method.
-                    /*if(csv2.getVal(j, 6) != null){
-                        System.out.println("Inside3........-----------......");
-                        String vio = csv2.getVal(j, 6);
-                        System.out.println(vio);
-                        String[] viol = {vio};
-                        inspect.setViolations(viol);
-                        System.out.println(inspect.toString());
-                    } */
+                if (csv2.getColSize(row) > 7) {
+                    for (int col = 7; col < csv2.getColSize(row); col++) {
+                        viol += csv2.getVal(row, col);
+                    }
 
-                restaurant.inspections.add(inspect);
+                    Inspection inspect = new Inspection(
+                            csv2.getVal(row, 0),
+                            csv2.getVal(row, 1),
+                            csv2.getVal(row, 2),
+                            Integer.valueOf(csv2.getVal(row, 3)),
+                            Integer.valueOf(csv2.getVal(row, 4)),
+                            csv2.getVal(row, 5),
+                            viol);
+                    restaurant.inspections.add(inspect);
+                } else {
+                    Inspection inspect = new Inspection(
+                            csv2.getVal(row, 0),
+                            csv2.getVal(row, 1),
+                            csv2.getVal(row, 2),
+                            Integer.valueOf(csv2.getVal(row, 3)),
+                            Integer.valueOf(csv2.getVal(row, 4)),
+                            csv2.getVal(row, 5),
+                            csv2.getVal(row, 6));
+                    restaurant.inspections.add(inspect);
+                }
+
+
             }
         }
 
