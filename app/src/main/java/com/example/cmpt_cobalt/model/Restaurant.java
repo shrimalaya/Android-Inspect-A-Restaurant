@@ -112,11 +112,11 @@ public class Restaurant {
 
         try {
             if(empty == false) {
-                return tracking + " "
+                return tracking + ", "
                         + name + "\n"
                         + (first.getNumCritical() + first.getNumNonCritical())
-                        + " "
-                        + first.getHazardRating() + " "
+                        + ", "
+                        + first.getHazardRating() + ", "
                         + first.dateFormatter();
             } else {
                 return tracking + " "
