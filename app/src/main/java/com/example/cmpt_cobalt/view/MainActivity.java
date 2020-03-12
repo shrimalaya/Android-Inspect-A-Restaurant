@@ -47,15 +47,6 @@ public class MainActivity extends AppCompatActivity {
         manager = RestaurantManager.getInstance();
         populateManager();
 
-        /*
-        size = manager.getManagerSize();
-        restaurantStrings = new String[size];
-
-        int i=0;
-        for(Restaurant restaurant: manager) {
-            restaurantStrings[i++] = restaurant.toString();
-        }
-        */
 
         if(size==0) {
             restaurantStrings = new String[1];
@@ -68,18 +59,6 @@ public class MainActivity extends AppCompatActivity {
           textView.setText(R.string.txt_select_a_restaurant);
         }
 
-
-        /*
-        // Build Adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String> (
-                this,           // Context for view
-                R.layout.layout_listview,     // Layout to use
-                restaurantStrings);               // Items to be displayed
-
-        // Configure the list view
-        ListView list = (ListView) findViewById(R.id.listViewMain);
-        list.setAdapter(adapter);
-         */
 
         ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
         ListView restaurantList = findViewById(R.id.listViewMain);

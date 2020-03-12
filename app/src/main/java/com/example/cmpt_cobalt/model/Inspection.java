@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
 import com.example.cmpt_cobalt.R;
 
 import java.text.DateFormatSymbols;
@@ -21,7 +23,6 @@ public class Inspection {
     private int numNonCritical;
     private String hazardRating;
     private String[] violations;
-    private int hazardIcon;
 
     //TODO: Inspection Date not displayed in proper format (yyyy-mm-dd or yyyy/mm/dd)
     public Inspection(
@@ -39,16 +40,7 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
-
-        if(hazardRating.equals("\"Low\"")){
-            this.hazardIcon = android.R.drawable.presence_online;
-        }
-        else if(hazardRating.equals("\"Moderate\"")){
-            this.hazardIcon = android.R.drawable.presence_away;
-        }
-        else if(hazardRating.equals("\"High\"")) {
-            this.hazardIcon = android.R.drawable.presence_busy;
-        }
+        this.formattedDate = dateFormatter();
     }
 
     //https://www.baeldung.com/java-date-difference
@@ -81,18 +73,6 @@ public class Inspection {
         }
         catch (Exception e){
             return "N/A";
-        }
-    }
-
-    private int assignHazardIcon(){
-        if (hazardRating.equals("low")){
-            return R.drawable.green;
-        }
-        else if (hazardRating.equals("Moderate")){
-            return R.drawable.yellow;
-        }
-        else {
-            return R.drawable.red;
         }
     }
 
@@ -164,10 +144,16 @@ public class Inspection {
         this.violations = violations;
     }
 
-    public int getHazardIcon() {
-        return hazardIcon;
-    }
 
+    public int getHazardIcon() {
+        if (hazardRating.equals("\"Low\"")) {
+            return R.drawable.green;
+        } else if (hazardRating.equals("\"Moderate\"")) {
+            return R.drawable.yellow;
+        } else {
+            return R.drawable.red;
+        }
+    }
     @Override
     public String toString() {
 
