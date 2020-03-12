@@ -9,10 +9,11 @@
     <string name="tracking_number">Tracking Number:</string>
     <string name="inspection_date">Inspection Date:</string>
     <string name="inspection_type">Inspection Type:</string>
-    <string name="num_critical">Number of Critical Issues:</string>
-    <string name="num_non_critical">Number of Non Critical Issues:</string>
+    <string name="num_critical"># Critical Issues:</string>
+    <string name="num_non_critical"># Non Critical Issues:</string>
     <string name="hazard_rating">Hazard Rating</string>
     <string name="violations">Violations:</string>
+
     <string name="name_resActivity">Name</string>
     <string name="address">Address</string>
     <string name="semicolon">:</string>
@@ -25,5 +26,7 @@
         Critical + Non-Critical, Hazard Level, Most Recent Inspection date</string>
     <string name="restaurant_display_format">Display Format:\n
         Critical, Non-Critical, Relative date, Type, Hazard level, icon</string>
+
+    <string name="na">N/A</string>
 
 </resources>
