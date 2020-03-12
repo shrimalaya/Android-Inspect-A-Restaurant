@@ -134,6 +134,25 @@ public class Inspection {
         return this.violations;
     }
 
+    public String[] getShortViolations() {
+        //int i=0;
+        if(violations.length == 0){
+            return this.violations;
+        }
+
+        String[] shortViolations = new String[violations.length];
+        for (int i = 0; i < violations.length; i++) {
+            if(violations[i].length()>10) {
+                shortViolations[i] = violations[i].substring(0, 40) + "...";
+            }
+            else {
+                shortViolations[i] = violations[i];
+            }
+        }
+
+        return shortViolations;
+    }
+
     public void setViolations(String[] violations) {
         this.violations = violations;
     }

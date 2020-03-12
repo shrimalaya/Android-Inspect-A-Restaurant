@@ -23,7 +23,6 @@ public class Restaurant {
         this.tracking = tracking;
         this.icon = icon;
         this.inspections = new ArrayList<>();
-
     }
 
     public String getName() {
