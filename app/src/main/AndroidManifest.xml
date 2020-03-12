@@ -11,12 +11,14 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.InspectionActivity"
+            android:parentActivityName=".view.RestaurantActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_inspection"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".view.RestaurantActivity"
+            android:parentActivityName=".view.MainActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_restaurant"
