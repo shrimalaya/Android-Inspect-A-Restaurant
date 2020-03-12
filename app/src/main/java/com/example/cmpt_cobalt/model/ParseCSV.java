@@ -28,6 +28,12 @@ public class ParseCSV {
                 values.add(Arrays.asList(lineValues));
             }
 
+            for (int i = 0; i < values.size(); i++) {
+                while (values.get(i).size() < 7) {
+                    values.get(i).add(null);
+                }
+            }
+
         } catch (FileNotFoundException e) {
             Log.wtf("ParseCSV", "File not found ", e);
             e.printStackTrace();

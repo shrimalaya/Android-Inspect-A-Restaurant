@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         Integer.valueOf(csv2.getVal(j, 3)),
                         Integer.valueOf(csv2.getVal(j, 4)),
                         csv2.getVal(j, 5),
-                        " ");
+                        csv2.getVal(j, 6));
 
                 //TODO: Parse Violations - Not working using normal csv2.getVal() method.
                     /*if(csv2.getVal(j, 6) != null){
