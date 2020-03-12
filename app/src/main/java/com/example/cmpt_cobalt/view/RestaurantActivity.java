@@ -107,9 +107,11 @@ public class RestaurantActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView) view;
                 String message = textView.getText().toString();
+                String restaurantTracking = restaurant.getTracking();
 
                 Intent intent = InspectionActivity.makeLaunchIntent(RestaurantActivity.this, "InspectionActivity");
                 intent.putExtra("Extra", message);
+                intent.putExtra("Restaurant", restaurantTracking);
                 startActivity(intent);
             }
         });
