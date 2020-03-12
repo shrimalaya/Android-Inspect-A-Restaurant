@@ -51,7 +51,7 @@ public class ParseCSV {
         return values.size();
     }
 
-    public int getColSize() {
-        return values.get(0).size();
+    public int getColSize(int row) {
+        return values.get(row).size();
     }
 }
