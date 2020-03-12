@@ -35,10 +35,13 @@ public class Inspection {
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
 
-        if(hazardRating.equals("Low")){
+        if(hazardRating.equals("\"Low\"")){
             this.hazardIcon = android.R.drawable.presence_online;
         }
-        else{
+        else if(hazardRating.equals("\"Moderate\"")){
+            this.hazardIcon = android.R.drawable.presence_away;
+        }
+        else if(hazardRating.equals("\"High\"")) {
             this.hazardIcon = android.R.drawable.presence_busy;
         }
     }

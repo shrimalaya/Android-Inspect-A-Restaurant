@@ -105,7 +105,7 @@ public class RestaurantActivity extends AppCompatActivity {
             imageView.setImageResource(currentInspection.getHazardIcon());
 
             TextView textView = (TextView) itemView.findViewById(R.id.inspectiontext);
-            textView.setText(inspections.toString());
+            textView.setText(currentInspection.toString());
 
             return itemView;
         }
