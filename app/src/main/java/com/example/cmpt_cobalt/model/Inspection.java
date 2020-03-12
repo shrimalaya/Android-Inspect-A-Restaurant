@@ -156,8 +156,8 @@ public class Inspection {
         this.violations = violations;
     }
 
-    public int getHazardIcon() { return hazardIcon; }
 
+    public int getHazardIcon() { return hazardIcon; }
 
     @Override
     public String toString() {
