@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
 import com.example.cmpt_cobalt.R;
 
 import java.text.DateFormatSymbols;
@@ -39,8 +41,6 @@ public class Inspection {
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
         this.formattedDate = dateFormatter();
-        this.hazardIcon = assignHazardIcon();
-
     }
 
     //https://www.baeldung.com/java-date-difference
@@ -73,18 +73,6 @@ public class Inspection {
         }
         catch (Exception e){
             return "N/A";
-        }
-    }
-
-    private int assignHazardIcon(){
-        if (hazardRating.equals("low")){
-            return R.drawable.green;
-        }
-        else if (hazardRating.equals("Moderate")){
-            return R.drawable.yellow;
-        }
-        else {
-            return R.drawable.red;
         }
     }
 
@@ -157,8 +145,15 @@ public class Inspection {
     }
 
 
-    public int getHazardIcon() { return hazardIcon; }
-
+    public int getHazardIcon() {
+        if (hazardRating.equals("\"Low\"")) {
+            return R.drawable.green;
+        } else if (hazardRating.equals("\"Moderate\"")) {
+            return R.drawable.yellow;
+        } else {
+            return R.drawable.red;
+        }
+    }
     @Override
     public String toString() {
 
