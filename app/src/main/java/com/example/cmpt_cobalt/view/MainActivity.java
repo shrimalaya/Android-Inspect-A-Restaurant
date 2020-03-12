@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                             csv2.getVal(row, 5),
                             viol);
                     restaurant.inspections.add(inspect);
+                    viol = "";
                 } else {
                     Inspection inspect = new Inspection(
                             csv2.getVal(row, 0),
