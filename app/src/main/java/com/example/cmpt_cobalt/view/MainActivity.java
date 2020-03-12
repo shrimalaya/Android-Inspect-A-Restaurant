@@ -7,8 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private void populateListView() {
         manager = RestaurantManager.getInstance();
         populateManager();
+
+        /*
         size = manager.getManagerSize();
         restaurantStrings = new String[size];
 
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         for(Restaurant restaurant: manager) {
             restaurantStrings[i++] = restaurant.toString();
         }
+        */
 
         if(size==0) {
             restaurantStrings = new String[1];
@@ -62,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
           textView.setText(R.string.txt_select_a_restaurant);
         }
 
+
+        /*
         // Build Adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String> (
                 this,           // Context for view
@@ -71,6 +79,54 @@ public class MainActivity extends AppCompatActivity {
         // Configure the list view
         ListView list = (ListView) findViewById(R.id.listViewMain);
         list.setAdapter(adapter);
+         */
+
+        ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
+        ListView restaurantList = findViewById(R.id.listViewMain);
+        restaurantList.setAdapter(adapter);
+    }
+
+    private class RestaurantAdapter extends ArrayAdapter<Restaurant> {
+        public RestaurantAdapter() {
+            super(MainActivity.this, R.layout.restaurant_item, manager.getRestaurants());
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            // Make sure we have a view to work with
+            View itemView = convertView;
+            if (itemView == null){
+                itemView = getLayoutInflater().inflate(R.layout.restaurant_item, parent, false);
+            }
+            // Find the restaurant to work with.
+            Restaurant currentRestaurant = manager.getRestaurants().get(position);
+            // Fill the view
+            ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
+            logo.setImageResource(currentRestaurant.getIcon());
+
+            TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
+            restaurantNameText.setText(currentRestaurant.getName());
+
+
+            Inspection mostRecentInspection = currentRestaurant.getInspection(0);
+            if (mostRecentInspection != null){
+                TextView numNonCriticalText = itemView.findViewById(R.id.item_numNonCritical);
+                numNonCriticalText.setText(Integer.toString(mostRecentInspection.getNumNonCritical()));
+
+                TextView numCriticalText = itemView.findViewById(R.id.item_numCritical);
+                numCriticalText.setText(Integer.toString(mostRecentInspection.getNumCritical()));
+
+                TextView lastInspectionText = itemView.findViewById(R.id.item_lastInspection);
+                lastInspectionText.setText(mostRecentInspection.getFormattedDate());
+
+                ImageView hazard = itemView.findViewById(R.id.item_hazardImage);
+                hazard.setImageResource(mostRecentInspection.getHazardIcon());
+            }
+
+
+            return itemView;
+        }
+
     }
 
     private void populateManager() {
@@ -80,13 +136,13 @@ public class MainActivity extends AppCompatActivity {
 
         // start row index at 1 to ignore the titles
         for (int i = 1; i < csv.getRowSize(); i++) {
-            Restaurant restaurant = new Restaurant(csv.getVal(i, 1),
+            Restaurant restaurant = new Restaurant(
+                    csv.getVal(i, 1),
                     csv.getVal(i, 2),
                     csv.getVal(i, 3),
                     Float.valueOf(csv.getVal(i, 5)),
                     Float.valueOf(csv.getVal(i, 6)),
-                    csv.getVal(i, 0),
-                    csv.getVal(i, 4));
+                    csv.getVal(i, 0));
 
             populateWithInspections(restaurant);
 
@@ -164,8 +220,7 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView) view;
-                String message = textView.getText().toString();
+                String message = manager.getRestaurants().get(position).toString();
 
                 Intent intent = RestaurantActivity.makeLaunchIntent(MainActivity.this, "RestaurantActivity");
                 intent.putExtra("Extra", message);
@@ -173,4 +228,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

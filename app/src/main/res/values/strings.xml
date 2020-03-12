@@ -25,5 +25,6 @@
         Tracking no., Restaurant Name\n
         Critical + Non-Critical, Hazard Level, Most Recent Inspection date</string>
 
+    <string name="na">N/A</string>
 
 </resources>

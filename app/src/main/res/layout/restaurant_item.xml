@@ -12,7 +12,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="0dp"
         android:layout_toEndOf="@+id/textView10"
-        android:text="TextView" />
+        android:text="@string/na" />
 
     <ImageView
         android:id="@+id/item_restaurantLogo"
@@ -74,7 +74,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="0dp"
         android:layout_toEndOf="@+id/textView9"
-        android:text="TextView" />
+        android:text="@string/na" />
 
     <TextView
         android:id="@+id/item_lastInspection"
@@ -84,5 +84,5 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
-        android:text="Show last inspection" />
+        android:text="@string/na" />
 </RelativeLayout>

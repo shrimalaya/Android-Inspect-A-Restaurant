@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import com.example.cmpt_cobalt.R;
+
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +11,9 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class Inspection {
+
+    private int hazardIcon;
+    private String formattedDate;
     private String trackingNumber;
     private String inspectionDate;
     private String inspectionType;
@@ -33,33 +38,52 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
+        this.formattedDate = dateFormatter();
+        this.hazardIcon = assignHazardIcon();
     }
 
     //https://www.baeldung.com/java-date-difference
-    public String dateFormatter() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
-        String[] indexToMonth = new DateFormatSymbols().getMonths();
+    public String dateFormatter(){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+            String[] indexToMonth = new DateFormatSymbols().getMonths();
 
-        String rawInspectionDate = this.getInspectionDate();
-        Date inspectionDate = sdf.parse(rawInspectionDate);
-        Date currentDate = new Date();
+            String rawInspectionDate = this.getInspectionDate();
+            Date inspectionDate = sdf.parse(rawInspectionDate);
+            Date currentDate = new Date();
 
-        long diffInMS = Math.abs(currentDate.getTime() - inspectionDate.getTime());
-        long diffInDay = TimeUnit.DAYS.convert(diffInMS, TimeUnit.MILLISECONDS);
+            long diffInMS = Math.abs(currentDate.getTime() - inspectionDate.getTime());
+            long diffInDay = TimeUnit.DAYS.convert(diffInMS, TimeUnit.MILLISECONDS);
 
-        //https://stackoverflow.com/questions/36370895/getyear-getmonth-getday-are-deprecated-in-calendar-what-to-use-then
-        Calendar inspectionCalendar = Calendar.getInstance();
-        inspectionCalendar.setTime(inspectionDate);
+            //https://stackoverflow.com/questions/36370895/getyear-getmonth-getday-are-deprecated-in-calendar-what-to-use-then
+            Calendar inspectionCalendar = Calendar.getInstance();
+            inspectionCalendar.setTime(inspectionDate);
 
-        if (diffInDay <= 1){ return diffInDay + "Day"; }
-        else if (diffInDay <= 30){ return diffInDay + " Days"; }
-        else if (diffInDay <= 365){
-            return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
-                    + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH);
+            if (diffInDay <= 1){ return diffInDay + "Day"; }
+            else if (diffInDay <= 30){ return diffInDay + " Days"; }
+            else if (diffInDay <= 365){
+                return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                        + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH);
+            }
+            else {
+                return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                        + " " + inspectionCalendar.get(Calendar.YEAR);
+            }
+        }
+        catch (Exception e){
+            return "N/A";
+        }
+    }
+
+    private int assignHazardIcon(){
+        if (hazardRating.equals("low")){
+            return R.drawable.green;
+        }
+        else if (hazardRating.equals("Moderate")){
+            return R.drawable.yellow;
         }
         else {
-            return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
-                    + " " + inspectionCalendar.get(Calendar.YEAR);
+            return R.drawable.red;
         }
     }
 
@@ -119,6 +143,10 @@ public class Inspection {
         setViolations(parseViolations(violations));
     }
 
+    public String getFormattedDate() {
+        return formattedDate;
+    }
+
     public String[] getViolations() {
         return this.violations;
     }
@@ -127,17 +155,17 @@ public class Inspection {
         this.violations = violations;
     }
 
+    public int getHazardIcon() { return hazardIcon; }
+
+
     @Override
     public String toString() {
-        try {
+
             return numCritical + ", " +
                     numNonCritical + ", " +
                     this.dateFormatter() + ", " +
                     inspectionType + ", " +
                     hazardRating;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+
     }
 }
