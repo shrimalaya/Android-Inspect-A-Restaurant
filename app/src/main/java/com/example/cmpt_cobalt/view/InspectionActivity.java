@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.example.cmpt_cobalt.model.Inspection;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -43,6 +44,8 @@ public class InspectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inspection);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         getInspection();
         displayDetails();
@@ -85,7 +88,6 @@ public class InspectionActivity extends AppCompatActivity {
         return "N/A";
     }
 
-    //TODO: Need more details on how to receive an inspection instance from the other activity.
     private void getInspection() {
         RestaurantManager manager = RestaurantManager.getInstance();
         Intent i = getIntent();
