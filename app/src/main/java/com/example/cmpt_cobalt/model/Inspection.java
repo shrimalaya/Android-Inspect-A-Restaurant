@@ -1,5 +1,9 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
+import com.example.cmpt_cobalt.R;
+
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +13,9 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class Inspection {
+
+    private int hazardIcon;
+    private String formattedDate;
     private String trackingNumber;
     private String inspectionDate;
     private String inspectionType;
@@ -16,7 +23,6 @@ public class Inspection {
     private int numNonCritical;
     private String hazardRating;
     private String[] violations;
-    private int hazardIcon;
 
     //TODO: Inspection Date not displayed in proper format (yyyy-mm-dd or yyyy/mm/dd)
     public Inspection(
@@ -34,43 +40,39 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
-
-        if(hazardRating.equals("\"Low\"")){
-            this.hazardIcon = android.R.drawable.presence_online;
-        }
-        else if(hazardRating.equals("\"Moderate\"")){
-            this.hazardIcon = android.R.drawable.presence_away;
-        }
-        else if(hazardRating.equals("\"High\"")) {
-            this.hazardIcon = android.R.drawable.presence_busy;
-        }
+        this.formattedDate = dateFormatter();
     }
 
     //https://www.baeldung.com/java-date-difference
-    public String dateFormatter() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
-        String[] indexToMonth = new DateFormatSymbols().getMonths();
+    public String dateFormatter(){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+            String[] indexToMonth = new DateFormatSymbols().getMonths();
 
-        String rawInspectionDate = this.getInspectionDate();
-        Date inspectionDate = sdf.parse(rawInspectionDate);
-        Date currentDate = new Date();
+            String rawInspectionDate = this.getInspectionDate();
+            Date inspectionDate = sdf.parse(rawInspectionDate);
+            Date currentDate = new Date();
 
-        long diffInMS = Math.abs(currentDate.getTime() - inspectionDate.getTime());
-        long diffInDay = TimeUnit.DAYS.convert(diffInMS, TimeUnit.MILLISECONDS);
+            long diffInMS = Math.abs(currentDate.getTime() - inspectionDate.getTime());
+            long diffInDay = TimeUnit.DAYS.convert(diffInMS, TimeUnit.MILLISECONDS);
 
-        //https://stackoverflow.com/questions/36370895/getyear-getmonth-getday-are-deprecated-in-calendar-what-to-use-then
-        Calendar inspectionCalendar = Calendar.getInstance();
-        inspectionCalendar.setTime(inspectionDate);
+            //https://stackoverflow.com/questions/36370895/getyear-getmonth-getday-are-deprecated-in-calendar-what-to-use-then
+            Calendar inspectionCalendar = Calendar.getInstance();
+            inspectionCalendar.setTime(inspectionDate);
 
-        if (diffInDay <= 1){ return diffInDay + "Day"; }
-        else if (diffInDay <= 30){ return diffInDay + " Days"; }
-        else if (diffInDay <= 365){
-            return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
-                    + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH);
+            if (diffInDay <= 1){ return diffInDay + "Day"; }
+            else if (diffInDay <= 30){ return diffInDay + " Days"; }
+            else if (diffInDay <= 365){
+                return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                        + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH);
+            }
+            else {
+                return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                        + " " + inspectionCalendar.get(Calendar.YEAR);
+            }
         }
-        else {
-            return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
-                    + " " + inspectionCalendar.get(Calendar.YEAR);
+        catch (Exception e){
+            return "N/A";
         }
     }
 
@@ -130,29 +132,55 @@ public class Inspection {
         setViolations(parseViolations(violations));
     }
 
+    public String getFormattedDate() {
+        return formattedDate;
+    }
+
     public String[] getViolations() {
         return this.violations;
+    }
+
+    public String[] getShortViolations() {
+        //int i=0;
+        if(violations.length == 0){
+            return this.violations;
+        }
+
+        String[] shortViolations = new String[violations.length];
+        for (int i = 0; i < violations.length; i++) {
+            if(violations[i].length()>10) {
+                shortViolations[i] = violations[i].substring(0, 40) + "...";
+            }
+            else {
+                shortViolations[i] = violations[i];
+            }
+        }
+
+        return shortViolations;
     }
 
     public void setViolations(String[] violations) {
         this.violations = violations;
     }
 
-    public int getHazardIcon() {
-        return hazardIcon;
-    }
 
+    public int getHazardIcon() {
+        if (hazardRating.equals("\"Low\"")) {
+            return R.drawable.green;
+        } else if (hazardRating.equals("\"Moderate\"")) {
+            return R.drawable.yellow;
+        } else {
+            return R.drawable.red;
+        }
+    }
     @Override
     public String toString() {
-        try {
+
             return numCritical + ", " +
                     numNonCritical + ", " +
                     this.dateFormatter() + ", " +
                     inspectionType + ", " +
                     hazardRating;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+
     }
 }

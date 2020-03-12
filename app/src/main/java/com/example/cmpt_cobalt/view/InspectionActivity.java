@@ -14,10 +14,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cmpt_cobalt.R;
 
@@ -55,6 +58,7 @@ public class InspectionActivity extends AppCompatActivity {
 
         getInspection();
         displayDetails();
+        registerClickCallback();
     }
 
     private void displayDetails(){
@@ -130,11 +134,35 @@ public class InspectionActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,            // Context for the activity.
                 R.layout.violation_item,      // Layout to use.
-                this.mInspection.getViolations()
+                this.mInspection.getShortViolations()
         );
 
         ListView violationsList = findViewById(R.id.violationsList);
         violationsList.setAdapter(adapter);
+    }
+
+    private void registerClickCallback() {
+        ListView list = findViewById(R.id.violationsList);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView = (TextView) view;
+                String message = textView.getText().toString();
+
+                for(String temp: mInspection.getViolations()) {
+                    if(temp.length()>10) {
+                        if ((temp.substring(0, 40)+"...").equals(message)) {
+                            message = temp;
+                        }
+                    }
+                }
+                showToast(message);
+            }
+        });
+    }
+
+    private void showToast(String text) {
+        Toast.makeText(InspectionActivity.this, text, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -145,12 +173,6 @@ public class InspectionActivity extends AppCompatActivity {
         return true;
     }
 
-    /*@Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
-    }
-*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
