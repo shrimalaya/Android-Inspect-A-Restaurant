@@ -23,7 +23,7 @@
         android:id="@+id/name_resActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="13dp"
         android:text="@string/name_resActivity"
         android:textSize="18sp"
