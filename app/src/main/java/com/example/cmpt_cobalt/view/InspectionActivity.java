@@ -51,7 +51,6 @@ public class InspectionActivity extends AppCompatActivity {
     private void displayDetails(){
         violationListView();
 
-
         TextView trackingNumberText= findViewById(R.id.trackingNumber);
         TextView inspectionDateText= findViewById(R.id.inspectionDate);
         TextView inspectionTypeText= findViewById(R.id.inspectionType);
