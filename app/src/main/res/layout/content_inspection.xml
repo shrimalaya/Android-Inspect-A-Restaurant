@@ -165,4 +165,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <ImageView
+        android:id="@+id/hazardImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintStart_toEndOf="@+id/hazardRating"
+        app:layout_constraintTop_toBottomOf="@+id/numNonCritical"
+        app:srcCompat="@android:drawable/presence_online" />
 </androidx.constraintlayout.widget.ConstraintLayout>
