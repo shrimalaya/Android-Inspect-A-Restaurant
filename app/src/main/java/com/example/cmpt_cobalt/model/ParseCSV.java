@@ -15,6 +15,7 @@ import java.util.List;
 public class ParseCSV {
     private List<List<String>> values = new ArrayList<>();
     private static final String COMMA_SEPARATOR = ",";
+    private static final int EXPECTED_LENGTH = 7;
 
     // parses the file and stores values into a 2d ArrayList
     // get the values by using passing in row + col into getter method
@@ -24,15 +25,12 @@ public class ParseCSV {
             String line;
 
             while ((line = br.readLine()) != null) {
+                line = line + ", N/A";
                 String[] lineValues = line.split(COMMA_SEPARATOR);
                 values.add(Arrays.asList(lineValues));
             }
 
-            for (int i = 0; i < values.size(); i++) {
-                while (values.get(i).size() < 7) {
-                    values.get(i).add(null);
-                }
-            }
+
 
         } catch (FileNotFoundException e) {
             Log.wtf("ParseCSV", "File not found ", e);
