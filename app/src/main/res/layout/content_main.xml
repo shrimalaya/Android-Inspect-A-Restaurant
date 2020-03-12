@@ -10,25 +10,34 @@
 
     <ListView
         android:id="@+id/listViewMain"
-        android:layout_width="393dp"
-        android:layout_height="570dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMain" />
+        app:layout_constraintTop_toBottomOf="@+id/fix_example_main" />
 
     <TextView
         android:id="@+id/textViewMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:text="@string/txt_select_a_restaurant"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fix_example_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/main_display_format"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="@+id/textViewMain"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMain" />
 </androidx.constraintlayout.widget.ConstraintLayout>
