@@ -92,7 +92,7 @@ public class InspectionActivity extends AppCompatActivity {
         hazardImage.setImageResource(mInspection.getHazardIcon());
 
     }
-
+//My project
     // Return a date formated in "May 12, 2019"
     private String getFormatDate(){
         try{
