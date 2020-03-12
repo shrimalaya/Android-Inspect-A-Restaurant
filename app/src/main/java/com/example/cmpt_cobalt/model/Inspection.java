@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
 import com.example.cmpt_cobalt.R;
 
 import java.text.DateFormatSymbols;
@@ -38,16 +40,7 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
-
-        if(hazardRating.equals("\"Low\"")){
-            this.hazardIcon = android.R.drawable.presence_online;
-        }
-        else if(hazardRating.equals("\"Moderate\"")){
-            this.hazardIcon = android.R.drawable.presence_away;
-        }
-        else if(hazardRating.equals("\"High\"")) {
-            this.hazardIcon = android.R.drawable.presence_busy;
-        }
+        this.formattedDate = dateFormatter();
     }
 
     //https://www.baeldung.com/java-date-difference
@@ -80,18 +73,6 @@ public class Inspection {
         }
         catch (Exception e){
             return "N/A";
-        }
-    }
-
-    private int assignHazardIcon(){
-        if (hazardRating.equals("low")){
-            return R.drawable.green;
-        }
-        else if (hazardRating.equals("Moderate")){
-            return R.drawable.yellow;
-        }
-        else {
-            return R.drawable.red;
         }
     }
 
@@ -159,33 +140,20 @@ public class Inspection {
         return this.violations;
     }
 
-    public String[] getShortViolations() {
-        //int i=0;
-        if(violations.length == 0){
-            return this.violations;
-        }
-
-        String[] shortViolations = new String[violations.length];
-        for (int i = 0; i < violations.length; i++) {
-            if(violations[i].length()>10) {
-                shortViolations[i] = violations[i].substring(0, 40) + "...";
-            }
-            else {
-                shortViolations[i] = violations[i];
-            }
-        }
-
-        return shortViolations;
-    }
-
     public void setViolations(String[] violations) {
         this.violations = violations;
     }
 
-    public int getHazardIcon() {
-        return hazardIcon;
-    }
 
+    public int getHazardIcon() {
+        if (hazardRating.equals("\"Low\"")) {
+            return R.drawable.green;
+        } else if (hazardRating.equals("\"Moderate\"")) {
+            return R.drawable.yellow;
+        } else {
+            return R.drawable.red;
+        }
+    }
     @Override
     public String toString() {
 
