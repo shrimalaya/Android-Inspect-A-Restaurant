@@ -125,8 +125,15 @@ public class Inspection {
 
     @Override
     public String toString() {
-        return inspectionDate + ' ' +
-                inspectionType + ' ' +
-                hazardRating;
+        try {
+            return numCritical + ", " +
+                    numNonCritical + ", " +
+                    this.dateFormatter() + ", " +
+                    inspectionType + ", " +
+                    hazardRating;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
