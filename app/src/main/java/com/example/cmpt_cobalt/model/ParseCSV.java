@@ -25,7 +25,7 @@ public class ParseCSV {
             String line;
 
             while ((line = br.readLine()) != null) {
-                line = line + ", N/A";
+                line = line + ", ";
                 String[] lineValues = line.split(COMMA_SEPARATOR);
                 values.add(Arrays.asList(lineValues));
             }
