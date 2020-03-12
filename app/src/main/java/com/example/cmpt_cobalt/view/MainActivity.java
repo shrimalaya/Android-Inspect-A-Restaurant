@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         if(size==0) {
             restaurantStrings = new String[1];
             TextView textView = findViewById(R.id.textViewMain);
-            textView.setText("");
+            //textView.setText("");
             restaurantStrings[0] = "\n\n\n\nWelcome to the Restaurant Inspector!" +
                     "\n\nTo start, load a CSV file.\n\n";
         } else {
