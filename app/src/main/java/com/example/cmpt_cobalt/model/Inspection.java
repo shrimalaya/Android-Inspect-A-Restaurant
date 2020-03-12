@@ -21,7 +21,6 @@ public class Inspection {
     private int numNonCritical;
     private String hazardRating;
     private String[] violations;
-    private int hazardIcon;
 
     //TODO: Inspection Date not displayed in proper format (yyyy-mm-dd or yyyy/mm/dd)
     public Inspection(
