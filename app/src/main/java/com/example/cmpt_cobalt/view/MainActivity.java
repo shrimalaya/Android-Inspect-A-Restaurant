@@ -110,13 +110,14 @@ public class MainActivity extends AppCompatActivity {
         // start at 1 to skip titles
         for (int j = 1; j < csv2.getRowSize(); j++) {
             if (csv2.getVal(j, 0).equals(restaurant.getTracking())) {
-                Inspection inspect = new Inspection(csv2.getVal(j, 0),
+                Inspection inspect = new Inspection(
+                        csv2.getVal(j, 0),
                         csv2.getVal(j, 1),
                         csv2.getVal(j, 2),
                         Integer.valueOf(csv2.getVal(j, 3)),
                         Integer.valueOf(csv2.getVal(j, 4)),
                         csv2.getVal(j, 5),
-                        " ");
+                        csv2.getVal(j, 6));
 
                 //TODO: Parse Violations - Not working using normal csv2.getVal() method.
                     /*if(csv2.getVal(j, 6) != null){
