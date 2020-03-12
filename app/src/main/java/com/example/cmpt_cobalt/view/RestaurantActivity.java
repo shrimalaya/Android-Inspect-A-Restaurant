@@ -65,7 +65,7 @@ public class RestaurantActivity extends AppCompatActivity {
         // Start populating string
         int i=0;
         for(Inspection inspection: inspectionList) {
-            inspectionStrings[i++] = inspection.toString();
+            //inspectionStrings[i++] = inspection.toString();
             inspections.add(inspection);
         }
 
