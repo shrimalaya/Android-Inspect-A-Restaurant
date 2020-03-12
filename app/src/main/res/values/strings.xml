@@ -12,7 +12,7 @@
     <string name="num_critical">Number of Critical Issues:</string>
     <string name="num_non_critical">Number of Non Critical Issues:</string>
     <string name="hazard_rating">Hazard Rating</string>
-    <string name="violations">Violations</string>
+    <string name="violations">Violations:</string>
     <string name="name_resActivity">Name</string>
     <string name="address">Address</string>
     <string name="semicolon">:</string>
@@ -20,5 +20,8 @@
     <string name="longitude_resActivity">Longitude</string>
     <string name="latitude_fix">Lat:</string>
     <string name="longitude_fix">Long:</string>
+    <string name="main_display_format">Display Format:\n
+        Tracking no., Restaurant Name\n
+        Critical + Non-Critical, Hazard Level, Most Recent Inspection date</string>
 
 </resources>

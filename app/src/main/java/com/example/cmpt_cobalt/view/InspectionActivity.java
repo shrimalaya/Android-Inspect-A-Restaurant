@@ -58,7 +58,6 @@ public class InspectionActivity extends AppCompatActivity {
 
     }
 
-    //TODO: Need more details on how to receive an inspection instance from the other activity.
     private void getInspection() {
         RestaurantManager manager = RestaurantManager.getInstance();
         Intent i = getIntent();
