@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">CMPT-Cobalt</string>
-    <string name="title_activity_main">Restaurant List</string>
-    <string name="title_activity_restaurant">RestaurantActivity</string>
-    <string name="title_activity_inspection">Inspection</string>
+    <string name="title_activity_main">List of Restaurants</string>
+    <string name="title_activity_restaurant">Restaurant</string>
+    <string name="title_activity_inspection">Inspections</string>
     <string name="txt_select_a_restaurant">Select a restaurant to see inspections:</string>
 
     <!--Inspection Details Screen-->
