@@ -2,6 +2,7 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.cmpt_cobalt.model.Inspection;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +70,8 @@ public class InspectionActivity extends AppCompatActivity {
         TextView numCriticalText= findViewById(R.id.numCritical);
         TextView numNonCriticalText= findViewById(R.id.numNonCritical);
         TextView hazardRatingText= findViewById(R.id.hazardRating);
+        ImageView hazardImage = findViewById(R.id.hazardImage);
+
 
         trackingNumberText.setText(mInspection.getTrackingNumber());
         inspectionDateText.setText(getFormatDate());
@@ -75,6 +79,17 @@ public class InspectionActivity extends AppCompatActivity {
         numCriticalText.setText(Integer.toString(mInspection.getNumCritical()));
         numNonCriticalText.setText(Integer.toString(mInspection.getNumNonCritical()));
         hazardRatingText.setText(mInspection.getHazardRating());
+
+        if(mInspection.getHazardRating().equals("\"Low\"")){
+            hazardRatingText.setTextColor(Color.GREEN);
+        }
+        else if(mInspection.getHazardRating().equals("\"Moderate\"")){
+            hazardRatingText.setTextColor(Color.YELLOW);
+        }
+        else if(mInspection.getHazardRating().equals("\"High\"")) {
+            hazardRatingText.setTextColor(Color.RED);        }
+
+        hazardImage.setImageResource(mInspection.getHazardIcon());
 
     }
 
