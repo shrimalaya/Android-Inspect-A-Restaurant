@@ -115,6 +115,10 @@ public class Inspection {
         this.hazardRating = hazardRating;
     }
 
+    public void setRawViolations(String violations) {
+        setViolations(parseViolations(violations));
+    }
+
     public String[] getViolations() {
         return this.violations;
     }
