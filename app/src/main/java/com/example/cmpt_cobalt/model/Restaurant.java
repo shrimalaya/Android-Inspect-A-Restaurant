@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import com.example.cmpt_cobalt.R;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -11,17 +13,17 @@ public class Restaurant {
     private float latAddress;
     private float longAddress;
     private String tracking;
-    private String icon;
+    private int icon;
     public ArrayList<Inspection> inspections;
 
-    public Restaurant(String name, String streetAddress, String cityAddress, float latAddress, float longAddress, String tracking, String icon) {
+    public Restaurant(String name, String streetAddress, String cityAddress, float latAddress, float longAddress, String tracking) {
         this.name = name;
         this.streetAddress = streetAddress;
         this.cityAddress = cityAddress;
         this.latAddress = latAddress;
         this.longAddress = longAddress;
         this.tracking = tracking;
-        this.icon = icon;
+        this.icon = R.drawable.log;
         this.inspections = new ArrayList<>();
     }
 
@@ -73,11 +75,11 @@ public class Restaurant {
         this.tracking = tracking;
     }
 
-    public String getIcon() {
+    public int getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(int icon) {
         this.icon = icon;
     }
 
@@ -91,8 +93,10 @@ public class Restaurant {
     }
 
     public Inspection getInspection(int inspection) {
+        if (inspections.size() <= inspection || inspection < 0){
+            return null;
+        }
         return inspections.get(inspection);
-
     }
 
     public int getInspectionSize() {
@@ -109,21 +113,19 @@ public class Restaurant {
             first = inspections.get(0);
         }
 
-        try {
-            if(empty == false) {
-                return tracking + ", "
-                        + name + "\n"
-                        + (first.getNumCritical() + first.getNumNonCritical())
-                        + ", "
-                        + first.getHazardRating() + ", "
-                        + first.dateFormatter();
-            } else {
-                return tracking + " "
-                        + name + "\nNo inspections";
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+
+        if(empty == false) {
+            return tracking + ", "
+                    + name + "\n"
+                    + (first.getNumCritical() + first.getNumNonCritical())
+                    + ", "
+                    + first.getHazardRating() + ", "
+                    + first.dateFormatter();
+        } else {
+            return tracking + " "
+                    + name + "\nNo inspections";
         }
-        return null;
+
+
     }
 }
