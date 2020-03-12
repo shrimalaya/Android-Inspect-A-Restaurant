@@ -146,8 +146,12 @@ public class RestaurantActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView) view;
+                View itemView = view;
+                TextView textView = view.findViewById(R.id.inspectiontext);
                 String message = textView.getText().toString();
+
+                //TextView textView = (TextView) view;
+                //String message = view.getText().toString();
                 String restaurantTracking = restaurant.getTracking();
 
                 Intent intent = InspectionActivity.makeLaunchIntent(RestaurantActivity.this, "InspectionActivity");
