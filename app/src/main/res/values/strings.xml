@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">CMPT-Cobalt</string>
-    <string name="title_activity_main">Restaurant List</string>
-    <string name="title_activity_restaurant">RestaurantActivity</string>
-    <string name="title_activity_inspection">Inspection</string>
+    <string name="title_activity_main">List of Restaurants</string>
+    <string name="title_activity_restaurant">Restaurant</string>
+    <string name="title_activity_inspection">Inspections</string>
     <string name="txt_select_a_restaurant">Select a restaurant to see inspections:</string>
 
     <!--Inspection Details Screen-->
@@ -12,7 +12,7 @@
     <string name="num_critical">Number of Critical Issues:</string>
     <string name="num_non_critical">Number of Non Critical Issues:</string>
     <string name="hazard_rating">Hazard Rating</string>
-    <string name="violations">Violations</string>
+    <string name="violations">Violations:</string>
     <string name="name_resActivity">Name</string>
     <string name="address">Address</string>
     <string name="semicolon">:</string>
@@ -20,5 +20,8 @@
     <string name="longitude_resActivity">Longitude</string>
     <string name="latitude_fix">Lat:</string>
     <string name="longitude_fix">Long:</string>
+    <string name="main_display_format">Display Format:\n
+        Tracking no., Restaurant Name\n
+        Critical + Non-Critical, Hazard Level, Most Recent Inspection date</string>
 
 </resources>

@@ -7,7 +7,12 @@ import android.os.Bundle;
 import com.example.cmpt_cobalt.model.Inspection;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,6 +21,13 @@ import com.example.cmpt_cobalt.R;
 
 import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
+
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class InspectionActivity extends AppCompatActivity {
 
@@ -35,30 +47,51 @@ public class InspectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inspection);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getInspection();
         displayDetails();
     }
 
-    private void displayDetails() {
+    private void displayDetails(){
+        violationListView();
+
         TextView trackingNumberText= findViewById(R.id.trackingNumber);
         TextView inspectionDateText= findViewById(R.id.inspectionDate);
         TextView inspectionTypeText= findViewById(R.id.inspectionType);
         TextView numCriticalText= findViewById(R.id.numCritical);
         TextView numNonCriticalText= findViewById(R.id.numNonCritical);
         TextView hazardRatingText= findViewById(R.id.hazardRating);
-        violationListView();
 
-        trackingNumberText.setText(this.mInspection.getTrackingNumber());
-        inspectionDateText.setText(this.mInspection.getInspectionDate());
-        inspectionTypeText.setText(this.mInspection.getInspectionType());
-        numCriticalText.setText(Integer.toString(this.mInspection.getNumCritical()));
-        numNonCriticalText.setText(Integer.toString(this.mInspection.getNumNonCritical()));
-        hazardRatingText.setText(this.mInspection.getHazardRating());
+        trackingNumberText.setText(mInspection.getTrackingNumber());
+        inspectionDateText.setText(getFormatDate());
+        inspectionTypeText.setText(mInspection.getInspectionType());
+        numCriticalText.setText(Integer.toString(mInspection.getNumCritical()));
+        numNonCriticalText.setText(Integer.toString(mInspection.getNumNonCritical()));
+        hazardRatingText.setText(mInspection.getHazardRating());
 
     }
 
-    //TODO: Need more details on how to receive an inspection instance from the other activity.
+    // Return a date formated in "May 12, 2019"
+    private String getFormatDate(){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+            Date inspectionDate = sdf.parse(mInspection.getInspectionDate());
+            Calendar inspectionCalendar = Calendar.getInstance();
+            inspectionCalendar.setTime(inspectionDate);
+            String[] indexToMonth = new DateFormatSymbols().getMonths();
+            return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                    + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH)
+                    + ", " + inspectionCalendar.get(Calendar.YEAR);
+        }
+        catch (Exception e) {
+            // Handle it.
+        }
+        return "N/A";
+    }
+
     private void getInspection() {
         RestaurantManager manager = RestaurantManager.getInstance();
         Intent i = getIntent();
@@ -89,5 +122,26 @@ public class InspectionActivity extends AppCompatActivity {
         violationsList.setAdapter(adapter);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        getMenuInflater().inflate(R.menu.menu_inspections, menu);
+        return true;
+    }
 
+    /*@Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+*/
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        finish();
+        return true;
+    }
 }
