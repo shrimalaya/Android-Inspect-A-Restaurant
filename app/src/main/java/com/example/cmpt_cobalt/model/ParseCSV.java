@@ -25,6 +25,7 @@ public class ParseCSV {
 
             while ((line = br.readLine()) != null) {
 
+                // need to add in an extra space in case there are no violations
                 line = line + ", ";
                 String[] lineValues = line.split(COMMA_SEPARATOR);
                 values.add(Arrays.asList(lineValues));
