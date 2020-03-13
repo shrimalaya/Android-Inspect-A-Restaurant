@@ -189,7 +189,8 @@ public class InspectionActivity extends AppCompatActivity {
             else if(violations.get(position).contains("Equipment") || violations.get(position).contains("equipment")) {
                 imageView.setImageResource(R.drawable.green);
             }
-            else if(violations.get(position).contains("food") || violations.get(position).contains("Food")) {
+            else if(violations.get(position).contains("food") || violations.get(position).contains("Food")
+                    || violations.get(position).contains("Cold")) {
                 imageView.setImageResource(R.drawable.yellow);
             }
             else if(violations.get(position).contains("Sanitized") || violations.get(position).contains("sanitized")) {
