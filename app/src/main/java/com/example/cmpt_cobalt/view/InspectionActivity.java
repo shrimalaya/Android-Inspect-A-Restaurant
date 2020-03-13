@@ -8,10 +8,8 @@ import android.os.Bundle;
 import com.example.cmpt_cobalt.model.Inspection;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,7 +28,6 @@ import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -158,7 +155,7 @@ public class InspectionActivity extends AppCompatActivity {
 
     private class CustomAdapter extends ArrayAdapter<String> {
         public CustomAdapter() {
-            super(InspectionActivity.this, R.layout.layout_inspection, violations);
+            super(InspectionActivity.this, R.layout.layout_violation, violations);
         }
 
         @Override
@@ -166,26 +163,39 @@ public class InspectionActivity extends AppCompatActivity {
 
             View itemView = convertView;
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.layout_inspection, parent, false);
+                itemView = getLayoutInflater().inflate(R.layout.layout_violation, parent, false);
             }
 
             String currentViolation = violations.get(position);
 
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.inspectionimage);
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.violationimage);
+            ImageView severityImage = (ImageView) itemView.findViewById(R.id.violationSeverity);
 
+            //Setup severity icon
+            if(violations.get(position).contains("Not Critical")) {
+                severityImage.setImageResource(R.drawable.green);
+            }
+            else if(violations.get(position).contains("Critical")){
+                severityImage.setImageResource(R.drawable.red);
+            }
+            else {
+                // Blank Image
+            }
+
+            //Setup violation type icon
             if(violations.get(position).contains("pests") || violations.get(position).contains("Pests")){
                 imageView.setImageResource(R.drawable.red);
             }
             else if(violations.get(position).contains("Equipment") || violations.get(position).contains("equipment")) {
                 imageView.setImageResource(R.drawable.green);
             }
-            else if(violations.get(position).contains("Food") || violations.get(position).contains("food")) {
+            else if(violations.get(position).contains("food") || violations.get(position).contains("Food")) {
                 imageView.setImageResource(R.drawable.yellow);
             }
             else if(violations.get(position).contains("Sanitized") || violations.get(position).contains("sanitized")) {
                 imageView.setImageResource(R.drawable.log);
             }
-            else if(violations.get(position).contains("employee") || violations.get(position).contains("Employee")) {
+            else if(violations.get(position).contains("handwashing")) {
                 // Critical hand-washing station not available for employees
                 imageView.setImageResource(R.drawable.green);
             }
@@ -193,7 +203,7 @@ public class InspectionActivity extends AppCompatActivity {
                 // Set a blank (white) image
             }
 
-            TextView textView = (TextView) itemView.findViewById(R.id.inspectiontext);
+            TextView textView = (TextView) itemView.findViewById(R.id.violationtext);
             textView.setText(currentViolation);
 
             return itemView;
@@ -207,13 +217,20 @@ public class InspectionActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 View itemView = view;
-                TextView textView = (TextView) itemView.findViewById(R.id.inspectiontext);
+                TextView textView = (TextView) itemView.findViewById(R.id.violationtext);
                 String message = textView.getText().toString();
 
                 for(String temp: mInspection.getViolations()) {
                     if(temp.length()>10) {
-                        if ((temp.substring(0, 40)+"...").equals(message)) {
-                            message = temp;
+                        if(temp.length()<40) {
+                            if (temp.equals(message)) {
+                                message = temp;
+                            }
+                        }
+                        else {
+                            if ((temp.substring(0, 40) + "...").equals(message)) {
+                                message = temp;
+                            }
                         }
                     }
                 }

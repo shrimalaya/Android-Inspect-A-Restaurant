@@ -200,7 +200,10 @@ public class Inspection {
         String[] shortViolations = new String[violations.length];
         for (int i = 0; i < violations.length; i++) {
             if(violations[i].length()>10) {
-                shortViolations[i] = violations[i].substring(0, 40) + "...";
+                if(violations[i].length()<40)
+                    shortViolations[i] = violations[i];
+                else
+                    shortViolations[i] = violations[i].substring(0, 40) + "...";
             }
             else {
                 shortViolations[i] = violations[i];
