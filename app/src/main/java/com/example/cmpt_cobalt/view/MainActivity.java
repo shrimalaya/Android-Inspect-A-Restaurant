@@ -25,12 +25,13 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Comparator;
 
+// main screen activity
+// displays the initial list of restaurants
 public class MainActivity extends AppCompatActivity {
 
     private RestaurantManager manager;
     private int size = 0;
     private String []restaurantStrings = new String[size];
-    //private Scanner in = new Scanner(System.in); //Read from keyboard
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +49,17 @@ public class MainActivity extends AppCompatActivity {
         populateManager();
 
 
-        if(size==0) {
+        if (size == 0) {
+
             restaurantStrings = new String[1];
-            TextView textView = findViewById(R.id.textViewMain);
-            //textView.setText("");
             restaurantStrings[0] = "\n\n\n\nWelcome to the Restaurant Inspector!" +
                     "\n\nTo start, load a CSV file.\n\n";
+
         } else {
+
           TextView textView = findViewById(R.id.textViewMain);
           textView.setText(R.string.txt_select_a_restaurant);
+
         }
 
 
@@ -66,19 +69,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class RestaurantAdapter extends ArrayAdapter<Restaurant> {
+
         public RestaurantAdapter() {
             super(MainActivity.this, R.layout.restaurant_item, manager.getRestaurants());
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent){
+        public View getView(int position, View convertView, ViewGroup parent) {
             // Make sure we have a view to work with
             View itemView = convertView;
-            if (itemView == null){
+
+            if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.restaurant_item, parent, false);
             }
+
             // Find the restaurant to work with.
             Restaurant currentRestaurant = manager.getRestaurants().get(position);
+
             // Fill the view
             ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
             logo.setImageResource(currentRestaurant.getIcon());
@@ -88,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             Inspection mostRecentInspection = currentRestaurant.getInspection(0);
-            if (mostRecentInspection != null){
+            if (mostRecentInspection != null) {
                 TextView numNonCriticalText = itemView.findViewById(R.id.item_numNonCritical);
                 numNonCriticalText.setText(Integer.toString(mostRecentInspection.getNumNonCritical()));
 
@@ -100,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
                 ImageView hazard = itemView.findViewById(R.id.item_hazardImage);
                 hazard.setImageResource(mostRecentInspection.getHazardIcon());
+
             }
 
 
@@ -109,19 +117,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void populateManager() {
-        // need to change the file path
         InputStream is1 = getResources().openRawResource(R.raw.restaurants_itr1);
         ParseCSV csv = new ParseCSV(is1);
 
         // start row index at 1 to ignore the titles
-        for (int i = 1; i < csv.getRowSize(); i++) {
+        for (int row = 1; row < csv.getRowSize(); row++) {
             Restaurant restaurant = new Restaurant(
-                    csv.getVal(i, 1),
-                    csv.getVal(i, 2),
-                    csv.getVal(i, 3),
-                    Float.valueOf(csv.getVal(i, 5)),
-                    Float.valueOf(csv.getVal(i, 6)),
-                    csv.getVal(i, 0));
+                    csv.getVal(row, 1),
+                    csv.getVal(row, 2),
+                    csv.getVal(row, 3),
+                    Float.valueOf(csv.getVal(row, 5)),
+                    Float.valueOf(csv.getVal(row, 6)),
+                    csv.getVal(row, 0));
 
             populateWithInspections(restaurant);
 

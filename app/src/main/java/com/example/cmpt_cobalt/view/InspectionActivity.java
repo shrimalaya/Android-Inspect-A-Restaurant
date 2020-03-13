@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+// activity that shows the single inspection screen
 public class InspectionActivity extends AppCompatActivity {
 
     private static final String EXTRA_MESSAGE = "Extra";
@@ -47,19 +48,22 @@ public class InspectionActivity extends AppCompatActivity {
 
     private Inspection mInspection;
     private Restaurant restaurant;
-    private ArrayList<String> violations = new ArrayList<String>();
+    private ArrayList<String> violations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inspection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         getInspection();
         displayDetails();
         registerClickCallback();
+
     }
 
     private void displayDetails(){
@@ -81,14 +85,19 @@ public class InspectionActivity extends AppCompatActivity {
         numNonCriticalText.setText(Integer.toString(mInspection.getNumNonCritical()));
         hazardRatingText.setText(mInspection.getHazardRating());
 
-        if(mInspection.getHazardRating().equals("\"Low\"")){
+        if (mInspection.getHazardRating().equals("\"Low\"")) {
+
             hazardRatingText.setTextColor(Color.GREEN);
-        }
-        else if(mInspection.getHazardRating().equals("\"Moderate\"")){
+
+        } else if (mInspection.getHazardRating().equals("\"Moderate\"")) {
+
             hazardRatingText.setTextColor(Color.rgb(204, 204, 0));
+
+        } else if (mInspection.getHazardRating().equals("\"High\"")) {
+
+            hazardRatingText.setTextColor(Color.RED);
+
         }
-        else if(mInspection.getHazardRating().equals("\"High\"")) {
-            hazardRatingText.setTextColor(Color.RED);        }
 
         hazardImage.setImageResource(mInspection.getHazardIcon());
 
@@ -96,64 +105,63 @@ public class InspectionActivity extends AppCompatActivity {
 
     // Return a date formatted in "May 12, 2019"
     private String getFormatDate(){
-        try{
+        try {
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
             Date inspectionDate = sdf.parse(mInspection.getInspectionDate());
             Calendar inspectionCalendar = Calendar.getInstance();
+
             inspectionCalendar.setTime(inspectionDate);
             String[] indexToMonth = new DateFormatSymbols().getMonths();
+
             return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
                     + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH)
                     + ", " + inspectionCalendar.get(Calendar.YEAR);
+
         }
+
         catch (Exception e) {
+
             // Handle it.
         }
+
         return "N/A";
     }
 
     private void getInspection() {
-        RestaurantManager manager = RestaurantManager.getInstance();
-        Intent i = getIntent();
-        String messageRestaurant = i.getStringExtra(RESTAURANT_MESSAGE);
-        String message = i.getStringExtra(EXTRA_MESSAGE);
 
-        for(Restaurant temp: manager) {
-            if(messageRestaurant.equals(temp.getTracking())) {
+        RestaurantManager manager = RestaurantManager.getInstance();
+        Intent intent = getIntent();
+        String messageRestaurant = intent.getStringExtra(RESTAURANT_MESSAGE);
+        String message = intent.getStringExtra(EXTRA_MESSAGE);
+
+        for (Restaurant temp : manager) {
+            if (messageRestaurant.equals(temp.getTracking())) {
                 restaurant = temp;
             }
         }
 
-        for(Inspection temp: restaurant.inspections) {
-            if(temp.toString().equals(message)) {
+        for (Inspection temp : restaurant.inspections) {
+            if (temp.toString().equals(message)) {
                 mInspection = temp;
             }
         }
 
-        for (int j = 0; j < mInspection.getViolations().length; j++) {
-            violations.add(mInspection.getShortViolation(j));
+        for (int i = 0; i < mInspection.getViolations().length; i++) {
+            violations.add(mInspection.getShortViolation(i));
         }
     }
 
     private void violationListView() {
+
         ArrayAdapter<String> adapter = new CustomAdapter();
         ListView violationsList = findViewById(R.id.violationsList);
         violationsList.setAdapter(adapter);
 
-        // Old code
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,            // Context for the activity.
-                R.layout.violation_item,      // Layout to use.
-                this.mInspection.getShortViolations()
-        );
-
-        ListView violationsList = findViewById(R.id.violationsList);
-        violationsList.setAdapter(adapter);
-         */
     }
 
     private class CustomAdapter extends ArrayAdapter<String> {
+
         public CustomAdapter() {
             super(InspectionActivity.this, R.layout.layout_violation, violations);
         }
@@ -172,36 +180,41 @@ public class InspectionActivity extends AppCompatActivity {
             ImageView severityImage = (ImageView) itemView.findViewById(R.id.violationSeverity);
 
             //Setup severity icon
-            if(violations.get(position).contains("Not Critical")) {
+            if (violations.get(position).contains("Not Critical")) {
                 severityImage.setImageResource(R.drawable.green);
             }
-            else if(violations.get(position).contains("Critical")){
+            else if (violations.get(position).contains("Critical")) {
                 severityImage.setImageResource(R.drawable.red);
             }
             else {
-                // Blank Image
+                imageView.setImageResource(R.drawable.blank);
             }
 
             //Setup violation type icon
-            if(violations.get(position).contains("pests") || violations.get(position).contains("Pests")){
-                imageView.setImageResource(R.drawable.red);
-            }
-            else if(violations.get(position).contains("Equipment") || violations.get(position).contains("equipment")) {
-                imageView.setImageResource(R.drawable.green);
-            }
-            else if(violations.get(position).contains("food") || violations.get(position).contains("Food")
-                    || violations.get(position).contains("Cold")) {
-                imageView.setImageResource(R.drawable.yellow);
-            }
-            else if(violations.get(position).contains("Sanitized") || violations.get(position).contains("sanitized")) {
-                imageView.setImageResource(R.drawable.log);
-            }
-            else if(violations.get(position).contains("handwashing")) {
-                // Critical hand-washing station not available for employees
-                imageView.setImageResource(R.drawable.green);
-            }
-            else {
-                // Set a blank (white) image
+            if (violations.get(position).contains("pests") || violations.get(position).contains("Pests")) {
+
+                imageView.setImageResource(R.drawable.pest);
+
+            } else if (violations.get(position).contains("Equipment") || violations.get(position).contains("equipment")) {
+
+                imageView.setImageResource(R.drawable.equipment);
+
+            } else if (violations.get(position).contains("food") || violations.get(position).contains("Food") || violations.get(position).contains("Cold")) {
+
+                imageView.setImageResource(R.drawable.food);
+
+            } else if (violations.get(position).contains("Sanitized") || violations.get(position).contains("sanitized")) {
+
+                imageView.setImageResource(R.drawable.sanitizer);
+
+            } else if (violations.get(position).contains("handwashing")) {
+
+                imageView.setImageResource(R.drawable.handwash);
+
+            } else {
+
+                imageView.setImageResource(R.drawable.blank);
+
             }
 
             TextView textView = (TextView) itemView.findViewById(R.id.violationtext);
@@ -221,17 +234,18 @@ public class InspectionActivity extends AppCompatActivity {
                 TextView textView = (TextView) itemView.findViewById(R.id.violationtext);
                 String message = textView.getText().toString();
 
-                for(String temp: mInspection.getViolations()) {
-                    if(temp.length()>10) {
-                        if(temp.length()<40) {
+                for (String temp : mInspection.getViolations()) {
+                    if (temp.length() > 10) {
+                        if (temp.length() < 40) {
                             if (temp.equals(message)) {
                                 message = temp;
                             }
-                        }
-                        else {
+                        } else {
+
                             if ((temp.substring(0, 40) + "...").equals(message)) {
                                 message = temp;
                             }
+
                         }
                     }
                 }

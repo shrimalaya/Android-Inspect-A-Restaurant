@@ -99,7 +99,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent" />
@@ -109,7 +108,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@+id/inspectionDate"
         app:layout_constraintTop_toBottomOf="@+id/inspectionDate" />
@@ -119,7 +117,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@+id/inspectionType"
         app:layout_constraintTop_toBottomOf="@+id/inspectionType" />
@@ -129,7 +126,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@+id/numCritical"
         app:layout_constraintTop_toBottomOf="@+id/numCritical" />
@@ -139,7 +135,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/numNonCritical"
@@ -150,7 +145,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="@+id/trackingNumber"
         app:layout_constraintTop_toBottomOf="@+id/trackingNumber" />
