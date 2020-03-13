@@ -32,7 +32,6 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/item_restaurantLogo"
-        android:text="Show Restaurant Name"
         android:textSize="18sp"
         android:textStyle="bold" />
 

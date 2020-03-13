@@ -16,7 +16,7 @@
             app:layout_constraintEnd_toStartOf="@+id/inspectionimage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textSize="17dp"/>
+            android:textSize="17sp"/>
 
         <ImageView
             android:id="@+id/inspectionimage"
@@ -29,7 +29,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/inspectiontext"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/presence_online" />
+            app:srcCompat="@android:drawable/presence_online"
+            android:contentDescription="TODO" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

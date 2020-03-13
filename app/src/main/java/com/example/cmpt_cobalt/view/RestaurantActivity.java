@@ -27,6 +27,8 @@ import com.example.cmpt_cobalt.R;
 import java.util.ArrayList;
 import java.util.List;
 
+// displays the list of all inspections
+// pertaining to a single restaurant
 public class RestaurantActivity extends AppCompatActivity {
 
     private RestaurantManager manager;
@@ -59,30 +61,17 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     private void populateInspectionList() {
+
         manager = RestaurantManager.getInstance();
-        // Process inspections
+
         processInspections();
         size = restaurant.getInspectionSize();
         inspectionStrings = new String[size];
 
         // Start populating string
-        int i=0;
-        for(Inspection inspection: inspectionList) {
-            //inspectionStrings[i++] = inspection.toString();
+        for (Inspection inspection : inspectionList) {
             inspections.add(inspection);
         }
-
-        // Build Adapter
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String> (
-                this,           // Context for view
-                R.layout.layout_listview,     // Layout to use
-                inspectionStrings);               // Items to be displayed
-
-        // Configure the list view
-        ListView list = (ListView) findViewById(R.id.restaurant_view);
-        list.setAdapter(adapter);
-        */
 
         ArrayAdapter<Inspection> adapter = new CustomAdapter();
         ListView list = (ListView) findViewById(R.id.restaurant_view);
@@ -117,14 +106,15 @@ public class RestaurantActivity extends AppCompatActivity {
 
 
     private void processInspections() {
+
         // Receive message from MainActivity
         // Message contains details of selected Restaurant
         Intent intent2 = getIntent();
         restaurantString = intent2.getStringExtra(EXTRA_MESSAGE);
 
         // Find the Restaurant and assign it to our local Restaurant object
-        for (Restaurant temp: manager) {
-            if(temp.toString().equals(restaurantString)) {
+        for (Restaurant temp : manager) {
+            if (temp.toString().equals(restaurantString)) {
                 restaurant = temp;
             }
         }
@@ -142,6 +132,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         TextView lon = findViewById(R.id.longitude_resActivity);
         lon.setText(restaurant.getLongAddress() + "");
+
     }
 
     private void registerClickCallback() {
@@ -149,12 +140,9 @@ public class RestaurantActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                View itemView = view;
                 TextView textView = view.findViewById(R.id.inspectiontext);
                 String message = textView.getText().toString();
 
-                //TextView textView = (TextView) view;
-                //String message = view.getText().toString();
                 String restaurantTracking = restaurant.getTracking();
 
                 Intent intent = InspectionActivity.makeLaunchIntent(RestaurantActivity.this, "InspectionActivity");
@@ -167,8 +155,8 @@ public class RestaurantActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
         getMenuInflater().inflate(R.menu.menu_restaurant, menu);
         return true;
     }

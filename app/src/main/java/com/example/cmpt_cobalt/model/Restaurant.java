@@ -5,15 +5,20 @@ import com.example.cmpt_cobalt.R;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+// restaurant class holding all info related to a restaurant
+// mainly stored in the restaurant manager class
 public class Restaurant {
 
     private String name;
     private String streetAddress;
     private String cityAddress;
+    private String tracking;
+
     private float latAddress;
     private float longAddress;
-    private String tracking;
+
     private int icon;
+
     public ArrayList<Inspection> inspections;
 
     public Restaurant(String name, String streetAddress, String cityAddress, float latAddress, float longAddress, String tracking) {
@@ -39,54 +44,22 @@ public class Restaurant {
         return streetAddress;
     }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
-
-    public String getCityAddress() {
-        return cityAddress;
-    }
-
-    public void setCityAddress(String cityAddress) {
-        this.cityAddress = cityAddress;
-    }
-
     public float getLatAddress() {
         return latAddress;
-    }
-
-    public void setLatAddress(float latAddress) {
-        this.latAddress = latAddress;
     }
 
     public float getLongAddress() {
         return longAddress;
     }
 
-    public void setLongAddress(float longAddress) {
-        this.longAddress = longAddress;
-    }
-
     public String getTracking() {
         return tracking;
-    }
-
-    public void setTracking(String tracking) {
-        this.tracking = tracking;
     }
 
     public int getIcon() {
         return icon;
     }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
-    }
-
-    public void setInspections(Inspection inspection) {
-        inspections.add(inspection);
-
-    }
 
     public ArrayList<Inspection> getInspections() {
         return inspections;
@@ -96,6 +69,7 @@ public class Restaurant {
         if (inspections.size() <= inspection || inspection < 0){
             return null;
         }
+
         return inspections.get(inspection);
     }
 
@@ -107,25 +81,33 @@ public class Restaurant {
     public String toString() {
         boolean empty = false;
         Inspection first = new Inspection("", "", "", 0, 0, "", "");
-        if(inspections.isEmpty()){
+
+        if (inspections.isEmpty()) {
+
             empty = true;
+
         } else {
+
             first = inspections.get(0);
+
         }
 
 
-        if(empty == false) {
+        if (!empty) {
+
             return tracking + ", "
                     + name + "\n"
                     + (first.getNumCritical() + first.getNumNonCritical())
                     + ", "
                     + first.getHazardRating() + ", "
                     + first.dateFormatter();
+
         } else {
+
             return tracking + " "
                     + name + "\nNo inspections";
-        }
 
+        }
 
     }
 }
