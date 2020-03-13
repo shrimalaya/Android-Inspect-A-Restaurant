@@ -189,13 +189,13 @@ public class InspectionActivity extends AppCompatActivity {
             else if(violations.get(position).contains("Equipment") || violations.get(position).contains("equipment")) {
                 imageView.setImageResource(R.drawable.green);
             }
-            else if(violations.get(position).contains("Food") || violations.get(position).contains("food")) {
+            else if(violations.get(position).contains("food") || violations.get(position).contains("Food")) {
                 imageView.setImageResource(R.drawable.yellow);
             }
             else if(violations.get(position).contains("Sanitized") || violations.get(position).contains("sanitized")) {
                 imageView.setImageResource(R.drawable.log);
             }
-            else if(violations.get(position).contains("employee") || violations.get(position).contains("Employee")) {
+            else if(violations.get(position).contains("handwashing")) {
                 // Critical hand-washing station not available for employees
                 imageView.setImageResource(R.drawable.green);
             }
@@ -222,8 +222,15 @@ public class InspectionActivity extends AppCompatActivity {
 
                 for(String temp: mInspection.getViolations()) {
                     if(temp.length()>10) {
-                        if ((temp.substring(0, 40)+"...").equals(message)) {
-                            message = temp;
+                        if(temp.length()<40) {
+                            if (temp.equals(message)) {
+                                message = temp;
+                            }
+                        }
+                        else {
+                            if ((temp.substring(0, 40) + "...").equals(message)) {
+                                message = temp;
+                            }
                         }
                     }
                 }
