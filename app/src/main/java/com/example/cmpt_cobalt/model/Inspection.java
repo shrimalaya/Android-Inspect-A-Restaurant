@@ -183,4 +183,29 @@ public class Inspection {
                     hazardRating;
 
     }
+
+    public String getViolation(int position) {
+        if(violations.length == 0){
+            return "";
+        } else {
+            return this.violations[position];
+        }
+    }
+
+    public String getShortViolation(int position) {
+        if(violations.length == 0){
+            return "";
+        }
+
+        String[] shortViolations = new String[violations.length];
+        for (int i = 0; i < violations.length; i++) {
+            if(violations[i].length()>10) {
+                shortViolations[i] = violations[i].substring(0, 40) + "...";
+            }
+            else {
+                shortViolations[i] = violations[i];
+            }
+        }
+        return shortViolations[position];
+    }
 }
