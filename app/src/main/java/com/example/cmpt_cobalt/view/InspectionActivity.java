@@ -84,7 +84,7 @@ public class InspectionActivity extends AppCompatActivity {
             hazardRatingText.setTextColor(Color.GREEN);
         }
         else if(mInspection.getHazardRating().equals("\"Moderate\"")){
-            hazardRatingText.setTextColor(Color.YELLOW);
+            hazardRatingText.setTextColor(Color.rgb(204, 204, 0));
         }
         else if(mInspection.getHazardRating().equals("\"High\"")) {
             hazardRatingText.setTextColor(Color.RED);        }
@@ -92,8 +92,8 @@ public class InspectionActivity extends AppCompatActivity {
         hazardImage.setImageResource(mInspection.getHazardIcon());
 
     }
-//My project
-    // Return a date formated in "May 12, 2019"
+
+    // Return a date formatted in "May 12, 2019"
     private String getFormatDate(){
         try{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
