@@ -2,7 +2,6 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 
 import com.example.cmpt_cobalt.model.Inspection;
@@ -116,7 +115,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
     }
 
-    
+
     private void processInspections() {
         // Receive message from MainActivity
         // Message contains details of selected Restaurant
