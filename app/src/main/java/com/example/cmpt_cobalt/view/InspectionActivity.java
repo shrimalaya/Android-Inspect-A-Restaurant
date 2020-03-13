@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.example.cmpt_cobalt.model.Inspection;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ import com.example.cmpt_cobalt.model.RestaurantManager;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -47,6 +50,7 @@ public class InspectionActivity extends AppCompatActivity {
 
     private Inspection mInspection;
     private Restaurant restaurant;
+    private ArrayList<String> violations = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +132,19 @@ public class InspectionActivity extends AppCompatActivity {
                 mInspection = temp;
             }
         }
+
+        for (int j = 0; j < mInspection.getViolations().length; j++) {
+            violations.add(mInspection.getShortViolation(j));
+        }
     }
 
     private void violationListView() {
+        ArrayAdapter<String> adapter = new CustomAdapter();
+        ListView violationsList = findViewById(R.id.violationsList);
+        violationsList.setAdapter(adapter);
+
+        // Old code
+        /*
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,            // Context for the activity.
                 R.layout.violation_item,      // Layout to use.
@@ -139,6 +153,52 @@ public class InspectionActivity extends AppCompatActivity {
 
         ListView violationsList = findViewById(R.id.violationsList);
         violationsList.setAdapter(adapter);
+         */
+    }
+
+    private class CustomAdapter extends ArrayAdapter<String> {
+        public CustomAdapter() {
+            super(InspectionActivity.this, R.layout.layout_inspection, violations);
+        }
+
+        @Override
+        public View getView (int position, View convertView, ViewGroup parent) {
+
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.layout_inspection, parent, false);
+            }
+
+            String currentViolation = violations.get(position);
+
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.inspectionimage);
+
+            if(violations.get(position).contains("pests") || violations.get(position).contains("Pests")){
+                imageView.setImageResource(R.drawable.red);
+            }
+            else if(violations.get(position).contains("Equipment") || violations.get(position).contains("equipment")) {
+                imageView.setImageResource(R.drawable.green);
+            }
+            else if(violations.get(position).contains("Food") || violations.get(position).contains("food")) {
+                imageView.setImageResource(R.drawable.yellow);
+            }
+            else if(violations.get(position).contains("Sanitized") || violations.get(position).contains("sanitized")) {
+                imageView.setImageResource(R.drawable.log);
+            }
+            else if(violations.get(position).contains("employee") || violations.get(position).contains("Employee")) {
+                // Critical hand-washing station not available for employees
+                imageView.setImageResource(R.drawable.green);
+            }
+            else {
+                // Set a blank (white) image
+            }
+
+            TextView textView = (TextView) itemView.findViewById(R.id.inspectiontext);
+            textView.setText(currentViolation);
+
+            return itemView;
+        }
+
     }
 
     private void registerClickCallback() {
@@ -146,7 +206,8 @@ public class InspectionActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView) view;
+                View itemView = view;
+                TextView textView = (TextView) itemView.findViewById(R.id.inspectiontext);
                 String message = textView.getText().toString();
 
                 for(String temp: mInspection.getViolations()) {
@@ -156,7 +217,9 @@ public class InspectionActivity extends AppCompatActivity {
                         }
                     }
                 }
-                showToast(message);
+                if(message.length()>10) {
+                    showToast(message);
+                }
             }
         });
     }
