@@ -40,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        populateListView();
-        registerClickCallback();
+        startActivity(new Intent(this, MapsActivity.class));
+
+//        populateListView();
+//        registerClickCallback();
     }
 
     private void populateListView() {
