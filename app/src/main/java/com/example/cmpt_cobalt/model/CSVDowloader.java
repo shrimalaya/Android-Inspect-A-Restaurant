@@ -14,7 +14,7 @@ public class CSVDowloader {
     private String url;
     private String fileName;
 
-    public CSVDowloader(String url, String fileName){
+    public CSVDowloader (String url, String fileName){
         this.url = url;
         this.fileName = fileName;
     }
