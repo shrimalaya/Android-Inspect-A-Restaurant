@@ -14,18 +14,18 @@ public class CSVDowloader {
     private String url;
     private String fileName;
 
-    public CSVDowloader (String url, String fileName){
+    public CSVDowloader (String url, String fileName) {
         this.url = url;
         this.fileName = fileName;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void download(){
+    public void download() {
         try{
             InputStream in = new URL(this.url).openStream();
             Files.copy(in, Paths.get(this.fileName), StandardCopyOption.REPLACE_EXISTING);
         }
-        catch (Exception e){
+        catch (Exception e) {
             System.out.println(e);
         }
     }
