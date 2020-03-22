@@ -28,5 +28,6 @@
         Critical, Non-Critical, Relative date, Type, Hazard level, icon</string>
 
     <string name="na">N/A</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
