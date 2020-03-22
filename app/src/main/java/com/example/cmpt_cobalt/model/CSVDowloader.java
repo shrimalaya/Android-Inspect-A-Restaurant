@@ -21,7 +21,7 @@ public class CSVDowloader {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void download() {
-        try{
+        try {
             InputStream in = new URL(this.url).openStream();
             Files.copy(in, Paths.get(this.fileName), StandardCopyOption.REPLACE_EXISTING);
         }
