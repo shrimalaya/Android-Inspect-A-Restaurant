@@ -40,30 +40,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        populateListView();
         startActivity(new Intent(this, MapsActivity.class));
-
-//        populateListView();
-//        registerClickCallback();
+        registerClickCallback();
     }
 
     private void populateListView() {
         manager = RestaurantManager.getInstance();
         populateManager();
 
-
         if (size == 0) {
-
             restaurantStrings = new String[1];
             restaurantStrings[0] = "\n\n\n\nWelcome to the Restaurant Inspector!" +
                     "\n\nTo start, load a CSV file.\n\n";
-
         } else {
-
           TextView textView = findViewById(R.id.textViewMain);
           textView.setText(R.string.txt_select_a_restaurant);
-
         }
-
 
         ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
         ListView restaurantList = findViewById(R.id.listViewMain);
