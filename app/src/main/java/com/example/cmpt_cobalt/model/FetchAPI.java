@@ -11,13 +11,13 @@ public class FetchAPI {
     private String url;
     private String format;
 
-    public FetchAPI(String sourceUrl){
+    public FetchAPI(String sourceUrl) {
         parser = new JsonParser();
         this.request = new HTTPRequest(sourceUrl);
         fetchData();
     }
 
-    public void fetchData(){
+    public void fetchData() {
         String content = this.request.getRequest().toString();
         JsonObject json = (JsonObject) this.parser.parse(content);
         json = (JsonObject) json.get("result");
