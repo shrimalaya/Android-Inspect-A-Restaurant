@@ -10,7 +10,7 @@ public class HTTPRequest {
     private java.net.URL URL;
     private final int timeOutLimitInMS = 5000;
 
-    public HTTPRequest(String URL){
+    public HTTPRequest(String URL) {
         try{
             this.URL = new URL(URL);
         }
