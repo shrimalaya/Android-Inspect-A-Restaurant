@@ -11,7 +11,7 @@ public class HTTPRequest {
     private final int timeOutLimitInMS = 5000;
 
     public HTTPRequest(String URL) {
-        try{
+        try {
             this.URL = new URL(URL);
         }
         catch (Exception e){
@@ -26,7 +26,7 @@ public class HTTPRequest {
 
      */
     public StringBuffer getRequest() {
-        try{
+        try {
             HttpURLConnection connection = (HttpURLConnection) this.URL.openConnection();
             connection.setRequestMethod("GET");
 
