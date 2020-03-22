@@ -10,25 +10,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.InspectionActivity"
-            android:parentActivityName=".view.RestaurantActivity"
-            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_inspection"
+            android:name=".view.DownloadActivity"
+            android:label="@string/title_activity_download"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".view.RestaurantActivity"
-            android:parentActivityName=".view.MainActivity"
+            android:name=".view.InspectionActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_inspection"
+            android:parentActivityName=".view.RestaurantActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.RestaurantActivity"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_restaurant"
+            android:parentActivityName=".view.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.MainActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
