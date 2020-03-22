@@ -1,5 +1,6 @@
 package com.example.cmpt_cobalt.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -34,8 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleMap.InfoWindowAdapter {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapActivity";
     private static final float DEFAULT_ZOOM = 15f;
@@ -103,8 +103,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Restaurant pegs
         populateRestaurants();
 
-        //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
-        mMap.setInfoWindowAdapter(this);
+        //Set Custom InfoWindow Adapter
+        CustomInfoAdapter adapter = new CustomInfoAdapter(MapsActivity.this);
+        mMap.setInfoWindowAdapter(adapter);
 
         //registerClickCallback();
     }
@@ -138,51 +139,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @Override
-    public View getInfoWindow(Marker marker) {
-        //return null;
-        return prepareInfoView(marker);
-    }
+    private class CustomInfoAdapter implements GoogleMap.InfoWindowAdapter {
 
-    @Override
-    public View getInfoContents(Marker marker) {
-        //return null;
-        return prepareInfoView(marker);
+        private Activity context;
 
-    }
+        public CustomInfoAdapter(Activity context){
+            this.context = context;
+        }
 
-    private View prepareInfoView(Marker marker){
-        Restaurant restaurant = manager.findRestaurantByLatLng(
-                                            marker.getPosition().latitude,
-                                            marker.getPosition().longitude);
-        //prepare InfoView programmatically
-        LinearLayout infoView = new LinearLayout(MapsActivity.this);
-        LinearLayout.LayoutParams infoViewParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        infoView.setOrientation(LinearLayout.HORIZONTAL);
-        infoView.setLayoutParams(infoViewParams);
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
 
-        ImageView infoImageView = new ImageView(MapsActivity.this);
-        //Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);
-        Drawable drawable = getResources().getDrawable(android.R.drawable.ic_dialog_map);
-        infoImageView.setImageDrawable(drawable);
-        infoView.addView(infoImageView);
+        @Override
+        public View getInfoContents(Marker marker) {
+            View itemView = context.getLayoutInflater().inflate(R.layout.map_infowindow_layout, null);
 
-        LinearLayout subInfoView = new LinearLayout(MapsActivity.this);
-        LinearLayout.LayoutParams subInfoViewParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        subInfoView.setOrientation(LinearLayout.VERTICAL);
-        subInfoView.setLayoutParams(subInfoViewParams);
+            // Find the restaurant to work with.
+            LatLng latLng0 = marker.getPosition();
+            double lat = latLng0.latitude;
+            double lng = latLng0.longitude;
+            Restaurant restaurant = manager.findRestaurantByLatLng(lat, lng);
 
-        TextView subInfoLat = new TextView(MapsActivity.this);
-        subInfoLat.setText("Lat: " + marker.getPosition().latitude);
-        TextView subInfoLnt = new TextView(MapsActivity.this);
-        subInfoLnt.setText("Lnt: " + marker.getPosition().longitude);
-        subInfoView.addView(subInfoLat);
-        subInfoView.addView(subInfoLnt);
-        infoView.addView(subInfoView);
+            // Fill the view
+            ImageView logo = itemView.findViewById(R.id.info_item_restaurantLogo);
+            logo.setImageResource(restaurant.getIcon());
 
-        return infoView;
+            TextView restaurantNameText = itemView.findViewById(R.id.info_item_restaurantName);
+            restaurantNameText.setText(restaurant.getName());
+
+
+            Inspection mostRecentInspection = restaurant.getInspection(0);
+            if (mostRecentInspection != null) {
+                TextView numNonCriticalText = itemView.findViewById(R.id.info_item_numNonCritical);
+                numNonCriticalText.setText(Integer.toString(mostRecentInspection.getNumNonCritical()));
+
+                TextView numCriticalText = itemView.findViewById(R.id.info_item_numCritical);
+                numCriticalText.setText(Integer.toString(mostRecentInspection.getNumCritical()));
+
+                TextView lastInspectionText = itemView.findViewById(R.id.info_item_lastInspection);
+                lastInspectionText.setText(mostRecentInspection.getFormattedDate());
+
+                ImageView hazard = itemView.findViewById(R.id.info_item_hazardImage);
+                hazard.setImageResource(mostRecentInspection.getHazardIcon());
+
+            }
+
+            return itemView;
+        }
     }
 }
 
@@ -242,3 +247,52 @@ private class InfoAdapter implements GoogleMap.InfoWindowAdapter {
         }
     }
     */
+
+/*
+@Override
+    public View getInfoWindow(Marker marker) {
+        //return null;
+        return prepareInfoView(marker);
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        //return null;
+        return prepareInfoView(marker);
+
+    }
+
+    private View prepareInfoView(Marker marker){
+        Restaurant restaurant = manager.findRestaurantByLatLng(
+                                            marker.getPosition().latitude,
+                                            marker.getPosition().longitude);
+        //prepare InfoView programmatically
+        LinearLayout infoView = new LinearLayout(MapsActivity.this);
+        LinearLayout.LayoutParams infoViewParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        infoView.setOrientation(LinearLayout.HORIZONTAL);
+        infoView.setLayoutParams(infoViewParams);
+
+        ImageView infoImageView = new ImageView(MapsActivity.this);
+        //Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);
+        Drawable drawable = getResources().getDrawable(android.R.drawable.ic_dialog_map);
+        infoImageView.setImageDrawable(drawable);
+        infoView.addView(infoImageView);
+
+        LinearLayout subInfoView = new LinearLayout(MapsActivity.this);
+        LinearLayout.LayoutParams subInfoViewParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        subInfoView.setOrientation(LinearLayout.VERTICAL);
+        subInfoView.setLayoutParams(subInfoViewParams);
+
+        TextView subInfoLat = new TextView(MapsActivity.this);
+        subInfoLat.setText("Lat: " + marker.getPosition().latitude);
+        TextView subInfoLnt = new TextView(MapsActivity.this);
+        subInfoLnt.setText("Lnt: " + marker.getPosition().longitude);
+        subInfoView.addView(subInfoLat);
+        subInfoView.addView(subInfoLnt);
+        infoView.addView(subInfoView);
+
+        return infoView;
+    }
+ */
