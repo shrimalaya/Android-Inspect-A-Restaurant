@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         populateListView();
-        //startActivityForResult(new Intent(this, MapsActivity.class), 42);
+        startActivityForResult(new Intent(this, MapsActivity.class), 42);
         registerClickCallback();
     }
 
