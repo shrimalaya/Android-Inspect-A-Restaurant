@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -40,10 +41,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //startActivity(new Intent(this, MapsActivity.class));
 
-//        populateListView();
-//        registerClickCallback();
+        populateListView();
+        registerClickCallback();
+        setupMapsActivityButton();
+    }
+
+    private void setupMapsActivityButton() {
+        Button button = (Button) findViewById(R.id.buttonMain);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void populateListView() {
