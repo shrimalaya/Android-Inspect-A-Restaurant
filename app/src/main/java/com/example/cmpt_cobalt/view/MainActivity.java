@@ -3,6 +3,7 @@ package com.example.cmpt_cobalt.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -22,8 +23,10 @@ import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 // main screen activity
 // displays the initial list of restaurants
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private int size = 0;
     private String []restaurantStrings = new String[size];
 
+    List<Restaurant> restaurants = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         populateListView();
-        startActivity(new Intent(this, MapsActivity.class));
+        startActivityForResult(new Intent(this, MapsActivity.class), 42);
         registerClickCallback();
     }
 
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
           textView.setText(R.string.txt_select_a_restaurant);
         }
 
+        restaurants = manager.getRestaurants();
         ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
         ListView restaurantList = findViewById(R.id.listViewMain);
         restaurantList.setAdapter(adapter);
@@ -66,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 
         public RestaurantAdapter() {
-            super(MainActivity.this, R.layout.restaurant_item, manager.getRestaurants());
+            super(MainActivity.this, R.layout.restaurant_item, restaurants);
         }
 
         @Override
@@ -104,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 hazard.setImageResource(mostRecentInspection.getHazardIcon());
 
             }
-
 
             return itemView;
         }
@@ -210,5 +215,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 42:
+                int answer = data.getIntExtra("result", 0);
+                if (answer == 1)
+                    this.finish();
+                break;
+        }
+    }
 }
