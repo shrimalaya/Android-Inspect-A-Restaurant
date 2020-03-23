@@ -38,8 +38,8 @@ public class RestaurantActivity extends AppCompatActivity {
     private static final String EXTRA_MESSAGE = "Extra";
     private String restaurantString;    // Name of calling restaurant object
     private ArrayList<Inspection> inspectionList;
-
     List<Inspection> inspections = new ArrayList<>();
+
 
 
     public static Intent makeLaunchIntent(Context c, String message) {
