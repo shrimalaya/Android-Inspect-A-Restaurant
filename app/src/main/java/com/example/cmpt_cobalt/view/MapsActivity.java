@@ -99,7 +99,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getDeviceLocation();
         mMap.setMyLocationEnabled(true);
 
-
         // Restaurant pegs
         populateRestaurants();
 
@@ -107,19 +106,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         CustomInfoAdapter adapter = new CustomInfoAdapter(MapsActivity.this);
         mMap.setInfoWindowAdapter(adapter);
 
-        //registerClickCallback();
+        registerClickCallback();
     }
 
     private void registerClickCallback() {
-        manager = RestaurantManager.getInstance();
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
+            public void onInfoWindowClick(Marker marker) {
+                // Find the restaurant to work with.
                 LatLng latLng0 = marker.getPosition();
                 double lat = latLng0.latitude;
                 double lng = latLng0.longitude;
                 Restaurant restaurant = manager.findRestaurantByLatLng(lat, lng);
-                return true;
+
+                String message = restaurant.toString();
+                Intent intent = RestaurantActivity.makeLaunchIntent(MapsActivity.this, "RestaurantActivity");
+                intent.putExtra("Extra", message);
+                MapsActivity.this.startActivity(intent);
             }
         });
     }
