@@ -10,6 +10,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,11 +54,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        Intent intent = new Intent();
-        intent.putExtra("result", 1);
-        setResult(Activity.RESULT_OK, intent);
+        Intent i = new Intent();
+        i.putExtra("result", 1);
+        setResult(Activity.RESULT_OK, i);
 
         getLocationPermission();
+        onButtonClick();
+    }
+
+    private void onButtonClick() {
+        Button button = (Button) findViewById(R.id.buttonMaps);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+                intent.putExtra("result", 0);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     private void initMap() {

@@ -2,19 +2,18 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageSwitcher;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.cmpt_cobalt.R;
 import com.example.cmpt_cobalt.model.Inspection;
@@ -48,20 +47,40 @@ public class MainActivity extends AppCompatActivity {
         populateListView();
         startActivityForResult(new Intent(this, MapsActivity.class), 42);
         registerClickCallback();
+        setupMapsActivityButton();
+    }
+
+    private void setupMapsActivityButton() {
+        Button button = (Button) findViewById(R.id.buttonMain);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivityForResult(intent, 42);
+            }
+        });
+
     }
 
     private void populateListView() {
         manager = RestaurantManager.getInstance();
         populateManager();
 
+
         if (size == 0) {
+
             restaurantStrings = new String[1];
             restaurantStrings[0] = "\n\n\n\nWelcome to the Restaurant Inspector!" +
                     "\n\nTo start, load a CSV file.\n\n";
+
         } else {
+
           TextView textView = findViewById(R.id.textViewMain);
           textView.setText(R.string.txt_select_a_restaurant);
+
         }
+
 
         restaurants = manager.getRestaurants();
         ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
@@ -110,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 hazard.setImageResource(mostRecentInspection.getHazardIcon());
 
             }
+
 
             return itemView;
         }
@@ -221,8 +241,12 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case 42:
                 int answer = data.getIntExtra("result", 0);
-                if (answer == 1)
+                if (answer == 1) {
                     this.finish();
+                }
+                else {
+                    break;
+                }
                 break;
         }
     }
