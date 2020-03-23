@@ -14,14 +14,14 @@ public class Restaurant {
     private String cityAddress;
     private String tracking;
 
-    private float latAddress;
-    private float longAddress;
+    private double latAddress;
+    private double longAddress;
 
     private int icon;
 
     public ArrayList<Inspection> inspections;
 
-    public Restaurant(String name, String streetAddress, String cityAddress, float latAddress, float longAddress, String tracking) {
+    public Restaurant(String name, String streetAddress, String cityAddress, double latAddress, double longAddress, String tracking) {
         this.name = name;
         this.streetAddress = streetAddress;
         this.cityAddress = cityAddress;
@@ -44,11 +44,11 @@ public class Restaurant {
         return streetAddress;
     }
 
-    public float getLatAddress() {
+    public double getLatAddress() {
         return latAddress;
     }
 
-    public float getLongAddress() {
+    public double getLongAddress() {
         return longAddress;
     }
 
