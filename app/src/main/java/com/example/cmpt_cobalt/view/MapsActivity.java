@@ -54,6 +54,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        Intent intent = new Intent();
+        intent.putExtra("result", 1);
+        setResult(Activity.RESULT_OK, intent);
     }
 
     private void getDeviceLocation() {

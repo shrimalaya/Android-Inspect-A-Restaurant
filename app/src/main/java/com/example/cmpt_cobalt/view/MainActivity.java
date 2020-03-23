@@ -3,6 +3,7 @@ package com.example.cmpt_cobalt.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         populateListView();
-        startActivity(new Intent(this, MapsActivity.class));
+        startActivityForResult(new Intent(this, MapsActivity.class), 42);
         registerClickCallback();
     }
 
@@ -210,5 +211,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 42:
+                int answer = data.getIntExtra("result", 0);
+                if (answer == 1)
+                    this.finish();
+                break;
+        }
+    }
 }
