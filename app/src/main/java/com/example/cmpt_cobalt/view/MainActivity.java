@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         populateListView();
-        startActivity(new Intent(this, MapsActivity.class));
         registerClickCallback();
         setupMapsActivityButton();
     }

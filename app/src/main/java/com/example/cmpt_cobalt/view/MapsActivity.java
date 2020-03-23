@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -113,8 +114,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         // Self gps location
-        getDeviceLocation();
-        mMap.setMyLocationEnabled(true);
+//        getDeviceLocation();
+//        mMap.setMyLocationEnabled(true);
 
 
         // Restaurant pegs
