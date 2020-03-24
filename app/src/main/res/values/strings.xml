@@ -29,5 +29,6 @@
 
     <string name="na">N/A</string>
     <string name="title_activity_download">DownloadActivity</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
