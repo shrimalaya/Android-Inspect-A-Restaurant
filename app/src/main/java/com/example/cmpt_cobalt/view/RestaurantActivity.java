@@ -32,7 +32,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private RestaurantManager manager;
     private Restaurant restaurant;
     private int size = 0;
-    private String []inspectionStrings = new String[size];
+    private String[] inspectionStrings = new String[size];
     private static final String EXTRA_MESSAGE = "Extra";
     private String restaurantString;    // Name of calling restaurant object
     private ArrayList<Inspection> inspectionList;
@@ -95,7 +95,7 @@ public class RestaurantActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView (int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
 
             View itemView = convertView;
             if (itemView == null) {
@@ -167,14 +167,6 @@ public class RestaurantActivity extends AppCompatActivity {
                 goToMapsActivity();
             }
         });
-
-        ImageView mapIcon = findViewById(R.id.map_restaurant);
-        mapIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToMapsActivity();
-            }
-        });
     }
 
     @Override
@@ -190,7 +182,12 @@ public class RestaurantActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        finish();
-        return true;
+        switch (item.getItemId()) {
+            case (R.id.restaurant_map_icon):
+                goToMapsActivity();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

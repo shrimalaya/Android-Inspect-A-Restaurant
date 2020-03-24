@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -78,15 +81,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void onButtonClick() {
-        Button button = (Button) findViewById(R.id.buttonMaps);
+        ImageView goToList = findViewById(R.id.ic_list);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        goToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, MainActivity.class);
                 intent.putExtra("result", 0);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+            }
+        });
+
+        ImageView gpsLocation = findViewById(R.id.ic_location);
+        gpsLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mLocationPermissionsGranted) {
+                    getDeviceLocation();
+                }
             }
         });
     }
@@ -194,6 +207,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -213,6 +235,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(mLocationPermissionsGranted) {
             getDeviceLocation();
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
 
         // Restaurant pegs
@@ -224,8 +247,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         registerClickCallback();
 
+        // Receive intent from Restaurant Activity
         Intent i_receive = getIntent();
         String resID = i_receive.getStringExtra(EXTRA_MESSAGE);
+        // If valid intent, show information at marker
         if (resID != null) {
             HandleReceivingCoordinates(resID);
         }
@@ -248,6 +273,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             moveCamera(new LatLng(goToRes.getLatAddress(),
                     goToRes.getLongAddress()), DEFAULT_ZOOM);
             mMarker[i].showInfoWindow();
+            moveCamera(new LatLng(goToRes.getLatAddress(),
+                    goToRes.getLongAddress()), DEFAULT_ZOOM);
         }
     }
 
@@ -288,7 +315,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     title(restaurant.getName());
 
             mMarker[i++] = mMap.addMarker(options);
-            //mMarker[i-1].setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on_green_24dp));
+
+            Inspection mostRecentInspection = restaurant.getInspection(0);
+            if (mostRecentInspection != null) {
+                if (mostRecentInspection.getHazardRating().equals("\"Low\"")) {
+                    mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_green));
+                } else if (mostRecentInspection.getHazardRating().equals("\"Moderate\"")) {
+                    mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_yellow));
+                } else {
+                    mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_red));
+                }
+            }
+            else
+            {
+                mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_no_inspection));
+            }
             moveCamera(new LatLng(restaurant.getLatAddress(),
                     restaurant.getLongAddress()), DEFAULT_ZOOM);
         }
