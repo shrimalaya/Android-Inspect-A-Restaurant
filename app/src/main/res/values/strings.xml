@@ -29,5 +29,8 @@
 
     <string name="na">N/A</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_location_permission">Grant location access</string>
+    <string name="text_location_permission">Requires location access</string>
+    <string name="ok">Grant</string>
 
 </resources>
