@@ -1,29 +1,38 @@
 package com.example.cmpt_cobalt.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageSwitcher;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.cmpt_cobalt.R;
+import com.example.cmpt_cobalt.model.CSVDowloader;
+import com.example.cmpt_cobalt.model.FetchAPI;
 import com.example.cmpt_cobalt.model.Inspection;
 import com.example.cmpt_cobalt.model.ParseCSV;
 import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 // main screen activity
 // displays the initial list of restaurants
@@ -33,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private int size = 0;
     private String []restaurantStrings = new String[size];
 
+    List<Restaurant> restaurants = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,24 +51,49 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        populateListView();
-        startActivity(new Intent(this, MapsActivity.class));
+        try {
+            populateListView();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        startActivityForResult(new Intent(this, MapsActivity.class), 42);
         registerClickCallback();
+        setupMapsActivityButton();
     }
 
-    private void populateListView() {
+    private void setupMapsActivityButton() {
+        Button button = (Button) findViewById(R.id.buttonMain);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivityForResult(intent, 42);
+            }
+        });
+
+    }
+
+    private void populateListView() throws FileNotFoundException {
         manager = RestaurantManager.getInstance();
         populateManager();
 
+
         if (size == 0) {
+
             restaurantStrings = new String[1];
             restaurantStrings[0] = "\n\n\n\nWelcome to the Restaurant Inspector!" +
                     "\n\nTo start, load a CSV file.\n\n";
+
         } else {
+
           TextView textView = findViewById(R.id.textViewMain);
           textView.setText(R.string.txt_select_a_restaurant);
+
         }
 
+
+        restaurants = manager.getRestaurants();
         ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
         ListView restaurantList = findViewById(R.id.listViewMain);
         restaurantList.setAdapter(adapter);
@@ -66,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     private class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 
         public RestaurantAdapter() {
-            super(MainActivity.this, R.layout.restaurant_item, manager.getRestaurants());
+            super(MainActivity.this, R.layout.restaurant_item, restaurants);
         }
 
         @Override
@@ -111,7 +147,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void populateManager() {
+    static File method(Context obj, String filename){
+        File myFile = new File (obj.getFilesDir(), filename );
+        return myFile;
+    }
+
+    private void populateManager() throws FileNotFoundException {
+        File file = method(MainActivity.this,"restaurants_itr1.csv");
+
+
+        //InputStream is1 = new BufferedInputStream(new FileInputStream(file), 1024);
         InputStream is1 = getResources().openRawResource(R.raw.restaurants_itr1);
         ParseCSV csv = new ParseCSV(is1);
 
@@ -210,5 +255,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 42:
+                int answer = data.getIntExtra("result", 0);
+                if (answer == 1) {
+                    this.finish();
+                }
+                else {
+                    break;
+                }
+                break;
+        }
+    }
 }
