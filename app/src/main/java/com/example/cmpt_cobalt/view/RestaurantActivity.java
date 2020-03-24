@@ -1,18 +1,10 @@
 package com.example.cmpt_cobalt.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.example.cmpt_cobalt.model.Inspection;
-import com.example.cmpt_cobalt.model.Restaurant;
-import com.example.cmpt_cobalt.model.RestaurantManager;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +14,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.cmpt_cobalt.R;
+import com.example.cmpt_cobalt.model.Inspection;
+import com.example.cmpt_cobalt.model.Restaurant;
+import com.example.cmpt_cobalt.model.RestaurantManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +38,6 @@ public class RestaurantActivity extends AppCompatActivity {
     private ArrayList<Inspection> inspectionList;
     List<Inspection> inspections = new ArrayList<>();
 
-
-
     public static Intent makeLaunchIntent(Context c, String message) {
         Intent intent = new Intent(c, RestaurantActivity.class);
         intent.putExtra(EXTRA_MESSAGE, message);
@@ -58,6 +54,21 @@ public class RestaurantActivity extends AppCompatActivity {
 
         populateInspectionList();
         registerClickCallback();
+        setupDefaultIntent();
+    }
+
+    private void setupDefaultIntent() {
+        Intent i = new Intent();
+        i.putExtra("result", 0);
+        setResult(Activity.RESULT_OK, i);
+    }
+
+    private void goToMapsActivity() {
+        Intent i = new Intent();
+        i.putExtra("result", 1);
+        i.putExtra("resID", restaurant.getTracking());
+        setResult(Activity.RESULT_OK, i);
+        finish();
     }
 
     private void populateInspectionList() {
@@ -127,11 +138,8 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView address = findViewById(R.id.address_resActivity);
         address.setText(restaurant.getStreetAddress());
 
-        TextView lat = findViewById(R.id.latitude_resActivity);
-        lat.setText(restaurant.getLatAddress() + "");
-
-        TextView lon = findViewById(R.id.longitude_resActivity);
-        lon.setText(restaurant.getLongAddress() + "");
+        TextView latLng = findViewById(R.id.latLng_resActivity);
+        latLng.setText((float) restaurant.getLatAddress() + ", " + (float) restaurant.getLongAddress());
 
     }
 
@@ -149,6 +157,22 @@ public class RestaurantActivity extends AppCompatActivity {
                 intent.putExtra("Extra", message);
                 intent.putExtra("Restaurant", restaurantTracking);
                 startActivity(intent);
+            }
+        });
+
+        TextView latLng = findViewById(R.id.latLng_resActivity);
+        latLng.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMapsActivity();
+            }
+        });
+
+        ImageView mapIcon = findViewById(R.id.map_restaurant);
+        mapIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMapsActivity();
             }
         });
     }

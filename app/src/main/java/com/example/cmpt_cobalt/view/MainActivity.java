@@ -54,9 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         populateListView();
-        startActivityForResult(new Intent(this, MapsActivity.class), 42);
+
+        // Launch map as soon as we populate the list of restaurants in instance
+        launchMap();
+
         registerClickCallback();
+
+        // Button to jump to Map activity
         setupMapsActivityButton();
+    }
+
+    private void launchMap() {
+        Intent i1 = new Intent(this, MapsActivity.class);
+        startActivityForResult(i1, 42);
+        
     }
 
     private void setupMapsActivityButton() {
@@ -239,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = RestaurantActivity.makeLaunchIntent(MainActivity.this, "RestaurantActivity");
                 intent.putExtra("Extra", message);
-                MainActivity.this.startActivity(intent);
+                MainActivity.this.startActivityForResult(intent, 45);
             }
         });
     }
@@ -253,8 +264,18 @@ public class MainActivity extends AppCompatActivity {
                 if (answer == 1) {
                     this.finish();
                 }
-                else {
-                    break;
+                break;
+
+            case 45:
+                int ans = data.getIntExtra("result", 0);
+                String id = data.getStringExtra("resID");
+                // 1 = launch map with peg
+                // 0 = return on back
+                if(ans == 1) {
+                    Intent i2 = MapsActivity.makeLaunchIntent(MainActivity.this, "MapsActivity");
+                    String message = id;
+                    i2.putExtra("Extra", message);
+                    MainActivity.this.startActivityForResult(i2, 42);
                 }
                 break;
         }
