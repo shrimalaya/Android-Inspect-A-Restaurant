@@ -2,11 +2,12 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,22 +55,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         populateListView();
-        startActivityForResult(new Intent(this, MapsActivity.class), 42);
+
+        // Launch map as soon as we populate the list of restaurants in instance
+        launchMap();
+
         registerClickCallback();
-        setupMapsActivityButton();
     }
 
-    private void setupMapsActivityButton() {
-        Button button = (Button) findViewById(R.id.buttonMain);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                startActivityForResult(intent, 42);
-            }
-        });
-
+    private void launchMap() {
+        Intent i1 = new Intent(this, MapsActivity.class);
+        startActivityForResult(i1, 42);
+        
     }
 
     private void populateListView() {
@@ -239,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = RestaurantActivity.makeLaunchIntent(MainActivity.this, "RestaurantActivity");
                 intent.putExtra("Extra", message);
-                MainActivity.this.startActivity(intent);
+                MainActivity.this.startActivityForResult(intent, 45);
             }
         });
     }
@@ -253,10 +249,43 @@ public class MainActivity extends AppCompatActivity {
                 if (answer == 1) {
                     this.finish();
                 }
-                else {
-                    break;
+                break;
+
+            case 45:
+                int ans = data.getIntExtra("result", 0);
+                String id = data.getStringExtra("resID");
+                // 1 = launch map with peg
+                // 0 = return on back
+                if(ans == 1) {
+                    Intent i2 = MapsActivity.makeLaunchIntent(MainActivity.this, "MapsActivity");
+                    String message = id;
+                    i2.putExtra("Extra", message);
+                    MainActivity.this.startActivityForResult(i2, 42);
                 }
                 break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case (R.id.main_map_icon):
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivityForResult(intent, 42);
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

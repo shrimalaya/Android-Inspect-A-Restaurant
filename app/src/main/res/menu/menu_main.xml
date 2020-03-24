@@ -4,7 +4,7 @@
 
     <item
 
-        android:id="@+id/restaurant_map_icon"
+        android:id="@+id/main_map_icon"
         android:enabled="true"
         android:icon="@drawable/map_icon"
         android:title="Map"

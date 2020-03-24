@@ -3,18 +3,22 @@ package com.example.cmpt_cobalt.view;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -29,6 +33,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -38,6 +44,7 @@ import com.google.android.gms.tasks.Task;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapActivity";
+    private static final String EXTRA_MESSAGE = "Extra";
     private static final float DEFAULT_ZOOM = 15f;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -49,29 +56,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private RestaurantManager manager = RestaurantManager.getInstance();
 
+
+    public static Intent makeLaunchIntent(Context c, String message) {
+        Intent i1 = new Intent(c, MapsActivity.class);
+        i1.putExtra("Extra", message);
+        return i1;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        Intent i = new Intent();
-        i.putExtra("result", 1);
-        setResult(Activity.RESULT_OK, i);
+        setDefaultIntent();
 
         getLocationPermission();
         onButtonClick();
     }
 
-    private void onButtonClick() {
-        Button button = (Button) findViewById(R.id.buttonMaps);
+    private void setDefaultIntent() {
+        Intent i = new Intent();
+        i.putExtra("result", 1);
+        setResult(Activity.RESULT_OK, i);
+    }
 
-        button.setOnClickListener(new View.OnClickListener() {
+    private void onButtonClick() {
+        ImageView goToList = findViewById(R.id.ic_list);
+
+        goToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, MainActivity.class);
                 intent.putExtra("result", 0);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+            }
+        });
+
+        ImageView gpsLocation = findViewById(R.id.ic_location);
+        gpsLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mLocationPermissionsGranted) {
+                    getDeviceLocation();
+                }
             }
         });
     }
@@ -179,6 +207,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -198,6 +235,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(mLocationPermissionsGranted) {
             getDeviceLocation();
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
 
         // Restaurant pegs
@@ -208,6 +246,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setInfoWindowAdapter(adapter);
 
         registerClickCallback();
+
+        // Receive intent from Restaurant Activity
+        Intent i_receive = getIntent();
+        String resID = i_receive.getStringExtra(EXTRA_MESSAGE);
+        // If valid intent, show information at marker
+        if (resID != null) {
+            HandleReceivingCoordinates(resID);
+        }
+    }
+
+    private void HandleReceivingCoordinates(String resID) {
+        Restaurant goToRes = null;
+        boolean found = false;
+        int i = 0;
+        for (Restaurant temp : manager.getRestaurants()) {
+            if (resID.equals(temp.getTracking())) {
+                goToRes = temp;
+                found = true;
+                break;
+            }
+            i++;
+        }
+
+        if(found) {
+            moveCamera(new LatLng(goToRes.getLatAddress(),
+                    goToRes.getLongAddress()), DEFAULT_ZOOM);
+            mMarker[i].showInfoWindow();
+            moveCamera(new LatLng(goToRes.getLatAddress(),
+                    goToRes.getLongAddress()), DEFAULT_ZOOM);
+        }
     }
 
     private void registerClickCallback() {
@@ -223,7 +291,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String message = restaurant.toString();
                 Intent intent = RestaurantActivity.makeLaunchIntent(MapsActivity.this, "RestaurantActivity");
                 intent.putExtra("Extra", message);
-                MapsActivity.this.startActivity(intent);
+                MapsActivity.this.startActivityForResult(intent, 451);
+            }
+        });
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                moveCamera(marker.getPosition(), DEFAULT_ZOOM);
+                marker.showInfoWindow();
+                return true;
             }
         });
     }
@@ -237,7 +313,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     position(new LatLng(restaurant.getLatAddress(),
                             restaurant.getLongAddress())).
                     title(restaurant.getName());
+
             mMarker[i++] = mMap.addMarker(options);
+
+            Inspection mostRecentInspection = restaurant.getInspection(0);
+            if (mostRecentInspection != null) {
+                if (mostRecentInspection.getHazardRating().equals("\"Low\"")) {
+                    mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_green));
+                } else if (mostRecentInspection.getHazardRating().equals("\"Moderate\"")) {
+                    mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_yellow));
+                } else {
+                    mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_red));
+                }
+            }
+            else
+            {
+                mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_no_inspection));
+            }
             moveCamera(new LatLng(restaurant.getLatAddress(),
                     restaurant.getLongAddress()), DEFAULT_ZOOM);
         }
@@ -293,110 +385,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return itemView;
         }
     }
-}
-
-//Implementation to custom adapter (Did not work but is a good idea to implement)
-
-/*
-private class InfoAdapter implements GoogleMap.InfoWindowAdapter {
-
-        private final View mWindow;
-        private Context mContext;
-
-        public InfoAdapter(Context context) {
-            mContext = context;
-            mWindow = LayoutInflater.from(context).inflate(R.layout.restaurant_item, null);
-        }
-
-        private void rendowWindowText(Marker marker, View view) {
-            LatLng latLng0 = marker.getPosition();
-            double lat = latLng0.latitude;
-            double lng = latLng0.longitude;
-            Restaurant restaurant = manager.findRestaurantByLatLng(lat, lng);
-            System.out.println(restaurant.toString());
-            // Fill the view
-            TextView restaurantNameText = findViewById(R.id.item_restaurantName);
-            restaurantNameText.setText(restaurant.getName());
-
-            ImageView logo = findViewById(R.id.item_restaurantLogo);
-            logo.setImageResource(restaurant.getIcon());
-
-
-            Inspection mostRecentInspection = restaurant.getInspection(0);
-            if (mostRecentInspection != null) {
-                TextView numNonCriticalText = findViewById(R.id.item_numNonCritical);
-                numNonCriticalText.setText(Integer.toString(mostRecentInspection.getNumNonCritical()));
-
-                TextView numCriticalText = findViewById(R.id.item_numCritical);
-                numCriticalText.setText(Integer.toString(mostRecentInspection.getNumCritical()));
-
-                TextView lastInspectionText = findViewById(R.id.item_lastInspection);
-                lastInspectionText.setText(mostRecentInspection.getFormattedDate());
-
-                ImageView hazard = findViewById(R.id.item_hazardImage);
-                hazard.setImageResource(mostRecentInspection.getHazardIcon());
-            }
-        }
-
-        @Override
-        public View getInfoWindow(Marker marker) {
-            rendowWindowText(marker, mWindow);
-            return mWindow;
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            rendowWindowText(marker, mWindow);
-            return mWindow;
-        }
-    }
-    */
-
-/*
-@Override
-    public View getInfoWindow(Marker marker) {
-        //return null;
-        return prepareInfoView(marker);
-    }
 
     @Override
-    public View getInfoContents(Marker marker) {
-        //return null;
-        return prepareInfoView(marker);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 451:
+                String resID = data.getStringExtra("resID");
+                int answer = data.getIntExtra("result", 0);
 
+                if (answer == 1) {
+                    HandleReceivingCoordinates(resID);
+                }
+                break;
+        }
     }
-
-    private View prepareInfoView(Marker marker){
-        Restaurant restaurant = manager.findRestaurantByLatLng(
-                                            marker.getPosition().latitude,
-                                            marker.getPosition().longitude);
-        //prepare InfoView programmatically
-        LinearLayout infoView = new LinearLayout(MapsActivity.this);
-        LinearLayout.LayoutParams infoViewParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        infoView.setOrientation(LinearLayout.HORIZONTAL);
-        infoView.setLayoutParams(infoViewParams);
-
-        ImageView infoImageView = new ImageView(MapsActivity.this);
-        //Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);
-        Drawable drawable = getResources().getDrawable(android.R.drawable.ic_dialog_map);
-        infoImageView.setImageDrawable(drawable);
-        infoView.addView(infoImageView);
-
-        LinearLayout subInfoView = new LinearLayout(MapsActivity.this);
-        LinearLayout.LayoutParams subInfoViewParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        subInfoView.setOrientation(LinearLayout.VERTICAL);
-        subInfoView.setLayoutParams(subInfoViewParams);
-
-        TextView subInfoLat = new TextView(MapsActivity.this);
-        subInfoLat.setText("Lat: " + marker.getPosition().latitude);
-        TextView subInfoLnt = new TextView(MapsActivity.this);
-        subInfoLnt.setText("Lnt: " + marker.getPosition().longitude);
-        subInfoView.addView(subInfoLat);
-        subInfoView.addView(subInfoLnt);
-        infoView.addView(subInfoView);
-
-        return infoView;
-    }
- */
+}

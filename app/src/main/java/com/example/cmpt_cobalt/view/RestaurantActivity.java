@@ -1,18 +1,10 @@
 package com.example.cmpt_cobalt.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.example.cmpt_cobalt.model.Inspection;
-import com.example.cmpt_cobalt.model.Restaurant;
-import com.example.cmpt_cobalt.model.RestaurantManager;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +14,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.cmpt_cobalt.R;
+import com.example.cmpt_cobalt.model.Inspection;
+import com.example.cmpt_cobalt.model.Restaurant;
+import com.example.cmpt_cobalt.model.RestaurantManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +32,11 @@ public class RestaurantActivity extends AppCompatActivity {
     private RestaurantManager manager;
     private Restaurant restaurant;
     private int size = 0;
-    private String []inspectionStrings = new String[size];
+    private String[] inspectionStrings = new String[size];
     private static final String EXTRA_MESSAGE = "Extra";
     private String restaurantString;    // Name of calling restaurant object
     private ArrayList<Inspection> inspectionList;
     List<Inspection> inspections = new ArrayList<>();
-
-
 
     public static Intent makeLaunchIntent(Context c, String message) {
         Intent intent = new Intent(c, RestaurantActivity.class);
@@ -58,6 +54,21 @@ public class RestaurantActivity extends AppCompatActivity {
 
         populateInspectionList();
         registerClickCallback();
+        setupDefaultIntent();
+    }
+
+    private void setupDefaultIntent() {
+        Intent i = new Intent();
+        i.putExtra("result", 0);
+        setResult(Activity.RESULT_OK, i);
+    }
+
+    private void goToMapsActivity() {
+        Intent i = new Intent();
+        i.putExtra("result", 1);
+        i.putExtra("resID", restaurant.getTracking());
+        setResult(Activity.RESULT_OK, i);
+        finish();
     }
 
     private void populateInspectionList() {
@@ -84,7 +95,7 @@ public class RestaurantActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView (int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
 
             View itemView = convertView;
             if (itemView == null) {
@@ -127,11 +138,8 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView address = findViewById(R.id.address_resActivity);
         address.setText(restaurant.getStreetAddress());
 
-        TextView lat = findViewById(R.id.latitude_resActivity);
-        lat.setText(restaurant.getLatAddress() + "");
-
-        TextView lon = findViewById(R.id.longitude_resActivity);
-        lon.setText(restaurant.getLongAddress() + "");
+        TextView latLng = findViewById(R.id.latLng_resActivity);
+        latLng.setText((float) restaurant.getLatAddress() + ", " + (float) restaurant.getLongAddress());
 
     }
 
@@ -151,6 +159,14 @@ public class RestaurantActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        TextView latLng = findViewById(R.id.latLng_resActivity);
+        latLng.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMapsActivity();
+            }
+        });
     }
 
     @Override
@@ -166,7 +182,12 @@ public class RestaurantActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        finish();
-        return true;
+        switch (item.getItemId()) {
+            case (R.id.restaurant_map_icon):
+                goToMapsActivity();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
