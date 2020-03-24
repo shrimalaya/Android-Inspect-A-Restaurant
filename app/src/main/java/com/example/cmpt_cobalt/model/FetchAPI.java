@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import android.os.StrictMode;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -18,6 +20,10 @@ public class FetchAPI {
     }
 
     public void fetchData() {
+        //https://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         String content = this.request.getRequest().toString();
         JsonObject json = (JsonObject) this.parser.parse(content);
         json = (JsonObject) json.get("result");
