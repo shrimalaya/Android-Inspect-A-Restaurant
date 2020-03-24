@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.cmpt_cobalt.R;
+import com.example.cmpt_cobalt.model.CSVDowloader;
+import com.example.cmpt_cobalt.model.FetchAPI;
 import com.example.cmpt_cobalt.model.Inspection;
 import com.example.cmpt_cobalt.model.ParseCSV;
 import com.example.cmpt_cobalt.model.Restaurant;
@@ -43,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        String url2 = "https://data.surrey.ca/api/3/action/package_show?id=fraser-health-restaurant-inspection-reports";
+        FetchAPI fetcher = new FetchAPI(url2);
+        String downloadLink = fetcher.getUrl(); //You can also get last_modified date, format through getters.
+        CSVDowloader dowloader = new CSVDowloader(downloadLink, "restaurants_itr1.csv"); // Download to base directory with FILE_NAME (replace it)
+        //dowloader.download();
+
 
         populateListView();
         startActivityForResult(new Intent(this, MapsActivity.class), 42);
