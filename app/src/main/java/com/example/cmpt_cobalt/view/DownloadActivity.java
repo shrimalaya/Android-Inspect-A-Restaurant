@@ -64,19 +64,16 @@ public class DownloadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
 
-        FetchAPI rFetch = new FetchAPI(rURL);
-        FetchAPI iFetch = new FetchAPI(iURL);
-
-        String rDownLink = rFetch.getUrl();
-        String iDownLink = iFetch.getUrl();
-
         TextView textView = findViewById(R.id.txt_download);
 
-        String rLastModified = rFetch.getLastModified().substring(0, 19);
-        String iLastModified = iFetch.getLastModified().substring(0, 19);
 
-        new DownloadFileFromURL(DownloadActivity.this).execute(iDownLink,"restaurants_itr1.csv");
-        new DownloadFileFromURL(DownloadActivity.this).execute(iDownLink,"inspectionreports_itr1.csv");
+        new DownloadFileFromURL(DownloadActivity.this).execute(rURL,"restaurants_itr1.csv");
+        new DownloadFileFromURL(DownloadActivity.this).execute(iURL,"inspectionreports_itr1.csv");
+
+        File file = method(DownloadActivity.this, "inspectionreports_itr1.csv");
+        if(file.exists()){
+            textView.setText("file is good");
+        }
 
     }
 
@@ -92,7 +89,10 @@ public class DownloadActivity extends AppCompatActivity {
             int count;
             try {
 
-                URL url = new URL(f_url[0]);
+                FetchAPI fetch = new FetchAPI(f_url[0]);
+                String downLink = fetch.getUrl();
+
+                URL url = new URL(downLink);
 
                 URLConnection connection = url.openConnection();
                 connection.connect();
@@ -115,6 +115,8 @@ public class DownloadActivity extends AppCompatActivity {
                 output.close();
                 input.close();
 
+                return f_url[1];
+
             } catch (Exception e) {
                 Log.e("Error: ", e.getMessage());
             }
@@ -124,10 +126,13 @@ public class DownloadActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String file_url) {
+            if(file_url.equals("inspectionreports_itr1.csv")) {
             Intent intent = new Intent(context,MainActivity.class);
             context.startActivity(intent);
             DownloadActivity.this.finish();
+            }
         }
+
 
     }
 
