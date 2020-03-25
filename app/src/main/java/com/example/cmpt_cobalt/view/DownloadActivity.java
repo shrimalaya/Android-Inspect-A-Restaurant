@@ -70,9 +70,6 @@ public class DownloadActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.txt_download);
 
-
-
-
         new DownloadFileFromURL(DownloadActivity.this).execute(rURL,"restaurants_itr1.csv");
         new DownloadFileFromURL(DownloadActivity.this).execute(iURL,"inspectionreports_itr1.csv");
 
@@ -110,7 +107,21 @@ public class DownloadActivity extends AppCompatActivity {
 
                 FetchAPI fetch = new FetchAPI(f_url[0]);
                 String downLink = fetch.getUrl();
+                File file = method(DownloadActivity.this, f_url[1]);
                 String time = fetch.getLastModified();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+                Date date = df.parse(time);
+                long epoch = date.getTime();
+                System.out.println("DD> API TIME: " + epoch);
+                System.out.println("DD>API TIME: " + date.toString());
+                if(file.exists()){
+                    //twenty days in milliseconds = 1728000000 ms
+                    if(epoch - file.lastModified() > 1728000000)
+                    {
+                        //ask if download
+                    }
+                    System.out.println("DD>LOCAL TIME: " + file.lastModified());
+                }
 
                 URL url = new URL(downLink);
 
@@ -119,8 +130,6 @@ public class DownloadActivity extends AppCompatActivity {
                 int lengthofFile = connection.getContentLength();
 
                 InputStream input = new BufferedInputStream(url.openStream(), 2048);
-
-                File file = method(DownloadActivity.this, f_url[1]);
 
 
                 OutputStream output = new FileOutputStream(file);
@@ -137,6 +146,8 @@ public class DownloadActivity extends AppCompatActivity {
                 output.flush();
                 output.close();
                 input.close();
+
+                file.setLastModified(epoch);
 
                 return f_url[1];
 
