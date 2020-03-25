@@ -60,21 +60,21 @@ public class MainActivity extends AppCompatActivity {
         }
         startActivityForResult(new Intent(this, MapsActivity.class), 42);
         registerClickCallback();
-        setupMapsActivityButton();
+        //setupMapsActivityButton();
     }
 
-    private void setupMapsActivityButton() {
-        Button button = (Button) findViewById(R.id.buttonMain);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                startActivityForResult(intent, 42);
-            }
-        });
-
-    }
+//    private void setupMapsActivityButton() {
+//        Button button = (Button) findViewById(R.id.buttonMain);
+//
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+//                startActivityForResult(intent, 42);
+//            }
+//        });
+//
+//    }
 
     private void populateListView() throws FileNotFoundException {
         manager = RestaurantManager.getInstance();
