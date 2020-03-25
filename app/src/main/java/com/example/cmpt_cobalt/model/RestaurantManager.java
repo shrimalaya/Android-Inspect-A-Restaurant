@@ -16,6 +16,16 @@ public class RestaurantManager implements Iterable<Restaurant>{
         restaurants.add(restaurant);
     }
 
+    public Restaurant find(String tracking){
+        for(Restaurant restaurant: restaurants){
+            if(restaurant.getTracking().equals(tracking))
+            {
+                return restaurant;
+            }
+        }
+        return null;
+    }
+
     public List<Restaurant> getRestaurants() {
         return restaurants;
     }

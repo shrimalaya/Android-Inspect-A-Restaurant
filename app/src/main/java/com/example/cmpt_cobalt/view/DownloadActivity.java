@@ -1,6 +1,7 @@
 package com.example.cmpt_cobalt.view;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.cmpt_cobalt.R;
@@ -58,6 +60,8 @@ public class DownloadActivity extends AppCompatActivity {
     String rURL = "http://data.surrey.ca/api/3/action/package_show?id=restaurants";
     String iURL = "http://data.surrey.ca/api/3/action/package_show?id=fraser-health-restaurant-inspection-reports";
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,6 +69,8 @@ public class DownloadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_download);
 
         TextView textView = findViewById(R.id.txt_download);
+
+
 
 
         new DownloadFileFromURL(DownloadActivity.this).execute(rURL,"restaurants_itr1.csv");
@@ -77,11 +83,24 @@ public class DownloadActivity extends AppCompatActivity {
 
     }
 
-    class DownloadFileFromURL extends AsyncTask<String, String, String> {
+    class DownloadFileFromURL extends AsyncTask<String, Integer, String> {
 
         Context context;
         private DownloadFileFromURL(Context context) {
             this.context = context.getApplicationContext();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            System.out.println("Starting download");
+
+            progressDialog = new ProgressDialog(DownloadActivity.this);
+            progressDialog.setMessage("Loading... Please wait...");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
         }
 
         @Override
@@ -91,16 +110,18 @@ public class DownloadActivity extends AppCompatActivity {
 
                 FetchAPI fetch = new FetchAPI(f_url[0]);
                 String downLink = fetch.getUrl();
+                String time = fetch.getLastModified();
 
                 URL url = new URL(downLink);
 
                 URLConnection connection = url.openConnection();
                 connection.connect();
-                int lOf = connection.getContentLength();
+                int lengthofFile = connection.getContentLength();
 
                 InputStream input = new BufferedInputStream(url.openStream(), 2048);
 
                 File file = method(DownloadActivity.this, f_url[1]);
+
 
                 OutputStream output = new FileOutputStream(file);
                 byte data[] = new byte[1024];
@@ -108,6 +129,8 @@ public class DownloadActivity extends AppCompatActivity {
                 long total = 0;
                 while ((count = input.read(data)) != -1) {
                     total += count;
+                    if (lengthofFile > 0) // only if total length is known
+                        publishProgress((int) (total * 100 / lengthofFile));
                     output.write(data, 0, count);
 
                 }
@@ -126,11 +149,19 @@ public class DownloadActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String file_url) {
+            progressDialog.dismiss();
             if(file_url.equals("inspectionreports_itr1.csv")) {
             Intent intent = new Intent(context,MainActivity.class);
             context.startActivity(intent);
             DownloadActivity.this.finish();
             }
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            progressDialog.setIndeterminate(false);
+            progressDialog.setMax(100);
+            progressDialog.setProgress(progress[0]);
         }
 
 
