@@ -124,11 +124,9 @@ public class DownloadActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String file_url) {
-            if(file_url.equals("inspectionreports_itr1.csv")){
             Intent intent = new Intent(context,MainActivity.class);
             context.startActivity(intent);
-            DownloadActivity.this.finish();}
-
+            DownloadActivity.this.finish();
         }
 
     }
