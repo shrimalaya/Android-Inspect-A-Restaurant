@@ -27,8 +27,11 @@ public class ParseCSV {
 
                 // need to add in an extra space in case there are no violations
                 line = line + ", ";
-                String[] lineValues = line.split(COMMA_SEPARATOR);
+                //String[] lineValues = line.split(COMMA_SEPARATOR);
+
+                String[] lineValues = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 values.add(Arrays.asList(lineValues));
+
             }
 
 
