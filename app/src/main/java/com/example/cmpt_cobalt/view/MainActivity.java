@@ -2,7 +2,6 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.cmpt_cobalt.R;
-import com.example.cmpt_cobalt.model.CSVDowloader;
-import com.example.cmpt_cobalt.model.FetchAPI;
 import com.example.cmpt_cobalt.model.Inspection;
 import com.example.cmpt_cobalt.model.ParseCSV;
 import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -169,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     Float.valueOf(csv.getVal(row, 6)),
                     csv.getVal(row, 0));
 
+            System.out.println(restaurant.toString());
             populateWithInspections(restaurant);
 
 
@@ -185,7 +181,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void populateWithInspections(Restaurant restaurant) throws FileNotFoundException {
-        File file2 = method(MainActivity.this,"inspectionreports_itr1");
+        File file2 = method(MainActivity.this,"inspectionreports_itr1.csv");
+        //InputStream is2 = new FileInputStream(file2);
         InputStream is2 = getResources().openRawResource(R.raw.inspectionreports_itr1);
         ParseCSV csv2 = new ParseCSV(is2);
         String viol = "";
