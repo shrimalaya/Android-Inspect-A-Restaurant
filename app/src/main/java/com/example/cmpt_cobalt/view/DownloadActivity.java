@@ -137,7 +137,6 @@ public class DownloadActivity extends AppCompatActivity {
     }
 
     static File method(Context obj, String filename){
-        File myFile = new File (obj.getFilesDir(), filename );
-        return myFile;
+        return new File (obj.getFilesDir(), filename );
     }
 }

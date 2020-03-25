@@ -149,9 +149,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void populateManager() throws FileNotFoundException {
         File file = method(MainActivity.this,"restaurants_itr1.csv");
+        if(file.exists()){
+            System.out.println("good");
+        }
 
-        //FileInputStream is1 = new FileInputStream(file);
-
+        //InputStream is1 = new FileInputStream(file);
         InputStream is1 = getResources().openRawResource(R.raw.restaurants_itr1);
         ParseCSV csv = new ParseCSV(is1);
 
@@ -268,7 +270,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static File method(Context obj, String filename){
-        File myFile = new File (obj.getFilesDir(), filename );
-        return myFile;
+        return new File (obj.getFilesDir(), filename );
     }
 }
