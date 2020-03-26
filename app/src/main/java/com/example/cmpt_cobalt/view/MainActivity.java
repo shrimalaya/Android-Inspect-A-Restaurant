@@ -116,7 +116,12 @@ public class MainActivity extends AppCompatActivity {
             logo.setImageResource(currentRestaurant.getIcon());
 
             TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
-            restaurantNameText.setText(currentRestaurant.getName());
+            String temp = currentRestaurant.getName();
+            if(temp.length() > 30) {
+                restaurantNameText.setText(temp.substring(0, 30) + "...");
+            } else {
+                restaurantNameText.setText(temp);
+            }
 
 
             Inspection mostRecentInspection = currentRestaurant.getInspection(0);
@@ -134,8 +139,6 @@ public class MainActivity extends AppCompatActivity {
                 hazard.setImageResource(mostRecentInspection.getHazardIcon());
 
             }
-
-
             return itemView;
         }
 
@@ -255,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                     Float.valueOf(csv.getVal(row, 6)),
                     csv.getVal(row, 0));
 
-
+            restaurant.setName(restaurant.getName().replace("\"", ""));
             manager.add(restaurant);
         }
 
@@ -305,8 +308,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
-
-
             }
 
             else {
