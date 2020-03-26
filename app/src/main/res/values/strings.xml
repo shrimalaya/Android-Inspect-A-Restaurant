@@ -17,8 +17,10 @@
     <string name="name_resActivity">Name</string>
     <string name="address">Address</string>
     <string name="semicolon">:</string>
-    <string name="latitude">LatLng</string>
-    <string name="latitude_fix">Lat, Lng:</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude_resActivity">Longitude</string>
+    <string name="latitude_fix">Lat:</string>
+    <string name="longitude_fix">Long:</string>
     <string name="main_display_format">Display Format:\n
         Restaurant Name\n
         Critical + Non-Critical, Hazard Level, Most Recent Inspection date</string>
@@ -31,6 +33,5 @@
     <string name="title_location_permission">Grant location access</string>
     <string name="text_location_permission">Requires location access</string>
     <string name="ok">Grant</string>
-    <string name="map_icon_description">Map icon</string>
 
 </resources>

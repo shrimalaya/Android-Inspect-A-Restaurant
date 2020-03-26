@@ -1,7 +1,5 @@
 package com.example.cmpt_cobalt.model;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +12,16 @@ public class RestaurantManager implements Iterable<Restaurant>{
 
     public void add(Restaurant restaurant) {
         restaurants.add(restaurant);
+    }
+
+    public Restaurant find(String tracking){
+        for(Restaurant restaurant: restaurants){
+            if(restaurant.getTracking().equals(tracking))
+            {
+                return restaurant;
+            }
+        }
+        return null;
     }
 
     public List<Restaurant> getRestaurants() {

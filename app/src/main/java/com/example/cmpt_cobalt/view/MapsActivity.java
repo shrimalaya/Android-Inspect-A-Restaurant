@@ -44,11 +44,11 @@ import com.google.android.gms.tasks.Task;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapActivity";
-    private static final String EXTRA_MESSAGE = "Extra";
     private static final float DEFAULT_ZOOM = 15f;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private static final String EXTRA_MESSAGE = "Extra";
 
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
@@ -59,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public static Intent makeLaunchIntent(Context c, String message) {
         Intent i1 = new Intent(c, MapsActivity.class);
-        i1.putExtra("Extra", message);
+        i1.putExtra(EXTRA_MESSAGE, message);
         return i1;
     }
 
