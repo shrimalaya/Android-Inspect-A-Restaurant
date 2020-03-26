@@ -1,8 +1,10 @@
 package com.example.cmpt_cobalt.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -23,10 +25,12 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -57,10 +61,15 @@ import javax.security.auth.callback.Callback;
 
 public class DownloadActivity extends AppCompatActivity {
 
-    String rURL = "http://data.surrey.ca/api/3/action/package_show?id=restaurants";
-    String iURL = "http://data.surrey.ca/api/3/action/package_show?id=fraser-health-restaurant-inspection-reports";
+    String[] url = {"http://data.surrey.ca/api/3/action/package_show?id=restaurants",
+            "http://data.surrey.ca/api/3/action/package_show?id=fraser-health-restaurant-inspection-reports"};
+
+    String[] fileList = {"restaurants_itr1.csv", "inspectionreports_itr1.csv"};
+
+    boolean toAsk = true;
 
     ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +77,58 @@ public class DownloadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
 
-        TextView textView = findViewById(R.id.txt_download);
-
-        new DownloadFileFromURL(DownloadActivity.this).execute(rURL,"restaurants_itr1.csv");
-        new DownloadFileFromURL(DownloadActivity.this).execute(iURL,"inspectionreports_itr1.csv");
-
-        File file = method(DownloadActivity.this, "inspectionreports_itr1.csv");
-        if(file.exists()){
-            textView.setText("file is good");
+        for(int i = 0; i < 2; i++){
+            String time = new FetchAPI(url[i]).getLastModified();
+            File file = method(DownloadActivity.this, fileList[i]);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+            Date date = null;
+            try {
+                date = df.parse(time);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long epoch = date.getTime();    //lastmodified time of remote file
+            if(file.exists() && toAsk && (epoch - file.lastModified() < 1728000000))
+                {
+                    toAsk = false;  //do not ask again if already asked once
+                    final ConstraintLayout dialogConstraint = findViewById(R.id.const_dialog);
+                    dialogConstraint.setVisibility(View.VISIBLE);
+                    Button yesButton = findViewById(R.id.btn_dialogYes);
+                    yesButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogConstraint.setVisibility(View.INVISIBLE);
+                            new DownloadFileFromURL(DownloadActivity.this).execute(url[0],fileList[0]);
+                            new DownloadFileFromURL(DownloadActivity.this).execute(url[1],fileList[1]);
+                        }
+                    });
+                    Button noButton = findViewById(R.id.btn_dialogyNo);
+                    noButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogConstraint.setVisibility(View.INVISIBLE);
+                            Intent intent = new Intent(DownloadActivity.this,MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                }
+                System.out.println("PP>LOCAL TIME: " + file.lastModified());
         }
+
+
+        /*
+        if(toDownload){
+            new DownloadFileFromURL(DownloadActivity.this).execute(url[0],fileList[0]);
+            new DownloadFileFromURL(DownloadActivity.this).execute(url[1],fileList[1]);
+        }
+        else
+        {
+            Intent intent = new Intent(this,MainActivity.class);
+            this.startActivity(intent);
+            DownloadActivity.this.finish();
+        }
+         */
 
     }
 
@@ -112,16 +164,6 @@ public class DownloadActivity extends AppCompatActivity {
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
                 Date date = df.parse(time);
                 long epoch = date.getTime();
-                System.out.println("DD> API TIME: " + epoch);
-                System.out.println("DD>API TIME: " + date.toString());
-                if(file.exists()){
-                    //twenty days in milliseconds = 1728000000 ms
-                    if(epoch - file.lastModified() > 1728000000)
-                    {
-                        //ask if download
-                    }
-                    System.out.println("DD>LOCAL TIME: " + file.lastModified());
-                }
 
                 URL url = new URL(downLink);
 
