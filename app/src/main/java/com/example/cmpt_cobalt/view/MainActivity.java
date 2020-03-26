@@ -317,6 +317,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+            else if (csv2.getColSize(row) < 7) {
+                break;
+            }
+
             else {
                 inspect = new Inspection(
                         csv2.getVal(row, 0),
