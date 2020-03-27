@@ -318,9 +318,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             Inspection mostRecentInspection = restaurant.getInspection(0);
             if (mostRecentInspection != null) {
-                if (mostRecentInspection.getHazardRating().equals("\"Low\"")) {
+                if (mostRecentInspection.getHazardRating().equals("Low")) {
                     mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_green));
-                } else if (mostRecentInspection.getHazardRating().equals("\"Moderate\"")) {
+                } else if (mostRecentInspection.getHazardRating().equals("Moderate")) {
                     mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_yellow));
                 } else {
                     mMarker[i - 1].setIcon(bitmapDescriptorFromVector(this, R.drawable.peg_red));
