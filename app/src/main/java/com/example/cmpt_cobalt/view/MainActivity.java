@@ -285,18 +285,20 @@ public class MainActivity extends AppCompatActivity {
         ParseCSV csv2 = new ParseCSV(is2);
         String viol = "";
 
-        int counter = 0;
 
         for (int row = 1; row < csv2.getRowSize(); row++) {
             Inspection inspect;
 
+            // error handling: check for valid csv file lines
             if (csv2.getVal(row, 0).equals("")) {
                 break;
             }
 
+            // multiple violations,
+            // so concatenate the strings
             else if (csv2.getColSize(row) > 7) {
 
-                for (int col = 6; col < csv2.getColSize(row) - 1; col++) {
+                for (int col = 5; col < csv2.getColSize(row) - 1; col++) {
                     viol += csv2.getVal(row, col) + " ";
                 }
 
@@ -308,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
                         Integer.valueOf(csv2.getVal(row, 4)),
                         csv2.getVal(row, csv2.getColSize(row) - 1),
                         viol);
+
 
                 viol = "";
 
@@ -331,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
                         csv2.getVal(row, 6),
                         csv2.getVal(row, 5));
 
+
                 for (Restaurant restaurant : manager) {
                     if (inspect.getTrackingNumber().equals(restaurant.getTracking())) {
                         restaurant.inspections.add(inspect);
@@ -339,12 +343,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            counter++;
-
-            // checking with the counter
-//            if (counter > 13480) {
-//                break;
-//            }
 
 
         }
