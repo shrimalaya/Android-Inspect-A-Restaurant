@@ -335,7 +335,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
 
-
         }
 
         for (Restaurant restaurant : manager) {
