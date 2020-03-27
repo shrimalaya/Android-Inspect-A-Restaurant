@@ -75,7 +75,7 @@ public class DownloadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
 
-        long tDifference = 1728000002;
+        long tDifference = 0;
 
         for(int i = 0; i < 2; i++){
             String time = new FetchAPI(url[i]).getLastModified();
@@ -183,8 +183,6 @@ public class DownloadActivity extends AppCompatActivity {
                 Date date = df.parse(time);
                 long epoch = date.getTime();
                 epoch = epoch / 1000;
-                epoch = epoch + 000;
-
                 URL url = new URL(downLink);
 
                 URLConnection connection = url.openConnection();
