@@ -1,5 +1,6 @@
 package com.example.cmpt_cobalt.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,13 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.cmpt_cobalt.R;
-import com.example.cmpt_cobalt.model.CSVDowloader;
-import com.example.cmpt_cobalt.model.FetchAPI;
 import com.example.cmpt_cobalt.model.Inspection;
 import com.example.cmpt_cobalt.model.ParseCSV;
 import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,14 +49,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String url2 = "https://data.surrey.ca/api/3/action/package_show?id=fraser-health-restaurant-inspection-reports";
-        FetchAPI fetcher = new FetchAPI(url2);
-        String downloadLink = fetcher.getUrl(); //You can also get last_modified date, format through getters.
-        CSVDowloader dowloader = new CSVDowloader(downloadLink, "restaurants_itr1.csv"); // Download to base directory with FILE_NAME (replace it)
-        //dowloader.download();
 
-
-        populateListView();
+        try {
+            populateListView();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         // Launch map as soon as we populate the list of restaurants in instance
         launchMap();
@@ -65,10 +65,10 @@ public class MainActivity extends AppCompatActivity {
     private void launchMap() {
         Intent i1 = new Intent(this, MapsActivity.class);
         startActivityForResult(i1, 42);
-        
+
     }
 
-    private void populateListView() {
+    private void populateListView() throws FileNotFoundException {
         manager = RestaurantManager.getInstance();
         populateManager();
 
@@ -116,7 +116,12 @@ public class MainActivity extends AppCompatActivity {
             logo.setImageResource(currentRestaurant.getIcon());
 
             TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
-            restaurantNameText.setText(currentRestaurant.getName());
+            String temp = currentRestaurant.getName();
+            if(temp.length() > 30) {
+                restaurantNameText.setText(temp.substring(0, 30) + "...");
+            } else {
+                restaurantNameText.setText(temp);
+            }
 
 
             Inspection mostRecentInspection = currentRestaurant.getInspection(0);
@@ -134,15 +139,113 @@ public class MainActivity extends AppCompatActivity {
                 hazard.setImageResource(mostRecentInspection.getHazardIcon());
 
             }
-
-
             return itemView;
         }
 
     }
 
-    private void populateManager() {
-        InputStream is1 = getResources().openRawResource(R.raw.restaurants_itr1);
+//    private void populateManager() throws FileNotFoundException {
+//        File file = method(MainActivity.this,"restaurants_itr1.csv");
+//        if(file.exists()){
+//            System.out.println("good");
+//        }
+//
+//        InputStream is1 = new FileInputStream(file);
+//        //InputStream is1 = getResources().openRawResource(R.raw.restaurants_itr1);
+//        ParseCSV csv = new ParseCSV(is1);
+//
+//        // start row index at 1 to ignore the titles
+//        for (int row = 1; row < csv.getRowSize(); row++) {
+//            Restaurant restaurant = new Restaurant(
+//                    csv.getVal(row, 1),
+//                    csv.getVal(row, 2),
+//                    csv.getVal(row, 3),
+//                    Float.valueOf(csv.getVal(row, 5)),
+//                    Float.valueOf(csv.getVal(row, 6)),
+//                    csv.getVal(row, 0));
+//
+//            populateWithInspections(restaurant);
+//
+//
+//            manager.add(restaurant);
+//        }
+//
+//        Collections.sort(manager.getRestaurants(), new Comparator<Restaurant>() {
+//            @Override
+//            public int compare(Restaurant o1, Restaurant o2) {
+//                return o1.getName().compareTo(o2.getName());
+//            }
+//        });
+//
+//    }
+//
+//    private void populateWithInspections(Restaurant restaurant) throws FileNotFoundException {
+//        File file2 = method(MainActivity.this,"inspectionreports_itr1.csv");
+////        InputStream is2 = getResources().openRawResource(R.raw.inspectionreports_itr1);
+//        InputStream is2 = new FileInputStream(file2);
+//        ParseCSV csv2 = new ParseCSV(is2);
+//        String viol = "";
+//
+//        // start at 1 to skip titles
+//        for (int row = 1; row < csv2.getRowSize(); row++) {
+//            if (csv2.getVal(row, 0).equals(restaurant.getTracking())) {
+//
+//                // check if there are more than one violation
+//                // if so, then append them all together in one string to be
+//                // parsed later
+//                if (csv2.getColSize(row) > 7) {
+//                    for (int col = 6; col < csv2.getColSize(row); col++) {
+//                        viol += csv2.getVal(row, col) + " ";
+//                    }
+//
+//                    Inspection inspect = new Inspection(
+//                            csv2.getVal(row, 0),
+//                            csv2.getVal(row, 1),
+//                            csv2.getVal(row, 2),
+//                            Integer.valueOf(csv2.getVal(row, 3)),
+//                            Integer.valueOf(csv2.getVal(row, 4)),
+//                            csv2.getVal(row, 5),
+//                            viol);
+//                    restaurant.inspections.add(inspect);
+//                    viol = "";
+//
+//
+//                } else {
+//                    Inspection inspect = new Inspection(
+//                            csv2.getVal(row, 0),
+//                            csv2.getVal(row, 1),
+//                            csv2.getVal(row, 2),
+//                            Integer.valueOf(csv2.getVal(row, 3)),
+//                            Integer.valueOf(csv2.getVal(row, 4)),
+//                            csv2.getVal(row, 5),
+//                            csv2.getVal(row, 6));
+//                    restaurant.inspections.add(inspect);
+//                }
+//
+//
+//            }
+//        }
+//
+//        Collections.sort(restaurant.inspections, new Comparator<Inspection>() {
+//            @Override
+//            public int compare(Inspection o1, Inspection o2) {
+//                return o2.getInspectionDate().compareTo(o1.getInspectionDate());
+//            }
+//        });
+//    }
+
+
+
+
+    // new code
+    private void populateManager() throws FileNotFoundException {
+        File file = method(MainActivity.this,"restaurants_itr1.csv");
+        if(file.exists()){
+            System.out.println("good");
+        }
+
+        InputStream is1 = new FileInputStream(file);
+        //InputStream is1 = getResources().openRawResource(R.raw.restaurants_itr1);
         ParseCSV csv = new ParseCSV(is1);
 
         // start row index at 1 to ignore the titles
@@ -155,11 +258,11 @@ public class MainActivity extends AppCompatActivity {
                     Float.valueOf(csv.getVal(row, 6)),
                     csv.getVal(row, 0));
 
-            populateWithInspections(restaurant);
-
-
+            restaurant.setName(restaurant.getName().replace("\"", ""));
             manager.add(restaurant);
         }
+
+        populateWithInspections();
 
         Collections.sort(manager.getRestaurants(), new Comparator<Restaurant>() {
             @Override
@@ -170,57 +273,80 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void populateWithInspections(Restaurant restaurant) {
-        InputStream is2 = getResources().openRawResource(R.raw.inspectionreports_itr1);
+    private void populateWithInspections() throws FileNotFoundException {
+        File file2 = method(MainActivity.this,"inspectionreports_itr1.csv");
+//        InputStream is2 = getResources().openRawResource(R.raw.inspectionreports_itr1);
+        InputStream is2 = new FileInputStream(file2);
         ParseCSV csv2 = new ParseCSV(is2);
         String viol = "";
 
-        // start at 1 to skip titles
+
         for (int row = 1; row < csv2.getRowSize(); row++) {
-            if (csv2.getVal(row, 0).equals(restaurant.getTracking())) {
+            Inspection inspect;
 
-                // check if there are more than one violation
-                // if so, then append them all together in one string to be
-                // parsed later
-                if (csv2.getColSize(row) > 7) {
-                    for (int col = 6; col < csv2.getColSize(row); col++) {
-                        viol += csv2.getVal(row, col) + " ";
-                    }
+            // error handling: check for valid csv file lines
+            if (csv2.getVal(row, 0).equals("")) {
+                break;
+            }
 
-                    Inspection inspect = new Inspection(
-                            csv2.getVal(row, 0),
-                            csv2.getVal(row, 1),
-                            csv2.getVal(row, 2),
-                            Integer.valueOf(csv2.getVal(row, 3)),
-                            Integer.valueOf(csv2.getVal(row, 4)),
-                            csv2.getVal(row, 5),
-                            viol);
-                    restaurant.inspections.add(inspect);
-                    viol = "";
+            // multiple violations,
+            // so concatenate the strings
+            else if (csv2.getColSize(row) > 7) {
 
-
-                } else {
-                    Inspection inspect = new Inspection(
-                            csv2.getVal(row, 0),
-                            csv2.getVal(row, 1),
-                            csv2.getVal(row, 2),
-                            Integer.valueOf(csv2.getVal(row, 3)),
-                            Integer.valueOf(csv2.getVal(row, 4)),
-                            csv2.getVal(row, 5),
-                            csv2.getVal(row, 6));
-                    restaurant.inspections.add(inspect);
+                for (int col = 5; col < csv2.getColSize(row) - 1; col++) {
+                    viol += csv2.getVal(row, col) + " ";
                 }
 
+                inspect = new Inspection(
+                        csv2.getVal(row, 0),
+                        csv2.getVal(row, 1),
+                        csv2.getVal(row, 2),
+                        Integer.valueOf(csv2.getVal(row, 3)),
+                        Integer.valueOf(csv2.getVal(row, 4)),
+                        csv2.getVal(row, csv2.getColSize(row) - 1),
+                        viol);
 
+
+                viol = "";
+
+                for (Restaurant restaurant : manager) {
+                    if (inspect.getTrackingNumber().equals(restaurant.getTracking())) {
+                        restaurant.inspections.add(inspect);
+                        break;
+                    }
+                }
             }
+
+            else {
+                inspect = new Inspection(
+                        csv2.getVal(row, 0),
+                        csv2.getVal(row, 1),
+                        csv2.getVal(row, 2),
+                        Integer.valueOf(csv2.getVal(row, 3)),
+                        Integer.valueOf(csv2.getVal(row, 4)),
+                        csv2.getVal(row, 6),
+                        csv2.getVal(row, 5));
+
+
+                for (Restaurant restaurant : manager) {
+                    if (inspect.getTrackingNumber().equals(restaurant.getTracking())) {
+                        restaurant.inspections.add(inspect);
+                        break;
+                    }
+                }
+            }
+
+
         }
 
-        Collections.sort(restaurant.inspections, new Comparator<Inspection>() {
-            @Override
-            public int compare(Inspection o1, Inspection o2) {
-                return o2.getInspectionDate().compareTo(o1.getInspectionDate());
-            }
-        });
+        for (Restaurant restaurant : manager) {
+            Collections.sort(restaurant.inspections, new Comparator<Inspection>() {
+                @Override
+                public int compare(Inspection o1, Inspection o2) {
+                    return o2.getInspectionDate().compareTo(o1.getInspectionDate());
+                }
+            });
+        }
     }
 
     /**
@@ -287,5 +413,9 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    static File method(Context obj, String filename){
+        return new File (obj.getFilesDir(), filename );
     }
 }

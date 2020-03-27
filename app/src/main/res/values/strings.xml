@@ -17,8 +17,10 @@
     <string name="name_resActivity">Name</string>
     <string name="address">Address</string>
     <string name="semicolon">:</string>
-    <string name="latitude">LatLng</string>
-    <string name="latitude_fix">Lat, Lng:</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude_resActivity">Longitude</string>
+    <string name="latitude_fix">Lat:</string>
+    <string name="longitude_fix">Long:</string>
     <string name="main_display_format">Display Format:\n
         Restaurant Name\n
         Critical + Non-Critical, Hazard Level, Most Recent Inspection date</string>
@@ -26,10 +28,11 @@
         Critical, Non-Critical, Relative date, Type, Hazard level, icon</string>
 
     <string name="na">N/A</string>
+    <string name="title_activity_download">Pre-loader</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_location_permission">Grant location access</string>
     <string name="text_location_permission">Requires location access</string>
     <string name="ok">Grant</string>
-    <string name="map_icon_description">Map icon</string>
+    <string name="txt_downloadAsk">The local database is less than 20 days old, compared to the online database. Would you still like to update and fetch the new database?\nThis may take a moment depending on your internet connection.</string>
 
 </resources>
