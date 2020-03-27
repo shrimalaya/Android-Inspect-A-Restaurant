@@ -134,11 +134,11 @@ public class Inspection {
 
     public int getHazardIcon() {
 
-        if (hazardRating.equals("\"Low\"")) {
+        if (hazardRating.equals("Low")) {
 
             return R.drawable.green;
 
-        } else if (hazardRating.equals("\"Moderate\"")) {
+        } else if (hazardRating.equals("Moderate")) {
 
             return R.drawable.yellow;
 
