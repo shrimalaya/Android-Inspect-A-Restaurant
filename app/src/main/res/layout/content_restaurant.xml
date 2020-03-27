@@ -28,7 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="13dp"
         android:text="@string/name_resActivity"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -39,13 +38,10 @@
         android:id="@+id/address_resActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:text="@string/address"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/name_resActivity"
-        app:layout_constraintStart_toEndOf="@+id/fix_txt1"
-        app:layout_constraintTop_toTopOf="@+id/name_resActivity"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/name_resActivity"
+        app:layout_constraintTop_toBottomOf="@+id/name_resActivity" />
 
     <TextView
         android:id="@+id/fix_txt1"
@@ -62,11 +58,10 @@
         android:id="@+id/fix_txt2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:text="@string/latitude_fix"
-        android:textSize="18sp"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/name_resActivity"
-        app:layout_constraintTop_toBottomOf="@+id/name_resActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/address_resActivity" />
 
     <TextView
         android:id="@+id/latLng_resActivity"
@@ -74,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/latitude"
-        android:textSize="18sp"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="@+id/fix_txt2"
         app:layout_constraintStart_toEndOf="@+id/fix_txt2"
         app:layout_constraintTop_toTopOf="@+id/fix_txt2" />
