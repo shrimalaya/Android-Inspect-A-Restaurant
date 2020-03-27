@@ -93,7 +93,13 @@ public class Restaurant {
             return R.drawable.subway;
         }
         else if (name.matches("^(7-Eleven).*")){
-            return R.drawable.subway;
+            return R.drawable.seven_eleven;
+        }
+        else if (name.matches("^(Blenz Coffee).*")){
+            return R.drawable.blenz;
+        }
+        else if (name.matches("^(Boston Pizze).^")){
+            return R.drawable.boston;
         }
         return R.drawable.blank;
     }
