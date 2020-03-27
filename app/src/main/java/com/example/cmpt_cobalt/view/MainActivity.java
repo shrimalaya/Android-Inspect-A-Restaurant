@@ -285,7 +285,11 @@ public class MainActivity extends AppCompatActivity {
         for (int row = 1; row < csv2.getRowSize(); row++) {
             Inspection inspect;
 
-            if (csv2.getColSize(row) > 7) {
+            if (csv2.getVal(row, 0).equals("")) {
+                break;
+            }
+
+            else if (csv2.getColSize(row) > 7) {
 
                 for (int col = 6; col < csv2.getColSize(row) - 1; col++) {
                     viol += csv2.getVal(row, col) + " ";
@@ -331,9 +335,9 @@ public class MainActivity extends AppCompatActivity {
             counter++;
 
             // checking with the counter
-            if (counter > 13480) {
-                break;
-            }
+//            if (counter > 13480) {
+//                break;
+//            }
 
         }
 
