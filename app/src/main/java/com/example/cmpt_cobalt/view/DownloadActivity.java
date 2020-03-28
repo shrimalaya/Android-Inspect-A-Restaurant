@@ -48,7 +48,7 @@ public class DownloadActivity extends AppCompatActivity {
 
         long tDifference = 0;
 
-        for(int i = 0; i < 2; i++){
+        for (int i = 0; i < 2; i++) {
             String time = new FetchAPI(url[i]).getLastModified();
             File file = method(DownloadActivity.this, fileList[i]);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -62,7 +62,7 @@ public class DownloadActivity extends AppCompatActivity {
             epoch = epoch / 1000;
             long difference = epoch - (file.lastModified());
 
-            if(tDifference < difference){
+            if (tDifference < difference) {
                 tDifference = difference;
             }
         }
@@ -72,7 +72,7 @@ public class DownloadActivity extends AppCompatActivity {
             Button yesButton = findViewById(R.id.btn_dialogYes);
             Button noButton = findViewById(R.id.btn_dialogyNo);
 
-            if(tDifference < 72000000){
+            if (tDifference < 72000000) {
                 TextView dialogText = findViewById(R.id.txt_dialogMsg);
                 dialogText.setText("Latest update already installed!");
                 noButton.setVisibility(View.INVISIBLE);
@@ -198,7 +198,7 @@ public class DownloadActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String file_url) {
             progressDialog.dismiss();
-            if(file_url.equals("inspectionreports_itr1.csv")) {
+            if (file_url.equals("inspectionreports_itr1.csv")) {
             Intent intent = new Intent(context,MainActivity.class);
             context.startActivity(intent);
             DownloadActivity.this.finish();

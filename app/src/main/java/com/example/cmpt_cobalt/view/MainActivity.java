@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         String file_status = i_receive.getStringExtra(EXTRA_MESSAGE);
 
         InputStream is1 = null;
-        if(file_status != null) {
+        if (file_status != null) {
             if (file_status.equals("OLD")) {
                 is1 = getResources().openRawResource(R.raw.restaurants_itr1);
             } else {
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i_receive = getIntent();
         String file_status = i_receive.getStringExtra(EXTRA_MESSAGE);
         InputStream is2 = null;
-        if(file_status != null) {
+        if (file_status != null) {
             if (file_status.equals("OLD")) {
                 is2 = getResources().openRawResource(R.raw.inspectionreports_itr1);
             } else {
