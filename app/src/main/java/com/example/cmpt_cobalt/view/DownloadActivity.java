@@ -96,12 +96,12 @@ public class DownloadActivity extends AppCompatActivity {
             }
         }
 
-        if(tDifference < 72000000) {
+
             final ConstraintLayout dialogConstraint = findViewById(R.id.const_dialog);
             Button yesButton = findViewById(R.id.btn_dialogYes);
             Button noButton = findViewById(R.id.btn_dialogyNo);
 
-            if(tDifference < 2000){
+            if(tDifference < 72000000){
                 TextView dialogText = findViewById(R.id.txt_dialogMsg);
                 dialogText.setText("Latest update already installed!");
                 noButton.setVisibility(View.INVISIBLE);
@@ -115,7 +115,6 @@ public class DownloadActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-
 
             }
             else {
@@ -141,13 +140,6 @@ public class DownloadActivity extends AppCompatActivity {
                 });
 
             }
-
-        }
-        else{
-            new DownloadFileFromURL(DownloadActivity.this).execute(url[0],fileList[0]);
-            new DownloadFileFromURL(DownloadActivity.this).execute(url[1],fileList[1]);
-        }
-
     }
 
     class DownloadFileFromURL extends AsyncTask<String, Integer, String> {
