@@ -36,11 +36,14 @@ public class HTTPRequest {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(connection.getInputStream())
             );
+
             String inputLine;
             StringBuffer content = new StringBuffer();
+
             while((inputLine = reader.readLine()) != null){
                 content.append(inputLine);
             }
+
             reader.close();
             return content;
         }

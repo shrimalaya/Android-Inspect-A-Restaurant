@@ -1,63 +1,33 @@
 package com.example.cmpt_cobalt.view;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.cmpt_cobalt.model.CSVDowloader;
-import com.example.cmpt_cobalt.model.FetchAPI;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.cmpt_cobalt.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.cmpt_cobalt.model.FetchAPI;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.security.auth.callback.Callback;
 
 public class DownloadActivity extends AppCompatActivity {
 
@@ -68,6 +38,7 @@ public class DownloadActivity extends AppCompatActivity {
 
     ProgressDialog progressDialog;
 
+    DownloadFileFromURL downloadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +48,7 @@ public class DownloadActivity extends AppCompatActivity {
 
         long tDifference = 0;
 
-        for(int i = 0; i < 2; i++){
+        for (int i = 0; i < 2; i++) {
             String time = new FetchAPI(url[i]).getLastModified();
             File file = method(DownloadActivity.this, fileList[i]);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -91,17 +62,17 @@ public class DownloadActivity extends AppCompatActivity {
             epoch = epoch / 1000;
             long difference = epoch - (file.lastModified());
 
-            if(tDifference < difference){
+            if (tDifference < difference) {
                 tDifference = difference;
             }
         }
 
-        if(tDifference < 72000000) {
+
             final ConstraintLayout dialogConstraint = findViewById(R.id.const_dialog);
             Button yesButton = findViewById(R.id.btn_dialogYes);
             Button noButton = findViewById(R.id.btn_dialogyNo);
 
-            if(tDifference < 2000){
+            if (tDifference < 72000000) {
                 TextView dialogText = findViewById(R.id.txt_dialogMsg);
                 dialogText.setText("Latest update already installed!");
                 noButton.setVisibility(View.INVISIBLE);
@@ -115,7 +86,6 @@ public class DownloadActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-
 
             }
             else {
@@ -134,23 +104,18 @@ public class DownloadActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         dialogConstraint.setVisibility(View.INVISIBLE);
-                        Intent intent = new Intent(DownloadActivity.this,MainActivity.class);
+                        Intent intent = new Intent();
+                        intent = MainActivity.makeLaunchIntent(DownloadActivity.this, "MainActivity");
+                        intent.putExtra("Extra", "OLD");
                         startActivity(intent);
-                        finish();
+                        DownloadActivity.this.finish();
                     }
                 });
 
             }
-
-        }
-        else{
-            new DownloadFileFromURL(DownloadActivity.this).execute(url[0],fileList[0]);
-            new DownloadFileFromURL(DownloadActivity.this).execute(url[1],fileList[1]);
-        }
-
     }
 
-    class DownloadFileFromURL extends AsyncTask<String, Integer, String> {
+    private class DownloadFileFromURL extends AsyncTask<String, Integer, String> {
 
         Context context;
         private DownloadFileFromURL(Context context) {
@@ -163,9 +128,21 @@ public class DownloadActivity extends AppCompatActivity {
             System.out.println("Starting download");
 
             progressDialog = new ProgressDialog(DownloadActivity.this);
-            progressDialog.setMessage("Fetching latest data from server... Please wait...");
+            progressDialog.setMessage("Fetching latest data from server.\nTo cancel, click anywhere outside the progress box.");
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(true);
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    cancel(true);
+                    Toast.makeText(DownloadActivity.this,"Download has been cancelled.",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    intent = MainActivity.makeLaunchIntent(DownloadActivity.this, "MainActivity");
+                    intent.putExtra("Extra", "OLD");
+                    context.startActivity(intent);
+                    DownloadActivity.this.finish();
+                }
+            });
             progressDialog.show();
 
         }
@@ -221,7 +198,7 @@ public class DownloadActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String file_url) {
             progressDialog.dismiss();
-            if(file_url.equals("inspectionreports_itr1.csv")) {
+            if (file_url.equals("inspectionreports_itr1.csv")) {
             Intent intent = new Intent(context,MainActivity.class);
             context.startActivity(intent);
             DownloadActivity.this.finish();
