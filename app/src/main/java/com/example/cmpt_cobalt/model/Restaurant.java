@@ -1,7 +1,5 @@
 package com.example.cmpt_cobalt.model;
 
-import android.util.Log;
-
 import com.example.cmpt_cobalt.R;
 
 import java.util.ArrayList;
@@ -63,7 +61,7 @@ public class Restaurant {
 
     private int matchLogo(){
         name = this.getName();
-        Log.e("Woot", name);
+        //Log.e("Woot", name);
         if (name.matches("^(McDonald's).*")){
             return R.drawable.mcdonalds;
         }
