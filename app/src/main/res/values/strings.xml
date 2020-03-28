@@ -33,6 +33,6 @@
     <string name="title_location_permission">Grant location access</string>
     <string name="text_location_permission">Requires location access</string>
     <string name="ok">Grant</string>
-    <string name="txt_downloadAsk">The local database is less than 20 days old, compared to the online database. Would you still like to update and fetch the new database?\nThis may take a moment depending on your internet connection.</string>
+    <string name="txt_downloadAsk">The local database is less than 20 hours old, compared to the online database. Would you still like to update and fetch the new database?\nThis may take a moment depending on your internet connection.</string>
 
 </resources>

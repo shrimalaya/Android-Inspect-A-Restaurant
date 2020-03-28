@@ -89,19 +89,19 @@ public class DownloadActivity extends AppCompatActivity {
             }
             long epoch = date.getTime();    //lastmodified time of remote file
             epoch = epoch / 1000;
-            long difference = epoch - file.lastModified()/1000;
+            long difference = epoch - (file.lastModified());
 
             if(tDifference < difference){
                 tDifference = difference;
             }
         }
 
-        if(tDifference < 1728000000) {
+        if(tDifference < 72000000) {
             final ConstraintLayout dialogConstraint = findViewById(R.id.const_dialog);
             Button yesButton = findViewById(R.id.btn_dialogYes);
             Button noButton = findViewById(R.id.btn_dialogyNo);
 
-            if(tDifference == 0){
+            if(tDifference < 2000){
                 TextView dialogText = findViewById(R.id.txt_dialogMsg);
                 dialogText.setText("Latest update already installed!");
                 noButton.setVisibility(View.INVISIBLE);
@@ -165,7 +165,7 @@ public class DownloadActivity extends AppCompatActivity {
             progressDialog = new ProgressDialog(DownloadActivity.this);
             progressDialog.setMessage("Fetching latest data from server... Please wait...");
             progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
+            progressDialog.setCancelable(true);
             progressDialog.show();
 
         }
