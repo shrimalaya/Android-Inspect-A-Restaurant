@@ -66,8 +66,6 @@ public class DownloadActivity extends AppCompatActivity {
 
     String[] fileList = {"restaurants_itr1.csv", "inspectionreports_itr1.csv"};
 
-    boolean toAsk = true;
-
     ProgressDialog progressDialog;
 
 
@@ -77,10 +75,12 @@ public class DownloadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
 
+        long tDifference = 0;
+
         for(int i = 0; i < 2; i++){
             String time = new FetchAPI(url[i]).getLastModified();
             File file = method(DownloadActivity.this, fileList[i]);
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
             Date date = null;
             try {
                 date = df.parse(time);
@@ -88,47 +88,65 @@ public class DownloadActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             long epoch = date.getTime();    //lastmodified time of remote file
-            if(file.exists() && toAsk && (epoch - file.lastModified() < 1728000000))
-                {
-                    toAsk = false;  //do not ask again if already asked once
-                    final ConstraintLayout dialogConstraint = findViewById(R.id.const_dialog);
-                    dialogConstraint.setVisibility(View.VISIBLE);
-                    Button yesButton = findViewById(R.id.btn_dialogYes);
-                    yesButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogConstraint.setVisibility(View.INVISIBLE);
-                            new DownloadFileFromURL(DownloadActivity.this).execute(url[0],fileList[0]);
-                            new DownloadFileFromURL(DownloadActivity.this).execute(url[1],fileList[1]);
-                        }
-                    });
-                    Button noButton = findViewById(R.id.btn_dialogyNo);
-                    noButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogConstraint.setVisibility(View.INVISIBLE);
-                            Intent intent = new Intent(DownloadActivity.this,MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-                }
-                System.out.println("PP>LOCAL TIME: " + file.lastModified());
+            epoch = epoch / 1000;
+            long difference = epoch - (file.lastModified());
+
+            if(tDifference < difference){
+                tDifference = difference;
+            }
         }
 
+        if(tDifference < 72000000) {
+            final ConstraintLayout dialogConstraint = findViewById(R.id.const_dialog);
+            Button yesButton = findViewById(R.id.btn_dialogYes);
+            Button noButton = findViewById(R.id.btn_dialogyNo);
 
-        /*
-        if(toDownload){
+            if(tDifference < 2000){
+                TextView dialogText = findViewById(R.id.txt_dialogMsg);
+                dialogText.setText("Latest update already installed!");
+                noButton.setVisibility(View.INVISIBLE);
+                dialogConstraint.setVisibility(View.VISIBLE);
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogConstraint.setVisibility(View.INVISIBLE);
+                        Intent intent = new Intent(DownloadActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+
+            }
+            else {
+                dialogConstraint.setVisibility(View.VISIBLE);
+
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogConstraint.setVisibility(View.INVISIBLE);
+                        new DownloadFileFromURL(DownloadActivity.this).execute(url[0],fileList[0]);
+                        new DownloadFileFromURL(DownloadActivity.this).execute(url[1],fileList[1]);
+                    }
+                });
+
+                noButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogConstraint.setVisibility(View.INVISIBLE);
+                        Intent intent = new Intent(DownloadActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+            }
+
+        }
+        else{
             new DownloadFileFromURL(DownloadActivity.this).execute(url[0],fileList[0]);
             new DownloadFileFromURL(DownloadActivity.this).execute(url[1],fileList[1]);
         }
-        else
-        {
-            Intent intent = new Intent(this,MainActivity.class);
-            this.startActivity(intent);
-            DownloadActivity.this.finish();
-        }
-         */
 
     }
 
@@ -145,9 +163,9 @@ public class DownloadActivity extends AppCompatActivity {
             System.out.println("Starting download");
 
             progressDialog = new ProgressDialog(DownloadActivity.this);
-            progressDialog.setMessage("Loading... Please wait...");
+            progressDialog.setMessage("Fetching latest data from server... Please wait...");
             progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
+            progressDialog.setCancelable(true);
             progressDialog.show();
 
         }
@@ -161,10 +179,10 @@ public class DownloadActivity extends AppCompatActivity {
                 String downLink = fetch.getUrl();
                 File file = method(DownloadActivity.this, f_url[1]);
                 String time = fetch.getLastModified();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 Date date = df.parse(time);
                 long epoch = date.getTime();
-
+                epoch = epoch / 1000;
                 URL url = new URL(downLink);
 
                 URLConnection connection = url.openConnection();
