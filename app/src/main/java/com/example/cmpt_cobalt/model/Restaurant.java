@@ -1,8 +1,9 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
 import com.example.cmpt_cobalt.R;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 // restaurant class holding all info related to a restaurant
@@ -28,7 +29,7 @@ public class Restaurant {
         this.latAddress = latAddress;
         this.longAddress = longAddress;
         this.tracking = tracking;
-        this.icon = R.drawable.log;
+        this.icon = matchLogo();
         this.inspections = new ArrayList<>();
     }
 
@@ -60,6 +61,47 @@ public class Restaurant {
         return icon;
     }
 
+    private int matchLogo(){
+        name = this.getName();
+        Log.e("Woot", name);
+        if (name.matches("^(McDonald's).*")){
+            return R.drawable.mcdonalds;
+        }
+        else if (name.matches("^(A&W).*")){
+            return R.drawable.a_and_w;
+        }
+        else if (name.matches("Boiling Point")){
+            return R.drawable.boiling_point;
+        }
+        else if (name.matches("^(Burger King).*")){
+            return R.drawable.burgerking;
+        }
+        else if (name.matches("Chipotle Mexican Grill")){
+            return R.drawable.chipotle;
+        }
+        else if (name.matches("^(Church's Chicken).*")){
+            return R.drawable.church_chicken;
+        }
+        else if (name.matches("^(KFC).*")){
+            return R.drawable.kfc;
+        }
+        else if (name.matches("^(Red Robin).*")){
+            return R.drawable.redrobin;
+        }
+        else if (name.matches("^(Subway).*")){
+            return R.drawable.subway;
+        }
+        else if (name.matches("^(7-Eleven).*")){
+            return R.drawable.seven_eleven;
+        }
+        else if (name.matches("^(Blenz Coffee).*")){
+            return R.drawable.blenz;
+        }
+        else if (name.matches("^(Boston Pizze).^")){
+            return R.drawable.boston;
+        }
+        return R.drawable.log;
+    }
 
     public ArrayList<Inspection> getInspections() {
         return inspections;

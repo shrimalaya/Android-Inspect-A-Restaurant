@@ -1,11 +1,8 @@
 package com.example.cmpt_cobalt.model;
 
-import android.util.Log;
-
 import com.example.cmpt_cobalt.R;
 
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -95,7 +92,7 @@ public class Inspection {
     }
 
     private String[] parseViolations(String rawViolations) {
-        return rawViolations.split("\\|");
+        return rawViolations.replace(",", ", ").split("\\|");
     }
 
     public String getTrackingNumber() {
@@ -134,11 +131,11 @@ public class Inspection {
 
     public int getHazardIcon() {
 
-        if (hazardRating.equals("\"Low\"")) {
+        if (hazardRating.equals("Low")) {
 
             return R.drawable.green;
 
-        } else if (hazardRating.equals("\"Moderate\"")) {
+        } else if (hazardRating.equals("Moderate")) {
 
             return R.drawable.yellow;
 
