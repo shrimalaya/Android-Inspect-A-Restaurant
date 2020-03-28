@@ -33,6 +33,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cmpt_cobalt.R;
 
@@ -68,6 +69,7 @@ public class DownloadActivity extends AppCompatActivity {
 
     ProgressDialog progressDialog;
 
+    DownloadFileFromURL downloadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +144,7 @@ public class DownloadActivity extends AppCompatActivity {
             }
     }
 
-    class DownloadFileFromURL extends AsyncTask<String, Integer, String> {
+    private class DownloadFileFromURL extends AsyncTask<String, Integer, String> {
 
         Context context;
         private DownloadFileFromURL(Context context) {
@@ -155,9 +157,19 @@ public class DownloadActivity extends AppCompatActivity {
             System.out.println("Starting download");
 
             progressDialog = new ProgressDialog(DownloadActivity.this);
-            progressDialog.setMessage("Fetching latest data from server... Please wait...");
+            progressDialog.setMessage("Fetching latest data from server...To cancel, click anywhere outside the progress box.");
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(true);
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    cancel(true);
+                    Toast.makeText(DownloadActivity.this,"Download has been cancelled.",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(context,MainActivity.class);
+                    context.startActivity(intent);
+                    DownloadActivity.this.finish();
+                }
+            });
             progressDialog.show();
 
         }
