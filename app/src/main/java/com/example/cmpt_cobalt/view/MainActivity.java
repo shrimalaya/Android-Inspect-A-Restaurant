@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
                         Integer.valueOf(csv2.getVal(row, 3)),
                         Integer.valueOf(csv2.getVal(row, 4)),
                         csv2.getVal(row, 6),
-                        csv2.getVal(row, 5));
+                        csv2.getVal(row, 5).replace("\"", ""));
 
 
                 for (Restaurant restaurant : manager) {

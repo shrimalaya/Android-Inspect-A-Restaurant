@@ -4,12 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.example.cmpt_cobalt.model.Inspection;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,8 +16,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cmpt_cobalt.R;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import com.example.cmpt_cobalt.R;
+import com.example.cmpt_cobalt.model.Inspection;
 import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 
@@ -85,15 +82,15 @@ public class InspectionActivity extends AppCompatActivity {
         numNonCriticalText.setText(Integer.toString(mInspection.getNumNonCritical()));
         hazardRatingText.setText(mInspection.getHazardRating());
 
-        if (mInspection.getHazardRating().equals("\"Low\"")) {
+        if (mInspection.getHazardRating().equals("Low")) {
 
             hazardRatingText.setTextColor(Color.GREEN);
 
-        } else if (mInspection.getHazardRating().equals("\"Moderate\"")) {
+        } else if (mInspection.getHazardRating().equals("Moderate")) {
 
             hazardRatingText.setTextColor(Color.rgb(204, 204, 0));
 
-        } else if (mInspection.getHazardRating().equals("\"High\"")) {
+        } else if (mInspection.getHazardRating().equals("High")) {
 
             hazardRatingText.setTextColor(Color.RED);
 

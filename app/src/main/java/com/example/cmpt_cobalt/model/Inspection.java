@@ -92,7 +92,7 @@ public class Inspection {
     }
 
     private String[] parseViolations(String rawViolations) {
-        return rawViolations.split("\\|");
+        return rawViolations.replace(",", ", ").split("\\|");
     }
 
     public String getTrackingNumber() {
