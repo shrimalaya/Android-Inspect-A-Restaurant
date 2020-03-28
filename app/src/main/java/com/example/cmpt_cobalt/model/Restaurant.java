@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.cmpt_cobalt.R;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 // restaurant class holding all info related to a restaurant
@@ -101,7 +100,7 @@ public class Restaurant {
         else if (name.matches("^(Boston Pizze).^")){
             return R.drawable.boston;
         }
-        return R.drawable.blank;
+        return R.drawable.log;
     }
 
     public ArrayList<Inspection> getInspections() {
