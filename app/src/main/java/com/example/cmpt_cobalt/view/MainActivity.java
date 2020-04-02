@@ -121,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
             ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
             logo.setImageResource(currentRestaurant.getIcon());
 
+            //Favorites view
+            ImageView favourite = itemView.findViewById(R.id.item_favourite);
+
             TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
             String temp = currentRestaurant.getName();
             if(temp.length() > 30) {

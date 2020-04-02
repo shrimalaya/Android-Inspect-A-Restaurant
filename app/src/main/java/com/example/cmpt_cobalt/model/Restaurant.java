@@ -18,6 +18,8 @@ public class Restaurant {
 
     private int icon;
 
+    private boolean isFavourite;
+
     public ArrayList<Inspection> inspections;
 
     public Restaurant(String name, String streetAddress, String cityAddress, double latAddress, double longAddress, String tracking) {
@@ -29,6 +31,7 @@ public class Restaurant {
         this.tracking = tracking;
         this.icon = matchLogo();
         this.inspections = new ArrayList<>();
+        this.isFavourite = false;
     }
 
     public String getName() {
@@ -115,6 +118,14 @@ public class Restaurant {
 
     public int getInspectionSize() {
         return inspections.size();
+    }
+
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
     }
 
     @Override
