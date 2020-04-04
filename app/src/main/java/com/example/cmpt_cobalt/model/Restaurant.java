@@ -120,8 +120,14 @@ public class Restaurant {
         return inspections.size();
     }
 
-    public boolean isFavourite() {
-        return isFavourite;
+    public int getFavourite() {
+        if(isFavourite){
+            return android.R.drawable.btn_star_big_on;
+        }
+        else
+        {
+            return android.R.drawable.btn_star_big_off;
+        }
     }
 
     public void setFavourite(boolean favourite) {

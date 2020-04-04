@@ -25,15 +25,16 @@
         app:srcCompat="@drawable/ic_location" />
 
     <ImageView
-        android:id="@+id/item_favourite"
+        android:id="@+id/item_hazard"
         android:layout_width="40dp"
         android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="2dp"
         android:layout_toEndOf="@id/item_restaurantLogo"
-        app:srcCompat="@android:drawable/star_big_off" />
+        app:srcCompat="@android:drawable/presence_online" />
 
     <TextView
         android:id="@+id/item_restaurantName"
@@ -53,7 +54,7 @@
         android:layout_alignBottom="@+id/item_restaurantLogo"
         android:layout_marginStart="0dp"
         android:layout_marginBottom="0dp"
-        android:layout_toEndOf="@id/item_favourite"
+        android:layout_toEndOf="@id/item_hazard"
         android:text="@string/num_critical" />
 
     <TextView
@@ -63,18 +64,19 @@
         android:layout_above="@+id/textView9"
         android:layout_marginStart="0dp"
         android:layout_marginBottom="0dp"
-        android:layout_toEndOf="@id/item_favourite"
+        android:layout_toEndOf="@id/item_hazard"
         android:text="@string/num_non_critical" />
 
     <ImageView
-        android:id="@+id/item_hazardImage"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/item_favourite"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        app:srcCompat="@android:drawable/presence_online" />
+        android:clickable="true"
+        app:srcCompat="@android:drawable/btn_star_big_off" />
 
     <TextView
         android:id="@+id/item_numCritical"

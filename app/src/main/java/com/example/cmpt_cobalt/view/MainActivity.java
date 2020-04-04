@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
             //Favorites view
             ImageView favourite = itemView.findViewById(R.id.item_favourite);
+            favourite.setImageResource(currentRestaurant.getFavourite());
 
             TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
             String temp = currentRestaurant.getName();
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView lastInspectionText = itemView.findViewById(R.id.item_lastInspection);
                 lastInspectionText.setText(mostRecentInspection.getFormattedDate());
 
-                ImageView hazard = itemView.findViewById(R.id.item_hazardImage);
+                ImageView hazard = itemView.findViewById(R.id.item_hazard);
                 hazard.setImageResource(mostRecentInspection.getHazardIcon());
 
             }
