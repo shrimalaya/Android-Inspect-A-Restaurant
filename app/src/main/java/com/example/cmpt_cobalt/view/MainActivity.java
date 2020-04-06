@@ -3,6 +3,7 @@ package com.example.cmpt_cobalt.view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -131,24 +132,22 @@ public class MainActivity extends AppCompatActivity {
             logo.setImageResource(currentRestaurant.getIcon());
 
             //Favorites view
-            final ViewHolder holder = new ViewHolder();
-            holder.favourite = (ImageView) itemView.findViewById(R.id.item_favourite);
-            //ImageView favourite = itemView.findViewById(R.id.item_favourite);
-            holder.favourite.setTag(position);
-            holder.favourite.setOnClickListener(new View.OnClickListener() {
+            final ImageView favourite = itemView.findViewById(R.id.item_favourite);
+            favourite.setTag(position);
+            favourite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Restaurant currentRestaurant = manager.getRestaurants().get((Integer) v.getTag());
                     if(currentRestaurant.getFavourite())
                     {
                         currentRestaurant.setFavourite(false);
-                        holder.favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
                         System.out.println("DD> " + currentRestaurant.getName() + "set to false\n");
                     }
                     else if(!currentRestaurant.getFavourite())
                     {
                         currentRestaurant.setFavourite(true);
-                        holder.favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
                         System.out.println("DD> " + currentRestaurant.getName() + "set to true\n");
                     }
                      }

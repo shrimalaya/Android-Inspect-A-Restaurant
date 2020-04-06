@@ -296,7 +296,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mostRecentInspection != null) {
             String hazardLevel = mostRecentInspection.getHazardRating();
 
-            if(isFavourite = true){
+            if(isFavourite){
                 hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_blue);
             }
             else {
@@ -311,7 +311,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else
         {
-            if(isFavourite = true){
+            if(isFavourite){
                 hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_blue);
             }
             else {
