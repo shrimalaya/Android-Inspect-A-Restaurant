@@ -2,6 +2,7 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,10 @@ import java.util.List;
 // main screen activity
 // displays the initial list of restaurants
 public class MainActivity extends AppCompatActivity {
+
+    //Shared Preferences.
+    //SharedPreferences sharedPref = getSharedPreferences("Favourites", MODE_PRIVATE);
+
 
     private static final String EXTRA_MESSAGE = "Extra";
     private RestaurantManager manager;
@@ -115,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Find the restaurant to work with.
-            Restaurant currentRestaurant = manager.getRestaurants().get(position);
+            final Restaurant currentRestaurant = manager.getRestaurants().get(position);
 
             // Fill the view
             ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
@@ -123,7 +128,22 @@ public class MainActivity extends AppCompatActivity {
 
             //Favorites view
             ImageView favourite = itemView.findViewById(R.id.item_favourite);
-            favourite.setImageResource(currentRestaurant.getFavourite());
+            favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ImageView favourite = v.findViewById(R.id.item_favourite);
+                    if(currentRestaurant.getFavourite())
+                    {
+                        currentRestaurant.setFavourite(false);
+                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                    }
+                    else if(!currentRestaurant.getFavourite())
+                    {
+                        currentRestaurant.setFavourite(true);
+                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                    }
+                     }
+            });
 
             TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
             String temp = currentRestaurant.getName();
