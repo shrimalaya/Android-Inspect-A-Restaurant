@@ -292,20 +292,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private BitmapDescriptor getHazardIcon(Restaurant restaurant) {
         Inspection mostRecentInspection = restaurant.getInspection(0);
         BitmapDescriptor hazardIcon;
-
+        boolean isFavourite = restaurant.getFavourite();
         if (mostRecentInspection != null) {
             String hazardLevel = mostRecentInspection.getHazardRating();
-            if (hazardLevel.equals("Low")) {
-                hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_green);
-            } else if (hazardLevel.equals("Moderate")) {
-                hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_yellow);
-            } else {
-                hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_red);
+
+            if(isFavourite = true){
+                hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_blue);
+            }
+            else {
+                if (hazardLevel.equals("Low")) {
+                    hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_green);
+                } else if (hazardLevel.equals("Moderate")) {
+                    hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_yellow);
+                } else {
+                    hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_red);
+                }
             }
         }
         else
         {
-            hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_no_inspection);
+            if(isFavourite = true){
+                hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_blue);
+            }
+            else {
+            hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_no_inspection); }
+
         }
         return hazardIcon;
     }

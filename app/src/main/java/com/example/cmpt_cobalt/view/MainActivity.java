@@ -104,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
         restaurantList.setAdapter(adapter);
     }
 
+    static class ViewHolder {
+        ImageView favourite;
+    }
+
     private class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 
         public RestaurantAdapter() {
@@ -120,27 +124,32 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Find the restaurant to work with.
-            final Restaurant currentRestaurant = manager.getRestaurants().get(position);
+            Restaurant currentRestaurant = manager.getRestaurants().get(position);
 
             // Fill the view
             ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
             logo.setImageResource(currentRestaurant.getIcon());
 
             //Favorites view
-            ImageView favourite = itemView.findViewById(R.id.item_favourite);
-            favourite.setOnClickListener(new View.OnClickListener() {
+            final ViewHolder holder = new ViewHolder();
+            holder.favourite = (ImageView) itemView.findViewById(R.id.item_favourite);
+            //ImageView favourite = itemView.findViewById(R.id.item_favourite);
+            holder.favourite.setTag(position);
+            holder.favourite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ImageView favourite = v.findViewById(R.id.item_favourite);
+                    Restaurant currentRestaurant = manager.getRestaurants().get((Integer) v.getTag());
                     if(currentRestaurant.getFavourite())
                     {
                         currentRestaurant.setFavourite(false);
-                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                        holder.favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                        System.out.println("DD> " + currentRestaurant.getName() + "set to false\n");
                     }
                     else if(!currentRestaurant.getFavourite())
                     {
                         currentRestaurant.setFavourite(true);
-                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                        holder.favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                        System.out.println("DD> " + currentRestaurant.getName() + "set to true\n");
                     }
                      }
             });
