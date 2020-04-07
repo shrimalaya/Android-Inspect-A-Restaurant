@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             Inspection mostRecentInspection = currentRestaurant.getInspection(0);
+            System.out.println("DD> " + mostRecentInspection.getFormattedDate());
             if (mostRecentInspection != null) {
                 TextView numNonCriticalText = itemView.findViewById(R.id.item_numNonCritical);
                 numNonCriticalText.setText(Integer.toString(mostRecentInspection.getNumNonCritical()));

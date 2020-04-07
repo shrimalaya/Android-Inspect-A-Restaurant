@@ -17,6 +17,7 @@ public class Restaurant {
     private double longAddress;
 
     private int icon;
+    private int criticalViolationCount;
 
     private boolean isFavourite;
 
@@ -31,6 +32,7 @@ public class Restaurant {
         this.tracking = tracking;
         this.icon = matchLogo();
         this.inspections = new ArrayList<>();
+        this.criticalViolationCount = countCriticalViolation();
         this.isFavourite = false;
     }
 
@@ -60,6 +62,23 @@ public class Restaurant {
 
     public int getIcon() {
         return icon;
+    }
+
+    public int getCriticalViolationCount() { return this.criticalViolationCount; }
+
+    public String getLastHazardLevel() {
+        if (inspections.isEmpty()) return "None";
+        return inspections.get(0).getHazardRating();
+    }
+
+    private int countCriticalViolation() {
+        int count = 0;
+        for (Inspection inspection : inspections) {
+            if (inspection.getDiffInDay() <= 365) {
+                count = count + inspection.getNumCritical();
+            }
+        }
+        return count;
     }
 
     private int matchLogo(){

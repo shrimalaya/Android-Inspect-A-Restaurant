@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,10 +11,18 @@ import java.util.List;
 public class RestaurantManager implements Iterable<Restaurant>{
 
     private List<Restaurant> restaurants = new ArrayList<>();
+    private String searchTerm = "";
+    private String hazardLevelFilter = "All";
+    private String comparator = "All";
+    private int violationLimit;
 
     public void add(Restaurant restaurant) {
         restaurants.add(restaurant);
     }
+    public void setSearchTerm(String searchTerm) { this.searchTerm = searchTerm; }
+    public void setHazardLevelFilter(String hazardLevelFilter) { this.hazardLevelFilter = hazardLevelFilter; }
+    public void setComparator(String comparator) { this.comparator = comparator; }
+    public void setViolationLimit(int violationLimit) { this.violationLimit = violationLimit; }
 
     public Restaurant find(String tracking){
         for(Restaurant restaurant: restaurants){
@@ -25,7 +35,38 @@ public class RestaurantManager implements Iterable<Restaurant>{
     }
 
     public List<Restaurant> getRestaurants() {
-        return restaurants;
+        searchTerm = searchTerm.trim();
+        if (searchTerm.isEmpty() &&
+                hazardLevelFilter.equalsIgnoreCase("All") &&
+                comparator.equalsIgnoreCase("All")) return restaurants; // O(1) when search term is empty.
+
+        List<Restaurant> filteredRestaurants = new ArrayList<>();
+        for (Restaurant restaurant : restaurants) {
+            if (qualifies(restaurant)) filteredRestaurants.add(restaurant);
+        }
+        return filteredRestaurants;
+    }
+
+    private boolean qualifies(Restaurant restaurant) {
+        String restaurantName = restaurant.getName();
+        restaurantName = restaurantName.toLowerCase();
+        String hazardLevel = restaurant.getLastHazardLevel();
+        int criticalViolationCount = restaurant.getCriticalViolationCount();
+
+        if (restaurantName.contains(searchTerm) &&
+                ((hazardLevelFilter.equalsIgnoreCase("All")) ||
+                        (hazardLevel.equalsIgnoreCase(hazardLevelFilter))) &&
+                (inRange(criticalViolationCount))) return true;
+        else return false;
+    }
+
+    boolean inRange(int count) {
+        if ((comparator.equalsIgnoreCase("All")) ||
+                ((comparator.equalsIgnoreCase("Greater or Equal")) && (count >= violationLimit)) ||
+                ((comparator.equalsIgnoreCase("Lesser or Equal")) && (count <= violationLimit))){
+            return true;
+        }
+        return false;
     }
 
     /*
@@ -55,14 +96,8 @@ public class RestaurantManager implements Iterable<Restaurant>{
 
     @Override
     public Iterator<Restaurant> iterator() {
-        return restaurants.iterator();
+        return getRestaurants().iterator();
     }
 
-    public int getManagerSize() {
-        int count = 0;
-        for(Restaurant restaurant: restaurants)
-            count++;
-
-        return count;
-    }
+    public int getManagerSize() { return restaurants.size(); }
 }

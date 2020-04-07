@@ -20,6 +20,7 @@ public class Inspection {
     private String inspectionDate;
     private String inspectionType;
     private String hazardRating;
+    private int diffInDay;
 
     private int numCritical;
     private int numNonCritical;
@@ -34,7 +35,7 @@ public class Inspection {
             int numNonCritical,
             String hazardRating,
             String violations) {
-
+        initDate();
         this.trackingNumber = trackingNumber;
         this.inspectionDate = inspectionDate;
         this.inspectionType = inspectionType;
@@ -42,54 +43,52 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
-        this.formattedDate = dateFormatter();
-
     }
 
     //https://www.baeldung.com/java-date-difference
-    public String dateFormatter() {
+    public void initDate() {
         try {
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
-            String[] indexToMonth = new DateFormatSymbols().getMonths();
-
             String rawInspectionDate = this.getInspectionDate();
             Date inspectionDate = sdf.parse(rawInspectionDate);
             Date currentDate = new Date();
 
             long diffInMS = Math.abs(currentDate.getTime() - inspectionDate.getTime());
             long diffInDay = TimeUnit.DAYS.convert(diffInMS, TimeUnit.MILLISECONDS);
+            this.diffInDay = (int) diffInDay;
 
             //https://stackoverflow.com/questions/36370895/getyear-getmonth-getday-are-deprecated-in-calendar-what-to-use-then
+            String[] indexToMonth = new DateFormatSymbols().getMonths();
             Calendar inspectionCalendar = Calendar.getInstance();
             inspectionCalendar.setTime(inspectionDate);
 
             if (diffInDay <= 1) {
 
-                return diffInDay + "Day";
+                this.formattedDate = diffInDay + "Day";
 
             } else if (diffInDay <= 30) {
 
-                return diffInDay + " Days";
+                this.formattedDate = diffInDay + " Days";
 
             } else if (diffInDay <= 365) {
 
-                return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                this.formattedDate = indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
                         + " " + inspectionCalendar.get(Calendar.DAY_OF_MONTH);
 
             } else {
 
-                return indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
+                this.formattedDate = indexToMonth[inspectionCalendar.get(Calendar.MONTH)]
                         + " " + inspectionCalendar.get(Calendar.YEAR);
 
             }
         }
-
         catch (Exception e){
-            return "N/A";
-
+            this.formattedDate = "N/A";
         }
     }
+
+    public String dateFormatter() { return this.formattedDate; }
+    public int getDiffInDay() { return this.diffInDay; }
 
     private String[] parseViolations(String rawViolations) {
         return rawViolations.replace(",", ", ").split("\\|");
