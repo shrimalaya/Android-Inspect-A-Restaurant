@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
 import com.example.cmpt_cobalt.R;
 
 import java.text.DateFormatSymbols;
@@ -35,7 +37,6 @@ public class Inspection {
             int numNonCritical,
             String hazardRating,
             String violations) {
-        initDate();
         this.trackingNumber = trackingNumber;
         this.inspectionDate = inspectionDate;
         this.inspectionType = inspectionType;
@@ -43,6 +44,7 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
+        initDate();
     }
 
     //https://www.baeldung.com/java-date-difference
@@ -83,6 +85,7 @@ public class Inspection {
             }
         }
         catch (Exception e){
+            e.printStackTrace();
             this.formattedDate = "N/A";
         }
     }
