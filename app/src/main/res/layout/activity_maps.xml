@@ -123,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_bar"
         android:layout_marginTop="10dp"
-        android:text="Show Critical Violations"
+        android:text="@string/show_violations"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout

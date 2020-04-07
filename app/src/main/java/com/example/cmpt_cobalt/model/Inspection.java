@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 // as a list of Strings
 public class Inspection {
 
+
     private String formattedDate;
     private String trackingNumber;
     private String inspectionDate;
