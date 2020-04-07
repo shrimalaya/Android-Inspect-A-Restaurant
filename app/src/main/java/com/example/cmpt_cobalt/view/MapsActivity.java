@@ -439,8 +439,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             TextView restaurantNameText = itemView.findViewById(R.id.info_item_restaurantName);
             String temp = restaurant.getName();
-            if(temp.length() > 30) {
-                temp = temp.substring(0, 30) + "...";
+            if(temp.length() > 25) {
+                temp = temp.substring(0, 25) + "...";
             }
             restaurantNameText.setText(temp);
 
