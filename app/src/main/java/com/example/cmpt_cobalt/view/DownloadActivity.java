@@ -74,7 +74,7 @@ public class DownloadActivity extends AppCompatActivity {
 
             if (tDifference < 72000000) {
                 TextView dialogText = findViewById(R.id.txt_dialogMsg);
-                dialogText.setText("Latest update already installed!");
+                dialogText.setText(R.string.dialog_text);
                 noButton.setVisibility(View.INVISIBLE);
                 dialogConstraint.setVisibility(View.VISIBLE);
                 yesButton.setOnClickListener(new View.OnClickListener() {
