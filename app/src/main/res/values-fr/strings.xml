@@ -11,8 +11,8 @@
     <string name="tracking_number">Numéro de suivi:</string>
     <string name="inspection_date">Date d\'inspection:</string>
     <string name="inspection_type">Type d\'inspection:</string>
-    <string name="num_critical">Des problèmes critiques</string>
-    <string name="num_non_critical">Des problèmes non critiques</string>
+    <string name="num_critical"># Des problemes critique</string>
+    <string name="num_non_critical"># Des non problemes critique</string>
     <string name="hazard_rating">Évaluation des dangers</string>
     <string name="violations">Violations:</string>
 
@@ -23,16 +23,21 @@
     <string name="longitude_resActivity">Longitude</string>
     <string name="latitude_fix">Lat:</string>
     <string name="longitude_fix">Longue:</string>
-    <string name="main_display_format">Format d\'affichage: \n        Nom du restaurant \n        Critique non critique, niveau de danger, date d\'inspection la plus récente</string>
-    <string name="restaurant_display_format">Format d\'affichage: \n        Critique, non critique, date relative, type, niveau de danger, icône</string>
+    <string name="main_display_format">Format d\'affichage: \n 
+               Nom du restaurant \n        
+        Critique non critique, niveau de danger, date d\'inspection la plus récente</string>
+    <string name="restaurant_display_format">Format d\'affichage: \n  
+              Critique, non critique, date relative, type, niveau de danger, icône</string>
 
     <string name="na">N /A</string>
+    <string name="show_violations">Afficher les violations critiques</string>
     <string name="title_activity_download">Pré-chargeur</string>
     <string name="title_activity_maps">Carte</string>
     <string name="title_location_permission">Accorder l\'accès à l\'emplacement</string>
     <string name="text_location_permission">Nécessite un accès à l\'emplacement</string>
     <string name="ok">Subvention</string>
-    <string name="txt_downloadAsk">La base de données locale a moins de 20 heures par rapport à la base de données en ligne. Souhaitez-vous toujours mettre à jour et récupérer la nouvelle base de données? \NCela peut prendre un certain temps en fonction de votre connexion Internet.</string>
+    <string name="txt_downloadAsk">La base de données locale a moins de 20 heures par rapport à la base de données en ligne. Souhaitez-vous toujours mettre à jour et récupérer la nouvelle base de données?
+        \N Cela peut prendre un certain temps en fonction de votre connexion Internet.</string>
 
     <string name="search_hint">Entrez votre recherche ici</string>
     <string name="search">Recherche de cobalt</string>
@@ -41,7 +46,6 @@
     <string name="critical_violation_count">Afficher le nombre de violations critiques</string>
     <string name="apply">Appliquer</string>
     <string name="dialog_text">Dernière mise à jour déjà installée!</string>
-    <string name="dots">...</string>
 
     <string-array name="hazard_level_array">
         <item>Tout</item>

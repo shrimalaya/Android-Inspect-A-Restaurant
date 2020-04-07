@@ -169,10 +169,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         goToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                intent.putExtra("result", 0);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                try {
+                    Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+                    intent.putExtra("result", 0);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 

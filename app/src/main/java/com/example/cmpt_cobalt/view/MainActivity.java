@@ -2,8 +2,6 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -157,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
             String temp = currentRestaurant.getName();
             if(temp.length() > 30) {
-                restaurantNameText.setText(temp.substring(0, 30) + getString(R.string.dots));
+                restaurantNameText.setText(temp.substring(0, 30) + "...");
             } else {
                 restaurantNameText.setText(temp);
             }

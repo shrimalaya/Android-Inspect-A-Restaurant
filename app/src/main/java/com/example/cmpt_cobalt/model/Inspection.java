@@ -1,7 +1,5 @@
 package com.example.cmpt_cobalt.model;
 
-import android.util.Log;
-
 import com.example.cmpt_cobalt.R;
 
 import java.text.DateFormatSymbols;
@@ -16,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 // note: no violations class, so we store all violations
 // as a list of Strings
 public class Inspection {
+
 
     private String formattedDate;
     private String trackingNumber;
