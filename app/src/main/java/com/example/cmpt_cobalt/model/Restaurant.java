@@ -19,6 +19,8 @@ public class Restaurant {
     private int icon;
     private int criticalViolationCount;
 
+    private boolean isFavourite;
+
     public ArrayList<Inspection> inspections;
 
     public Restaurant(String name, String streetAddress, String cityAddress, double latAddress, double longAddress, String tracking) {
@@ -31,6 +33,7 @@ public class Restaurant {
         this.icon = matchLogo();
         this.inspections = new ArrayList<>();
         this.criticalViolationCount = countCriticalViolation();
+        this.isFavourite = false;
     }
 
     public String getName() {
@@ -134,6 +137,24 @@ public class Restaurant {
 
     public int getInspectionSize() {
         return inspections.size();
+    }
+
+    public boolean getFavourite(){
+        return isFavourite;
+    }
+
+    public int getFavouriteImage() {
+        if(isFavourite){
+            return android.R.drawable.btn_star_big_on;
+        }
+        else
+        {
+            return android.R.drawable.btn_star_big_off;
+        }
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
     }
 
     @Override
