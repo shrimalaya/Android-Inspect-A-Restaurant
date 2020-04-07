@@ -35,7 +35,6 @@ public class Inspection {
             int numNonCritical,
             String hazardRating,
             String violations) {
-        initDate();
         this.trackingNumber = trackingNumber;
         this.inspectionDate = inspectionDate;
         this.inspectionType = inspectionType;
@@ -43,13 +42,14 @@ public class Inspection {
         this.numNonCritical = numNonCritical;
         this.hazardRating = hazardRating;
         this.violations = parseViolations(violations);
+        initDate();
     }
 
     //https://www.baeldung.com/java-date-difference
     public void initDate() {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
-            String rawInspectionDate = this.getInspectionDate();
+            String rawInspectionDate = getInspectionDate();
             Date inspectionDate = sdf.parse(rawInspectionDate);
             Date currentDate = new Date();
 
@@ -99,7 +99,7 @@ public class Inspection {
     }
 
     public String getInspectionDate() {
-        return inspectionDate;
+        return this.inspectionDate;
     }
 
     public String getInspectionType() {
