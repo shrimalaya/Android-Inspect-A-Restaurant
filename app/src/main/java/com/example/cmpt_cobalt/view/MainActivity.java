@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
             String temp = currentRestaurant.getName();
             if(temp.length() > 30) {
-                restaurantNameText.setText(temp.substring(0, 30) + "...");
+                restaurantNameText.setText(temp.substring(0, 30) + getString(R.string.dots));
             } else {
                 restaurantNameText.setText(temp);
             }

@@ -41,6 +41,8 @@
     <string name="hazard_level">Show Hazard Level:</string>
     <string name="critical_violation_count">Show Critical Violations Count</string>
     <string name="apply">Apply</string>
+    <string name="dialog_text">Latest update already installed!</string>
+    <string name="dots">...</string>
 
     <string-array name="hazard_level_array">
         <item>All</item>
