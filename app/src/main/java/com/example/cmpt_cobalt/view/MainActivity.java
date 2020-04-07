@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
             //Favorites view
             final ImageView favourite = itemView.findViewById(R.id.item_favourite);
+            favourite.setImageResource(currentRestaurant.getFavouriteImage());
             favourite.setTag(position);
             favourite.setOnClickListener(new View.OnClickListener() {
                 @Override
