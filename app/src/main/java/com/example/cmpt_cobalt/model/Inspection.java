@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
 import com.example.cmpt_cobalt.R;
 
 import java.text.DateFormatSymbols;
@@ -83,6 +85,7 @@ public class Inspection {
             }
         }
         catch (Exception e){
+            e.printStackTrace();
             this.formattedDate = "N/A";
         }
     }
