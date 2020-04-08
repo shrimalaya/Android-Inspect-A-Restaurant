@@ -112,6 +112,29 @@ public class MainActivity extends AppCompatActivity {
         restaurantList.setAdapter(adapter);
     }
 
+    private void repopulateListView() {
+        manager = RestaurantManager.getInstance();
+
+
+        if (size == 0) {
+
+            restaurantStrings = new String[1];
+            restaurantStrings[0] = "\n\n\n\nWelcome to the Restaurant Inspector!" +
+                    "\n\nNothing to show right now!\n\n";
+
+        } else {
+
+            TextView textView = findViewById(R.id.textViewMain);
+            textView.setText(R.string.txt_select_a_restaurant);
+
+        }
+
+
+        restaurants = manager.getRestaurants();
+        ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
+        ListView restaurantList = findViewById(R.id.listViewMain);
+        restaurantList.setAdapter(adapter);
+    }
     private void populateManager() throws FileNotFoundException {
         File file = method(MainActivity.this,"restaurants_itr1.csv");
 
@@ -379,6 +402,8 @@ public class MainActivity extends AppCompatActivity {
                 int answer = data.getIntExtra("result", 0);
                 if (answer == 1) {
                     this.finish();
+                } else {
+                    repopulateListView();
                 }
                 break;
 
