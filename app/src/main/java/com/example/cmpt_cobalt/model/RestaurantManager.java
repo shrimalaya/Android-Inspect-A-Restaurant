@@ -56,8 +56,7 @@ public class RestaurantManager implements Iterable<Restaurant>{
         if (restaurantName.contains(searchTerm) &&
                 ((hazardLevelFilter.equalsIgnoreCase("All")) ||
                         (hazardLevel.equalsIgnoreCase(hazardLevelFilter))) &&
-                (inRange(criticalViolationCount)) &&
-                restaurant.getFavourite()) return true;
+                (inRange(criticalViolationCount))) return true;
         else return false;
     }
 
