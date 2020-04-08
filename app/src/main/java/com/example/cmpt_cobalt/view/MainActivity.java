@@ -92,47 +92,62 @@ public class MainActivity extends AppCompatActivity {
         populateManager();
 
 
-        if (size == 0) {
+        if (manager.getRestaurants().isEmpty()) {
 
+            TextView textView = findViewById(R.id.textViewMain);
+            textView.setText(R.string.txt_select_a_restaurant);
             restaurantStrings = new String[1];
-            restaurantStrings[0] = "\n\n\n\nWelcome to the Restaurant Inspector!" +
-                    "\n\nTo start, load a CSV file.\n\n";
+            restaurantStrings[0] = getResources().getString(R.string.greeting_main_activity);
+
+            // Build Adapter
+            ArrayAdapter<String> adapter = new ArrayAdapter<String> (
+                    this,           // Context for view
+                    R.layout.layout_listview,     // Layout to use
+                    restaurantStrings);               // Items to be displayed
+
+            ListView restaurantList = findViewById(R.id.listViewMain);
+            restaurantList.setAdapter(adapter);
 
         } else {
+            restaurantStrings = new String[size];
+            TextView textView = findViewById(R.id.textViewMain);
+            textView.setText(R.string.txt_select_a_restaurant);
 
-          TextView textView = findViewById(R.id.textViewMain);
-          textView.setText(R.string.txt_select_a_restaurant);
-
+            restaurants = manager.getRestaurants();
+            ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
+            ListView restaurantList = findViewById(R.id.listViewMain);
+            restaurantList.setAdapter(adapter);
         }
-
-
-        restaurants = manager.getRestaurants();
-        ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
-        ListView restaurantList = findViewById(R.id.listViewMain);
-        restaurantList.setAdapter(adapter);
     }
 
     private void repopulateListView() {
         manager = RestaurantManager.getInstance();
 
 
-        if (size == 0) {
+        if (manager.getRestaurants().isEmpty()) {
 
             restaurantStrings = new String[1];
             restaurantStrings[0] = getResources().getString(R.string.greeting_main_activity);
 
-        } else {
+            // Build Adapter
+            ArrayAdapter<String> adapter = new ArrayAdapter<String> (
+                    this,           // Context for view
+                    R.layout.layout_listview,     // Layout to use
+                    restaurantStrings);               // Items to be displayed
 
+            ListView restaurantList = findViewById(R.id.listViewMain);
+            restaurantList.setAdapter(adapter);
+
+        } else {
+            restaurantStrings = new String[size];
             TextView textView = findViewById(R.id.textViewMain);
             textView.setText(R.string.txt_select_a_restaurant);
 
+            restaurants = manager.getRestaurants();
+            ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
+            ListView restaurantList = findViewById(R.id.listViewMain);
+            restaurantList.setAdapter(adapter);
         }
-
-
-        restaurants = manager.getRestaurants();
-        ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
-        ListView restaurantList = findViewById(R.id.listViewMain);
-        restaurantList.setAdapter(adapter);
     }
     private void populateManager() throws FileNotFoundException {
         File file = method(MainActivity.this,"restaurants_itr1.csv");
@@ -384,11 +399,14 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String message = manager.getRestaurants().get(position).toString();
 
-                Intent intent = RestaurantActivity.makeLaunchIntent(MainActivity.this, "RestaurantActivity");
-                intent.putExtra("Extra", message);
-                MainActivity.this.startActivityForResult(intent, 45);
+                if(restaurantStrings.length == 0) {
+                    String message = manager.getRestaurants().get(position).toString();
+
+                    Intent intent = RestaurantActivity.makeLaunchIntent(MainActivity.this, "RestaurantActivity");
+                    intent.putExtra("Extra", message);
+                    MainActivity.this.startActivityForResult(intent, 45);
+                }
             }
         });
     }
