@@ -58,7 +58,7 @@ public class DownloadActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            long epoch = date.getTime();    //lastmodified time of remote file
+            long epoch = date.getTime();    // lastmodified time of remote file
             epoch = epoch / 1000;
             long difference = epoch - (file.lastModified());
 
@@ -74,7 +74,7 @@ public class DownloadActivity extends AppCompatActivity {
 
             if (tDifference < 72000000) {
                 TextView dialogText = findViewById(R.id.txt_dialogMsg);
-                dialogText.setText("Latest update already installed!");
+                dialogText.setText(R.string.dialog_text);
                 noButton.setVisibility(View.INVISIBLE);
                 dialogConstraint.setVisibility(View.VISIBLE);
                 yesButton.setOnClickListener(new View.OnClickListener() {
@@ -199,8 +199,8 @@ public class DownloadActivity extends AppCompatActivity {
         protected void onPostExecute(String file_url) {
             progressDialog.dismiss();
             if (file_url.equals("inspectionreports_itr1.csv")) {
-            Intent intent = new Intent(context,MainActivity.class);
-            context.startActivity(intent);
+            Intent intent = new Intent(DownloadActivity.this,MainActivity.class);
+            startActivity(intent);
             DownloadActivity.this.finish();
             }
         }

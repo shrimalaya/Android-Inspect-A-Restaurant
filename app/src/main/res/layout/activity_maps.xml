@@ -46,6 +46,17 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_location" />
 
+    <ImageView
+        android:id="@+id/ic_favourites"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ic_location"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_favourites_icon" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_bar"
         android:layout_width="339dp"
@@ -123,7 +134,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_bar"
         android:layout_marginTop="10dp"
-        android:text="Show Critical Violations"
+        android:text="@string/show_violations"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout

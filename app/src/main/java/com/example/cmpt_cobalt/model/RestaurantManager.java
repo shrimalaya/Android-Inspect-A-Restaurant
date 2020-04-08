@@ -1,7 +1,5 @@
 package com.example.cmpt_cobalt.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
