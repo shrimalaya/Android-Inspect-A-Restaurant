@@ -2,6 +2,7 @@ package com.example.cmpt_cobalt.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,15 +31,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // main screen activity
 // displays the initial list of restaurants
 public class MainActivity extends AppCompatActivity {
 
-    //Shared Preferences.
-    //SharedPreferences sharedPref = getSharedPreferences("Favourites", MODE_PRIVATE);
-
+    SharedPreferences mSharedPreferences;
 
     private static final String EXTRA_MESSAGE = "Extra";
     private RestaurantManager manager;
@@ -103,84 +104,6 @@ public class MainActivity extends AppCompatActivity {
         restaurantList.setAdapter(adapter);
     }
 
-    static class ViewHolder {
-        ImageView favourite;
-    }
-
-    private class RestaurantAdapter extends ArrayAdapter<Restaurant> {
-
-        public RestaurantAdapter() {
-            super(MainActivity.this, R.layout.restaurant_item, restaurants);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // Make sure we have a view to work with
-            View itemView = convertView;
-
-            if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.restaurant_item, parent, false);
-            }
-
-            // Find the restaurant to work with.
-            Restaurant currentRestaurant = manager.getRestaurants().get(position);
-
-            // Fill the view
-            ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
-            logo.setImageResource(currentRestaurant.getIcon());
-
-            //Favorites view
-            final ImageView favourite = itemView.findViewById(R.id.item_favourite);
-            favourite.setImageResource(currentRestaurant.getFavouriteImage());
-            favourite.setTag(position);
-            favourite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Restaurant currentRestaurant = manager.getRestaurants().get((Integer) v.getTag());
-                    if(currentRestaurant.getFavourite())
-                    {
-                        currentRestaurant.setFavourite(false);
-                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
-                        System.out.println("DD> " + currentRestaurant.getName() + "set to false\n");
-                    }
-                    else if(!currentRestaurant.getFavourite())
-                    {
-                        currentRestaurant.setFavourite(true);
-                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
-                        System.out.println("DD> " + currentRestaurant.getName() + "set to true\n");
-                    }
-                     }
-            });
-
-            TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
-            String temp = currentRestaurant.getName();
-            if(temp.length() > 30) {
-                restaurantNameText.setText(temp.substring(0, 30) + "...");
-            } else {
-                restaurantNameText.setText(temp);
-            }
-
-
-            Inspection mostRecentInspection = currentRestaurant.getInspection(0);
-            if (mostRecentInspection != null) {
-                TextView numNonCriticalText = itemView.findViewById(R.id.item_numNonCritical);
-                numNonCriticalText.setText(Integer.toString(mostRecentInspection.getNumNonCritical()));
-
-                TextView numCriticalText = itemView.findViewById(R.id.item_numCritical);
-                numCriticalText.setText(Integer.toString(mostRecentInspection.getNumCritical()));
-
-                TextView lastInspectionText = itemView.findViewById(R.id.item_lastInspection);
-                lastInspectionText.setText(mostRecentInspection.getFormattedDate());
-
-                ImageView hazard = itemView.findViewById(R.id.item_hazard);
-                hazard.setImageResource(mostRecentInspection.getHazardIcon());
-
-            }
-            return itemView;
-        }
-
-    }
-
     private void populateManager() throws FileNotFoundException {
         File file = method(MainActivity.this,"restaurants_itr1.csv");
 
@@ -211,6 +134,12 @@ public class MainActivity extends AppCompatActivity {
                     csv.getVal(row, 0).replace("\"", ""));
 
             manager.add(restaurant);
+
+            mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+            Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
+            if(favourites.contains(restaurant.getTracking())) {
+                restaurant.setFavourite(true);
+            }
         }
 
         populateWithInspections();
@@ -309,6 +238,102 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    static class ViewHolder {
+        ImageView favourite;
+    }
+
+    private class RestaurantAdapter extends ArrayAdapter<Restaurant> {
+
+        public RestaurantAdapter() {
+            super(MainActivity.this, R.layout.restaurant_item, restaurants);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Make sure we have a view to work with
+            View itemView = convertView;
+
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.restaurant_item, parent, false);
+            }
+
+            // Find the restaurant to work with.
+            Restaurant currentRestaurant = manager.getRestaurants().get(position);
+
+            // Fill the view
+            ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
+            logo.setImageResource(currentRestaurant.getIcon());
+
+            //Favorites view
+            final ImageView favourite = itemView.findViewById(R.id.item_favourite);
+            favourite.setImageResource(currentRestaurant.getFavouriteImage());
+            favourite.setTag(position);
+            favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Restaurant currentRestaurant = manager.getRestaurants().get((Integer) v.getTag());
+                    if(currentRestaurant.getFavourite())
+                    {
+                        currentRestaurant.setFavourite(false);
+                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                        System.out.println("DD> " + currentRestaurant.getName() + "set to false\n");
+                        removeFromFavourites(currentRestaurant);
+                    }
+                    else if(!currentRestaurant.getFavourite())
+                    {
+                        currentRestaurant.setFavourite(true);
+                        favourite.setImageResource(currentRestaurant.getFavouriteImage());
+                        System.out.println("DD> " + currentRestaurant.getName() + "set to true\n");
+                        saveToFavourites(currentRestaurant);
+                    }
+                }
+            });
+
+            TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
+            String temp = currentRestaurant.getName();
+            if(temp.length() > 30) {
+                restaurantNameText.setText(temp.substring(0, 30) + "...");
+            } else {
+                restaurantNameText.setText(temp);
+            }
+
+
+            Inspection mostRecentInspection = currentRestaurant.getInspection(0);
+            if (mostRecentInspection != null) {
+                TextView numNonCriticalText = itemView.findViewById(R.id.item_numNonCritical);
+                numNonCriticalText.setText(Integer.toString(mostRecentInspection.getNumNonCritical()));
+
+                TextView numCriticalText = itemView.findViewById(R.id.item_numCritical);
+                numCriticalText.setText(Integer.toString(mostRecentInspection.getNumCritical()));
+
+                TextView lastInspectionText = itemView.findViewById(R.id.item_lastInspection);
+                lastInspectionText.setText(mostRecentInspection.getFormattedDate());
+
+                ImageView hazard = itemView.findViewById(R.id.item_hazard);
+                hazard.setImageResource(mostRecentInspection.getHazardIcon());
+
+            }
+            return itemView;
+        }
+
+    }
+
+    // Learned from: https://medium.com/@anupamchugh/a-nightmare-with-shared-preferences-and-stringset-c53f39f1ef52
+    private void removeFromFavourites(Restaurant currentRestaurant) {
+        mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
+        favourites.remove(currentRestaurant.getTracking());
+        mSharedPreferences.edit().putStringSet("Favourites", favourites).apply();
+    }
+
+    private void saveToFavourites(Restaurant currentRestaurant) {
+        mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
+        favourites.add(currentRestaurant.getTracking());
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putStringSet("Favourites", favourites).apply();
     }
 
     /**
