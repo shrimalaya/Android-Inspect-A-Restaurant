@@ -41,6 +41,7 @@
     <string name="hazard_level">Show Hazard Level:</string>
     <string name="critical_violation_count">Show Critical Violations Count</string>
     <string name="apply">Apply</string>
+    <string name="favourite_only">Show Favourite Only</string>
 
     <string-array name="hazard_level_array">
         <item>All</item>

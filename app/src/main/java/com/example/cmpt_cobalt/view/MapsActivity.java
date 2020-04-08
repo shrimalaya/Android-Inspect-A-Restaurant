@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -78,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button countBtn;
     private Spinner hazardSpinner;
     private Spinner comparatorSpinner;
+    private CheckBox favouriteCheckBox;
 
     public static Intent makeLaunchIntent(Context c, String message) {
         Intent i1 = new Intent(c, MapsActivity.class);
@@ -100,6 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setupFields();
         setupButtons();
         setupSpinners();
+        setupCheckBox();
     }
 
     private void setupFields() {
@@ -169,6 +172,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 manager.setComparator("All");
+            }
+        });
+    }
+
+    private void setupCheckBox() {
+        favouriteCheckBox = findViewById(R.id.checkbox_meat);
+        favouriteCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (favouriteCheckBox.isChecked()) manager.setFavouriteOnly(true);
+                else manager.setFavouriteOnly(false);
+                updateMap();
             }
         });
     }
