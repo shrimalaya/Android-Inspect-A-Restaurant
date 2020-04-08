@@ -119,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
         if (size == 0) {
 
             restaurantStrings = new String[1];
-            restaurantStrings[0] = "\n\n\n\nWelcome to the Restaurant Inspector!" +
-                    "\n\nNothing to show right now!\n\n";
+            restaurantStrings[0] = getResources().getString(R.string.greeting_main_activity);
 
         } else {
 
