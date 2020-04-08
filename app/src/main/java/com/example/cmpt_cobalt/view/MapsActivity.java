@@ -399,18 +399,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Clear the currently open marker
                 mMap.clear();
 
-                /*
-                // GPS
-                if(mLocationPermissionsGranted) {
-                    getDeviceLocation();
-                    mMap.setMyLocationEnabled(true);
-                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                }
-
-                 */
-
                 // Reinitialize clusterManager
                 setUpClusterer();
+
+                // Focus map on the position that was clicked on map
                 moveCamera(latLng, 15f);
             }
         });
@@ -453,7 +445,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMarker = mMap.addMarker(options);
                 mMarker.setIcon(getHazardIcon(temp));
                 moveCamera(new LatLng(temp.getLatAddress(),
-                        temp.getLongAddress()), DEFAULT_ZOOM);
+                        temp.getLongAddress()), 12f);
             }
         }
     }
