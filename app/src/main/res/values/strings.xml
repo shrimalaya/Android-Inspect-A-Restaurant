@@ -28,6 +28,7 @@
         Critical, Non-Critical, Relative date, Type, Hazard level, icon</string>
 
     <string name="na">N/A</string>
+    <string name="show_violations">Show Critical Violations</string>
     <string name="title_activity_download">Pre-loader</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_location_permission">Grant location access</string>
@@ -41,6 +42,7 @@
     <string name="hazard_level">Show Hazard Level:</string>
     <string name="critical_violation_count">Show Critical Violations Count</string>
     <string name="apply">Apply</string>
+    <string name="dialog_text">Latest update already installed!</string>
 
     <string-array name="hazard_level_array">
         <item>All</item>

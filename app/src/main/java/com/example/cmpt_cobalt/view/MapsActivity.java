@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,12 +15,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +31,7 @@ import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,9 +47,8 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
-import java.util.List;
-
-import static java.lang.Integer.parseInt;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -70,15 +66,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private RestaurantManager manager = RestaurantManager.getInstance();
     private ClusterManager<PegItem> mClusterManager;
 
-    //Search filters
-    private EditText searchField;
-    private EditText violationCountField;
-    private Button searchSumbitBtn;
-    private Button clearBtn;
-    private Button countBtn;
-    private Spinner hazardSpinner;
-    private Spinner comparatorSpinner;
-
     public static Intent makeLaunchIntent(Context c, String message) {
         Intent i1 = new Intent(c, MapsActivity.class);
         i1.putExtra(EXTRA_MESSAGE, message);
@@ -91,114 +78,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         setDefaultIntent();
-        setupSearch();
+
         getLocationPermission();
         onButtonClick();
-    }
-
-    private void setupSearch() {
-        setupFields();
-        setupButtons();
-        setupSpinners();
-    }
-
-    private void setupFields() {
-        searchField = (EditText) findViewById(R.id.search_field);
-        violationCountField = (EditText) findViewById(R.id.violation_count_field);
-    }
-
-    private void setupButtons() {
-        searchSumbitBtn = (Button) findViewById(R.id.search_button);
-        clearBtn = (Button) findViewById(R.id.clear_button);
-        countBtn = (Button) findViewById(R.id.count_button);
-        searchSumbitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitSearch();
-            }
-        });
-        clearBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearFilters();
-            }
-        });
-        countBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateViolationCountRestriction();
-            }
-        });
-
-    }
-
-    private void setupSpinners() {
-        hazardSpinner = (Spinner) findViewById(R.id.hazard_spinner);
-        ArrayAdapter<CharSequence> hazardAdapter = ArrayAdapter.createFromResource(this,
-                R.array.hazard_level_array, android.R.layout.simple_spinner_dropdown_item);
-        hazardAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        hazardSpinner.setAdapter(hazardAdapter);
-        hazardSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String hazardLevelFilter = parent.getItemAtPosition(position).toString();
-                manager.setHazardLevelFilter(hazardLevelFilter);
-                updateMap();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                manager.setHazardLevelFilter("All");
-            }
-        });
-
-        comparatorSpinner = (Spinner) findViewById(R.id.count_hazard_spinner);
-        ArrayAdapter<CharSequence> comparatorAdapter = ArrayAdapter.createFromResource(this,
-                R.array.comparator, android.R.layout.simple_spinner_dropdown_item);
-        comparatorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        comparatorSpinner.setAdapter(comparatorAdapter);
-        comparatorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String comparator = parent.getItemAtPosition(position).toString();
-                manager.setComparator(comparator);
-                updateMap();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                manager.setComparator("All");
-            }
-        });
-    }
-
-    private void submitSearch() {
-        String searchTerm = searchField.getText().toString();
-        manager.setSearchTerm(searchTerm);
-        updateMap();
-    }
-
-    private void updateViolationCountRestriction() {
-        try{
-            int limit = Integer.parseInt(violationCountField.getText().toString());
-            manager.setViolationLimit(limit);
-            updateMap();
-        }
-        catch (Exception e) {}
-    }
-
-    private void clearFilters() {
-        manager.setSearchTerm("");
-        manager.setHazardLevelFilter("All");
-        manager.setComparator("All");
-        updateMap();
-    }
-
-    private void updateMap() {
-        mClusterManager.clearItems();
-        mMap.clear();
-        setUpClusterer();
     }
 
     private void setDefaultIntent() {
@@ -292,10 +174,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         goToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                intent.putExtra("result", 0);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                try {
+                    Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+                    intent.putExtra("result", 0);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -334,7 +220,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * DEFAULT_ZOOM = 15
      */
     private void moveCamera(LatLng latLng, float zoom) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
+        mMap.animateCamera(location);
     }
 
     // For peg icon
@@ -399,9 +286,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void getItems() {
         RestaurantManager manager = RestaurantManager.getInstance();
-        List<Restaurant> restaurants = manager.getRestaurants();
         int i = 0;
-        for (Restaurant restaurant : restaurants) {
+        for (Restaurant restaurant : manager) {
 
             String temp = restaurant.getName();
 
@@ -513,15 +399,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Clear the currently open marker
                 mMap.clear();
 
-                // GPS
-                if(mLocationPermissionsGranted) {
-                    getDeviceLocation();
-                    mMap.setMyLocationEnabled(true);
-                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                }
-
                 // Reinitialize clusterManager
                 setUpClusterer();
+
+                // Focus map on the position that was clicked on map
+                moveCamera(latLng, 15f);
             }
         });
 
@@ -532,6 +414,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return true;
             }
         });
+
+        ImageView favourites_icon = findViewById(R.id.ic_favourites);
+        favourites_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                populateFavourites();
+            }
+        });
+    }
+
+    private void populateFavourites() {
+        mClusterManager.clearItems();
+        mMap.clear();
+
+        SharedPreferences mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
+
+        manager = RestaurantManager.getInstance();
+
+        for(Restaurant temp: manager) {
+            if (favourites.contains(temp.getTracking())) {
+                String name = temp.getName();
+
+                MarkerOptions options = new MarkerOptions().
+                        position(new LatLng(temp.getLatAddress(),
+                                temp.getLongAddress())).
+                        title(name);
+
+                mMarker = mMap.addMarker(options);
+                mMarker.setIcon(getHazardIcon(temp));
+                moveCamera(new LatLng(temp.getLatAddress(),
+                        temp.getLongAddress()), 12f);
+            }
+        }
     }
 
     private class CustomInfoAdapter implements GoogleMap.InfoWindowAdapter {
@@ -563,8 +479,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             TextView restaurantNameText = itemView.findViewById(R.id.info_item_restaurantName);
             String temp = restaurant.getName();
-            if(temp.length() > 30) {
-                temp = temp.substring(0, 30) + "...";
+            if(temp.length() > 25) {
+                temp = temp.substring(0, 25) + "...";
             }
             restaurantNameText.setText(temp);
 
