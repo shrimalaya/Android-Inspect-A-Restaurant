@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -30,6 +31,7 @@ import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,6 +46,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -215,7 +220,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * DEFAULT_ZOOM = 15
      */
     private void moveCamera(LatLng latLng, float zoom) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
+        mMap.animateCamera(location);
     }
 
     // For peg icon
@@ -393,6 +399,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Clear the currently open marker
                 mMap.clear();
 
+                /*
                 // GPS
                 if(mLocationPermissionsGranted) {
                     getDeviceLocation();
@@ -400,8 +407,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 }
 
+                 */
+
                 // Reinitialize clusterManager
                 setUpClusterer();
+                moveCamera(latLng, 15f);
             }
         });
 
@@ -412,6 +422,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return true;
             }
         });
+
+        ImageView favourites_icon = findViewById(R.id.ic_favourites);
+        favourites_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                populateFavourites();
+            }
+        });
+    }
+
+    private void populateFavourites() {
+        mClusterManager.clearItems();
+        mMap.clear();
+
+        SharedPreferences mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
+
+        manager = RestaurantManager.getInstance();
+
+        for(Restaurant temp: manager) {
+            if (favourites.contains(temp.getTracking())) {
+                String name = temp.getName();
+
+                MarkerOptions options = new MarkerOptions().
+                        position(new LatLng(temp.getLatAddress(),
+                                temp.getLongAddress())).
+                        title(name);
+
+                mMarker = mMap.addMarker(options);
+                mMarker.setIcon(getHazardIcon(temp));
+                moveCamera(new LatLng(temp.getLatAddress(),
+                        temp.getLongAddress()), DEFAULT_ZOOM);
+            }
+        }
     }
 
     private class CustomInfoAdapter implements GoogleMap.InfoWindowAdapter {
