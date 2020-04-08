@@ -23,6 +23,7 @@ import com.example.cmpt_cobalt.model.Inspection;
 import com.example.cmpt_cobalt.model.ParseCSV;
 import com.example.cmpt_cobalt.model.Restaurant;
 import com.example.cmpt_cobalt.model.RestaurantManager;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,10 +68,17 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //TODO: Work in progress for checking updates
+        //launchCheckUpdateActivity();
+
         // Launch map as soon as we populate the list of restaurants in instance
         launchMap();
 
         registerClickCallback();
+    }
+
+    private void launchCheckUpdateActivity() {
+        startActivity(new Intent(this, CheckUpdateActivity.class));
     }
 
     private void launchMap() {
@@ -137,8 +145,14 @@ public class MainActivity extends AppCompatActivity {
 
             mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
             Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
-            if(favourites.contains(restaurant.getTracking())) {
-                restaurant.setFavourite(true);
+
+            for(String JSON: favourites) {
+                Gson gson = new Gson();
+                Restaurant temp = gson.fromJson(JSON, Restaurant.class);
+                if(temp.getTracking().equals(restaurant.getTracking())) {
+                    System.out.println("Test> " + temp.getTracking() + " vs " + restaurant.getTracking());
+                    restaurant.setFavourite(true);
+                }
             }
         }
 
@@ -324,15 +338,19 @@ public class MainActivity extends AppCompatActivity {
     private void removeFromFavourites(Restaurant currentRestaurant) {
         mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
-        favourites.remove(currentRestaurant.getTracking());
+        Gson gson = new Gson();
+        String json = gson.toJson(currentRestaurant);
+        favourites.remove(json);
         mSharedPreferences.edit().putStringSet("Favourites", favourites).apply();
     }
 
     private void saveToFavourites(Restaurant currentRestaurant) {
         mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
-        favourites.add(currentRestaurant.getTracking());
         SharedPreferences.Editor editor = mSharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(currentRestaurant);
+        favourites.add(json);
         editor.putStringSet("Favourites", favourites).apply();
     }
 

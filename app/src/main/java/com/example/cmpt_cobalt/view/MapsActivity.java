@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
@@ -434,7 +435,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         manager = RestaurantManager.getInstance();
 
         for(Restaurant temp: manager) {
-            if (favourites.contains(temp.getTracking())) {
+            Gson gson = new Gson();
+            String json = gson.toJson(temp);
+            if (favourites.contains(json)) {
                 String name = temp.getName();
 
                 MarkerOptions options = new MarkerOptions().
