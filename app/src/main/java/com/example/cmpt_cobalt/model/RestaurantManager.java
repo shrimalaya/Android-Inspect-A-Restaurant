@@ -1,7 +1,5 @@
 package com.example.cmpt_cobalt.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -56,7 +54,8 @@ public class RestaurantManager implements Iterable<Restaurant>{
         if (restaurantName.contains(searchTerm) &&
                 ((hazardLevelFilter.equalsIgnoreCase("All")) ||
                         (hazardLevel.equalsIgnoreCase(hazardLevelFilter))) &&
-                (inRange(criticalViolationCount))) return true;
+                (inRange(criticalViolationCount)) &&
+                restaurant.getFavourite()) return true;
         else return false;
     }
 
