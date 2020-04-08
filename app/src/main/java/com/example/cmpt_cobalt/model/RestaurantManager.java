@@ -54,7 +54,7 @@ public class RestaurantManager implements Iterable<Restaurant>{
         String hazardLevel = restaurant.getLastHazardLevel();
         int criticalViolationCount = restaurant.getCriticalViolationCount();
 
-        if (restaurantName.contains(searchTerm) &&
+        if (restaurantName.toLowerCase().contains(searchTerm.toLowerCase()) &&
                 ((hazardLevelFilter.equalsIgnoreCase("All")) ||
                         (hazardLevel.equalsIgnoreCase(hazardLevelFilter))) &&
                 (inRange(criticalViolationCount)) &&
