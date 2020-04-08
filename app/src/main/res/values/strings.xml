@@ -45,7 +45,7 @@
     <string name="dialog_text">Latest update already installed!</string>
     <string name = "greeting_check_update">\n\n\n\nNothing to show!
                     \n\nNo updates to favourite restaurants found.\n\n</string>
-
+    <string name="favourite_only">Show Favourite Only</string>
     <string-array name="hazard_level_array">
         <item>All</item>
         <item>Low</item>

@@ -164,5 +164,18 @@
         android:layout_toEndOf="@+id/violation_count_field"
         android:text="@string/apply" />
 
+    <CheckBox
+        android:id="@+id/checkbox_meat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="26dp"
+        android:onClick="onCheckboxClicked"
+        android:text="@string/favourite_only" />
+
 
 </RelativeLayout>

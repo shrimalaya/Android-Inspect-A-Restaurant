@@ -12,6 +12,7 @@ public class RestaurantManager implements Iterable<Restaurant>{
     private String searchTerm = "";
     private String hazardLevelFilter = "All";
     private String comparator = "All";
+    private boolean favouriteOnly = false;
     private int violationLimit;
 
     public void add(Restaurant restaurant) {
@@ -20,6 +21,7 @@ public class RestaurantManager implements Iterable<Restaurant>{
     public void setSearchTerm(String searchTerm) { this.searchTerm = searchTerm; }
     public void setHazardLevelFilter(String hazardLevelFilter) { this.hazardLevelFilter = hazardLevelFilter; }
     public void setComparator(String comparator) { this.comparator = comparator; }
+    public void setFavouriteOnly(Boolean favouriteOnly) { this.favouriteOnly = favouriteOnly; }
     public void setViolationLimit(int violationLimit) { this.violationLimit = violationLimit; }
 
     public Restaurant find(String tracking){
@@ -36,7 +38,8 @@ public class RestaurantManager implements Iterable<Restaurant>{
         searchTerm = searchTerm.trim();
         if (searchTerm.isEmpty() &&
                 hazardLevelFilter.equalsIgnoreCase("All") &&
-                comparator.equalsIgnoreCase("All")) return restaurants; // O(1) when search term is empty.
+                comparator.equalsIgnoreCase("All") &&
+                !favouriteOnly) return restaurants; // O(1) when search term is empty.
 
         List<Restaurant> filteredRestaurants = new ArrayList<>();
         for (Restaurant restaurant : restaurants) {
@@ -55,7 +58,7 @@ public class RestaurantManager implements Iterable<Restaurant>{
                 ((hazardLevelFilter.equalsIgnoreCase("All")) ||
                         (hazardLevel.equalsIgnoreCase(hazardLevelFilter))) &&
                 (inRange(criticalViolationCount)) &&
-                restaurant.getFavourite()) return true;
+                (!favouriteOnly || restaurant.getFavourite())) return true;
         else return false;
     }
 
