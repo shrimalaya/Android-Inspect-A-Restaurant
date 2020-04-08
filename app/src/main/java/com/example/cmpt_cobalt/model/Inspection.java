@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import android.util.Log;
+
 import com.example.cmpt_cobalt.R;
 
 import java.text.DateFormatSymbols;
@@ -14,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 // note: no violations class, so we store all violations
 // as a list of Strings
 public class Inspection {
-
 
     private String formattedDate;
     private String trackingNumber;
@@ -50,7 +51,7 @@ public class Inspection {
     public void initDate() {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
-            String rawInspectionDate = getInspectionDate();
+            String rawInspectionDate = this.getInspectionDate();
             Date inspectionDate = sdf.parse(rawInspectionDate);
             Date currentDate = new Date();
 
@@ -101,7 +102,7 @@ public class Inspection {
     }
 
     public String getInspectionDate() {
-        return this.inspectionDate;
+        return inspectionDate;
     }
 
     public String getInspectionType() {
