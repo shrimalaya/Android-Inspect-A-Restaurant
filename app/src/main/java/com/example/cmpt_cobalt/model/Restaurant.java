@@ -83,7 +83,6 @@ public class Restaurant {
 
     private int matchLogo(){
         name = this.getName();
-        //Log.e("Woot", name);
         if (name.matches("^(McDonald's).*")){
             return R.drawable.mcdonalds;
         }

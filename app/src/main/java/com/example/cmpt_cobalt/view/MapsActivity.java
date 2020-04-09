@@ -175,7 +175,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                     mLocationPermissionsGranted = true;
-                    //initialize our map
                     initMap();
                 }
             }
