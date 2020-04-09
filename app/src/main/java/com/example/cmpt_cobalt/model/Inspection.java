@@ -83,7 +83,7 @@ public class Inspection {
 
             }
         }
-        catch (Exception e){
+        catch (Exception e) {
             e.printStackTrace();
             this.formattedDate = "N/A";
         }
@@ -171,7 +171,7 @@ public class Inspection {
 
         for (int i = 0; i < violations.length; i++) {
 
-            if(violations[i].length() > 10) {
+            if (violations[i].length() > 10) {
 
                 if (violations[i].length() < 40) {
 

@@ -28,17 +28,26 @@ public class RestaurantManager implements Iterable<Restaurant>{
         else if (index == 3) this.hazardLevelFilter = "High";
     }
     public void setComparator(int index) {
-        if (index == 0) this.comparator = "All";
-        else if (index == 1) this.comparator = "Greater or Equal";
-        else if (index == 2) this.comparator = "Lesser or Equal";
+        if (index == 0) {
+
+            this.comparator = "All";
+
+        } else if (index == 1) {
+
+            this.comparator = "Greater or Equal";
+
+        } else if (index == 2) {
+
+            this.comparator = "Lesser or Equal";
+
+        }
     }
     public void setFavouriteOnly(Boolean favouriteOnly) { this.favouriteOnly = favouriteOnly; }
     public void setViolationLimit(int violationLimit) { this.violationLimit = violationLimit; }
 
     public Restaurant find(String tracking){
-        for(Restaurant restaurant: restaurants){
-            if(restaurant.getTracking().equals(tracking))
-            {
+        for (Restaurant restaurant: restaurants) {
+            if (restaurant.getTracking().equals(tracking)) {
                 return restaurant;
             }
         }
@@ -50,11 +59,16 @@ public class RestaurantManager implements Iterable<Restaurant>{
         if (searchTerm.isEmpty() &&
                 hazardLevelFilter.equalsIgnoreCase("All") &&
                 comparator.equalsIgnoreCase("All") &&
-                !favouriteOnly) return restaurants; // O(1) when search term is empty.
+                !favouriteOnly) {
+
+            return restaurants; // O(1) when search term is empty.
+        }
 
         List<Restaurant> filteredRestaurants = new ArrayList<>();
         for (Restaurant restaurant : restaurants) {
-            if (qualifies(restaurant)) filteredRestaurants.add(restaurant);
+            if (qualifies(restaurant)) {
+                filteredRestaurants.add(restaurant);
+            }
         }
         return filteredRestaurants;
     }
@@ -69,14 +83,22 @@ public class RestaurantManager implements Iterable<Restaurant>{
                 ((hazardLevelFilter.equalsIgnoreCase("All")) ||
                         (hazardLevel.equalsIgnoreCase(hazardLevelFilter))) &&
                 (inRange(criticalViolationCount)) &&
-                (!favouriteOnly || restaurant.getFavourite())) return true;
-        else return false;
+                (!favouriteOnly || restaurant.getFavourite())) {
+
+            return true;
+
+        } else {
+
+            return false;
+        }
+
     }
 
     boolean inRange(int count) {
         if ((comparator.equalsIgnoreCase("All")) ||
                 ((comparator.equalsIgnoreCase("Greater or Equal")) && (count >= violationLimit)) ||
-                ((comparator.equalsIgnoreCase("Lesser or Equal")) && (count <= violationLimit))){
+                ((comparator.equalsIgnoreCase("Lesser or Equal")) && (count <= violationLimit))) {
+
             return true;
         }
         return false;
@@ -99,8 +121,8 @@ public class RestaurantManager implements Iterable<Restaurant>{
     }
 
     public Restaurant findRestaurantByLatLng(double latitude, double longitude) {
-        for(Restaurant res: restaurants) {
-            if(res.getLatAddress() == latitude && res.getLongAddress() == longitude){
+        for (Restaurant res: restaurants) {
+            if (res.getLatAddress() == latitude && res.getLongAddress() == longitude) {
                 return res;
             }
         }

@@ -19,6 +19,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.cmpt_cobalt.R;
 import com.example.cmpt_cobalt.model.RestaurantManager;
 
+// separate activity that allows the user to search for specific restaurants
+// this activity is present within the MapsActivity and MainActivity
 public class SearchActivity extends AppCompatActivity {
 
     //Search filters
@@ -117,8 +119,14 @@ public class SearchActivity extends AppCompatActivity {
         favouriteCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (favouriteCheckBox.isChecked()) manager.setFavouriteOnly(true);
-                else manager.setFavouriteOnly(false);
+
+                if (favouriteCheckBox.isChecked()) {
+                    manager.setFavouriteOnly(true);
+
+                } else {
+
+                    manager.setFavouriteOnly(false);
+                }
             }
         });
     }
@@ -132,7 +140,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void updateViolationCountRestriction() {
-        try{
+        try {
             int limit = Integer.parseInt(violationCountField.getText().toString());
             manager.setViolationLimit(limit);
         }

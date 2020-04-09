@@ -144,11 +144,10 @@ public class Restaurant {
     }
 
     public int getFavouriteImage() {
-        if(isFavourite){
+        if (isFavourite) {
             return android.R.drawable.btn_star_big_on;
         }
-        else
-        {
+        else {
             return android.R.drawable.btn_star_big_off;
         }
     }
