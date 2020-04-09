@@ -176,7 +176,7 @@ public class Restaurant {
         if (!empty) {
 
             return tracking + ", "
-                    + name + "\n"
+                    + name + ", "
                     + (first.getNumCritical() + first.getNumNonCritical())
                     + ", "
                     + first.getHazardRating() + ", "

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private String []restaurantStrings = new String[size];
 
     List<Restaurant> restaurants = new ArrayList<>();
+    List<Restaurant> updatedRestaurants = new ArrayList<>();
 
     public static Intent makeLaunchIntent(Context c, String message) {
         Intent i1 = new Intent(c, MainActivity.class);
@@ -68,17 +70,98 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //TODO: Work in progress for checking updates
-        //launchCheckUpdateActivity();
-
-        // Launch map as soon as we populate the list of restaurants in instance
-        launchMap();
+        compareForUpdate();
 
         registerClickCallback();
     }
 
     private void launchCheckUpdateActivity() {
         startActivity(new Intent(this, CheckUpdateActivity.class));
+    }
+
+    private void compareForUpdate() {
+        manager = RestaurantManager.getInstance();
+        mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        Set<String> favourites = new HashSet<String>(mSharedPreferences.getStringSet("Favourites", new HashSet<String>()));
+
+        ArrayList<String> toRemove = new ArrayList<>();
+        ArrayList<String> toAdd = new ArrayList<>();
+
+        for(String OldJson: favourites) {
+            for(Restaurant newRes: manager) {
+                if(newRes.getFavourite()) {
+                    System.out.println("Test> Evaluating " + newRes.toString() + " Favourite: " + newRes.getFavourite());
+                    Gson gson = new Gson();
+                    Restaurant oldRes = gson.fromJson(OldJson, Restaurant.class);
+                    System.out.println("Test> Comparing with " + newRes.toString() + " Favourite: " + newRes.getFavourite());
+
+                    String newJson = new Gson().toJson(newRes);
+                    if (oldRes.getTracking().equals(newRes.getTracking())) {
+                        if (!OldJson.equals(newJson)) {
+                            updatedRestaurants.add(newRes);
+                            System.out.println("Test> Adding " + newRes.toString() + " Favourite: " + newRes.getFavourite());
+                            toRemove.add(OldJson);
+                            toAdd.add(newJson);
+                        }
+                    }
+                }
+            }
+        }
+
+        favourites.removeAll(toRemove);
+        favourites.addAll(toAdd);
+
+        mSharedPreferences.edit().putStringSet("Favourites", favourites).apply();
+
+        populateUpdatedRestaurants();
+    }
+
+    private void populateUpdatedRestaurants() {
+
+        final Button okButton = findViewById(R.id.button_ok_main);
+        okButton.setVisibility(View.VISIBLE);
+
+        if (updatedRestaurants.isEmpty()) {
+
+            TextView textView = findViewById(R.id.textViewMain);
+            textView.setText(R.string.newly_inspected_favourite_restaurants_click_the_check_once_done);
+            restaurantStrings = new String[1];
+            restaurantStrings[0] = getResources().getString(R.string.greeting_check_update);
+
+            // Build Adapter
+            ArrayAdapter<String> adapter = new ArrayAdapter<String> (
+                    this,           // Context for view
+                    R.layout.layout_listview,     // Layout to use
+                    restaurantStrings);               // Items to be displayed
+
+            ListView restaurantList = findViewById(R.id.listViewMain);
+            restaurantList.setAdapter(adapter);
+
+        } else {
+            restaurantStrings = new String[size];
+            TextView textView = findViewById(R.id.textViewMain);
+            textView.setText(R.string.newly_inspected_favourite_restaurants_click_the_check_once_done);
+
+            restaurants = updatedRestaurants;
+
+            for(Restaurant temp: restaurants) {
+                System.out.println("Test> " + temp.getName() + " Favourite: " + temp.getFavourite());
+            }
+
+            ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
+            ListView restaurantList = findViewById(R.id.listViewMain);
+            restaurantList.setAdapter(adapter);
+        }
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                okButton.setVisibility(View.INVISIBLE);
+
+                // Launch map as soon as we populate the list of restaurants in instance
+                launchMap();
+            }
+        });
     }
 
     private void launchMap() {
@@ -311,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Find the restaurant to work with.
-            Restaurant currentRestaurant = manager.getRestaurants().get(position);
+            Restaurant currentRestaurant = restaurants.get(position);
 
             // Fill the view
             ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
@@ -324,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
             favourite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Restaurant currentRestaurant = manager.getRestaurants().get((Integer) v.getTag());
+                    Restaurant currentRestaurant = restaurants.get((Integer) v.getTag());
                     if(currentRestaurant.getFavourite())
                     {
                         currentRestaurant.setFavourite(false);

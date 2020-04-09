@@ -60,6 +60,6 @@
         <item>Lesser or Equal</item>
     </string-array>
     <string name="title_activity_check_update">Check Update Activity</string>
-    <string name="newly_inspected_favourite_restaurants_click_the_check_once_done">Following are the newly inspected favourite restaurants: (Click the check once done)</string>
+    <string name="newly_inspected_favourite_restaurants_click_the_check_once_done">Following are the newly inspected favourite restaurants: (Click OK once done)</string>
 
 </resources>
