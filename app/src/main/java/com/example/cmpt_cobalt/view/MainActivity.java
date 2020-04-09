@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //TODO: Work in progress for checking updates
         compareForUpdate();
 
         registerClickCallback();
@@ -91,13 +90,16 @@ public class MainActivity extends AppCompatActivity {
         for(String OldJson: favourites) {
             for(Restaurant newRes: manager) {
                 if(newRes.getFavourite()) {
+                    System.out.println("Test> Evaluating " + newRes.toString() + " Favourite: " + newRes.getFavourite());
                     Gson gson = new Gson();
                     Restaurant oldRes = gson.fromJson(OldJson, Restaurant.class);
+                    System.out.println("Test> Comparing with " + newRes.toString() + " Favourite: " + newRes.getFavourite());
 
                     String newJson = new Gson().toJson(newRes);
                     if (oldRes.getTracking().equals(newRes.getTracking())) {
                         if (!OldJson.equals(newJson)) {
                             updatedRestaurants.add(newRes);
+                            System.out.println("Test> Adding " + newRes.toString() + " Favourite: " + newRes.getFavourite());
                             toRemove.add(OldJson);
                             toAdd.add(newJson);
                         }
@@ -141,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(R.string.newly_inspected_favourite_restaurants_click_the_check_once_done);
 
             restaurants = updatedRestaurants;
+
+            for(Restaurant temp: restaurants) {
+                System.out.println("Test> " + temp.getName() + " Favourite: " + temp.getFavourite());
+            }
+
             ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
             ListView restaurantList = findViewById(R.id.listViewMain);
             restaurantList.setAdapter(adapter);
@@ -387,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Find the restaurant to work with.
-            Restaurant currentRestaurant = manager.getRestaurants().get(position);
+            Restaurant currentRestaurant = restaurants.get(position);
 
             // Fill the view
             ImageView logo = itemView.findViewById(R.id.item_restaurantLogo);
@@ -400,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
             favourite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Restaurant currentRestaurant = manager.getRestaurants().get((Integer) v.getTag());
+                    Restaurant currentRestaurant = restaurants.get((Integer) v.getTag());
                     if(currentRestaurant.getFavourite())
                     {
                         currentRestaurant.setFavourite(false);
