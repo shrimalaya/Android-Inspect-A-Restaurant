@@ -1,5 +1,7 @@
 package com.example.cmpt_cobalt.model;
 
+import com.example.cmpt_cobalt.R;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,8 +21,17 @@ public class RestaurantManager implements Iterable<Restaurant>{
         restaurants.add(restaurant);
     }
     public void setSearchTerm(String searchTerm) { this.searchTerm = searchTerm; }
-    public void setHazardLevelFilter(String hazardLevelFilter) { this.hazardLevelFilter = hazardLevelFilter; }
-    public void setComparator(String comparator) { this.comparator = comparator; }
+    public void setHazardLevelFilter(int index) {
+        if (index == 0) this.hazardLevelFilter = "All";
+        else if (index == 1) this.hazardLevelFilter = "Low";
+        else if (index == 2) this.hazardLevelFilter = "Moderate";
+        else if (index == 3) this.hazardLevelFilter = "High";
+    }
+    public void setComparator(int index) {
+        if (index == 0) this.comparator = "All";
+        else if (index == 1) this.comparator = "Greater or Equal";
+        else if (index == 2) this.comparator = "Lesser or Equal";
+    }
     public void setFavouriteOnly(Boolean favouriteOnly) { this.favouriteOnly = favouriteOnly; }
     public void setViolationLimit(int violationLimit) { this.violationLimit = violationLimit; }
 
