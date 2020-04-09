@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedPreferences.edit().putStringSet("Favourites", favourites).apply();
 
-        if(!updatedRestaurants.isEmpty()) {
+        if (!updatedRestaurants.isEmpty()) {
             populateUpdatedRestaurants();
         } else {
             launchMap();
@@ -390,15 +390,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Restaurant currentRestaurant = restaurants.get((Integer) v.getTag());
-                    if(currentRestaurant.getFavourite())
-                    {
+                    if (currentRestaurant.getFavourite()) {
                         currentRestaurant.setFavourite(false);
                         favourite.setImageResource(currentRestaurant.getFavouriteImage());
                         System.out.println("DD> " + currentRestaurant.getName() + "set to false\n");
                         removeFromFavourites(currentRestaurant);
-                    }
-                    else if(!currentRestaurant.getFavourite())
-                    {
+
+                    } else if (!currentRestaurant.getFavourite()) {
                         currentRestaurant.setFavourite(true);
                         favourite.setImageResource(currentRestaurant.getFavouriteImage());
                         System.out.println("DD> " + currentRestaurant.getName() + "set to true\n");
@@ -409,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
 
             TextView restaurantNameText = itemView.findViewById(R.id.item_restaurantName);
             String temp = currentRestaurant.getName();
-            if(temp.length() > 30) {
+            if (temp.length() > 30) {
                 restaurantNameText.setText(temp.substring(0, 30) + "...");
             } else {
                 restaurantNameText.setText(temp);
@@ -465,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if(restaurantStrings.length == 0) {
+                if (restaurantStrings.length == 0) {
                     String message = manager.getRestaurants().get(position).toString();
 
                     Intent intent = RestaurantActivity.makeLaunchIntent(MainActivity.this, "RestaurantActivity");

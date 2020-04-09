@@ -101,7 +101,7 @@ public class InspectionActivity extends AppCompatActivity {
     }
 
     // Return a date formatted in "May 12, 2019"
-    private String getFormatDate(){
+    private String getFormatDate() {
         try {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);

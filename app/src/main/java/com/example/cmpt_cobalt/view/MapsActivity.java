@@ -52,6 +52,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+// shows the current maps using the Google Maps API
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapActivity";
@@ -105,23 +106,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     // Retrieved from: https://www.youtube.com/watch?v=Vt6H9TOmsuo&list=PLgCYzUzKIBE-vInwQhGSdnbyJ62nixHCt&index=4
-    private void getLocationPermission(){
+    private void getLocationPermission() {
         Log.d(TAG, "getLocationPermission: getting location permissions");
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
 
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
                 mLocationPermissionsGranted = true;
+
                 initMap();
-            }else{
+            } else {
                 ActivityCompat.requestPermissions(this,
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
-        }else{
+        } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
@@ -156,16 +160,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d(TAG, "onRequestPermissionsResult: called.");
         mLocationPermissionsGranted = false;
 
-        switch(requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if(grantResults.length > 0){
-                    for(int i = 0; i < grantResults.length; i++){
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+
+                    for (int i = 0; i < grantResults.length; i++) {
+
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             mLocationPermissionsGranted = false;
                             Log.d(TAG, "onRequestPermissionsResult: permission failed");
                             return;
                         }
                     }
+
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                     mLocationPermissionsGranted = true;
                     //initialize our map
@@ -183,7 +190,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location.addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     Location currentLocation = (Location) task.getResult();
                     moveCamera(new LatLng(currentLocation.getLatitude(),
                             currentLocation.getLongitude()), 15f);
@@ -296,13 +303,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_red);
                 }
             }
-        }
-        else
-        {
-            if(isFavourite){
+        } else {
+
+            if (isFavourite) {
                 hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_blue);
-            }
-            else {
+
+            } else {
+
             hazardIcon = bitmapDescriptorFromVector(this, R.drawable.peg_no_inspection); }
 
         }
@@ -322,7 +329,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             i++;
         }
 
-        if(found) {
+        if (found) {
             mClusterManager.clearItems();
             moveCamera(new LatLng(goToRes.getLatAddress(),
                     goToRes.getLongAddress()), DEFAULT_ZOOM);
@@ -447,7 +454,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         manager = RestaurantManager.getInstance();
 
-        for(Restaurant temp: manager) {
+        for (Restaurant temp: manager) {
             Gson gson = new Gson();
             String json = gson.toJson(temp);
             if (favourites.contains(json)) {
@@ -495,7 +502,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             TextView restaurantNameText = itemView.findViewById(R.id.info_item_restaurantName);
             String temp = restaurant.getName();
-            if(temp.length() > 25) {
+
+            if (temp.length() > 25) {
                 temp = temp.substring(0, 25) + "...";
             }
             restaurantNameText.setText(temp);

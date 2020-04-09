@@ -29,6 +29,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// activity download screen that processes any new data if need be
+// asks the user if they would like to download
 public class DownloadActivity extends AppCompatActivity {
 
     String[] url = {"http://data.surrey.ca/api/3/action/package_show?id=restaurants",
@@ -87,8 +89,7 @@ public class DownloadActivity extends AppCompatActivity {
                     }
                 });
 
-            }
-            else {
+            } else {
                 dialogConstraint.setVisibility(View.VISIBLE);
 
                 yesButton.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +216,7 @@ public class DownloadActivity extends AppCompatActivity {
 
     }
 
-    static File method(Context obj, String filename){
-        return new File (obj.getFilesDir(), filename );
+    static File method(Context obj, String filename) {
+        return new File (obj.getFilesDir(), filename);
     }
 }
