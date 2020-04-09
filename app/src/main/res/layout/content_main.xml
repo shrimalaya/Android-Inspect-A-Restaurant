@@ -43,4 +43,17 @@
         app:layout_constraintStart_toStartOf="@+id/textViewMain"
         app:layout_constraintTop_toBottomOf="@+id/textViewMain" />
 
+    <Button
+        android:id="@+id/button_ok_main"
+        android:layout_width="46dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:text="@android:string/ok"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/listViewMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMain"
+        app:layout_constraintVertical_bias="1.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
