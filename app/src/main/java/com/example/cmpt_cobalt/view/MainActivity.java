@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String EXTRA_MESSAGE = "Extra";
     private RestaurantManager manager;
     private int size = 0;
-    private String []restaurantStrings = new String[size];
+    private String[] restaurantStrings = new String[size];
 
     List<Restaurant> restaurants = new ArrayList<>();
     List<Restaurant> updatedRestaurants = new ArrayList<>();
@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> toRemove = new ArrayList<>();
         ArrayList<String> toAdd = new ArrayList<>();
 
-        for(String OldJson: favourites) {
-            for(Restaurant newRes: manager) {
-                if(newRes.getFavourite()) {
+        for (String OldJson : favourites) {
+            for (Restaurant newRes : manager) {
+                if (newRes.getFavourite()) {
                     System.out.println("Test> Evaluating " + newRes.toString() + " Favourite: " + newRes.getFavourite());
                     Gson gson = new Gson();
                     Restaurant oldRes = gson.fromJson(OldJson, Restaurant.class);
@@ -109,7 +109,11 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedPreferences.edit().putStringSet("Favourites", favourites).apply();
 
-        populateUpdatedRestaurants();
+        if(!updatedRestaurants.isEmpty()) {
+            populateUpdatedRestaurants();
+        } else {
+            launchMap();
+        }
     }
 
     private void populateUpdatedRestaurants() {
@@ -117,46 +121,28 @@ public class MainActivity extends AppCompatActivity {
         final Button okButton = findViewById(R.id.button_ok_main);
         okButton.setVisibility(View.VISIBLE);
 
-        if (updatedRestaurants.isEmpty()) {
+        restaurantStrings = new String[size];
+        TextView textView = findViewById(R.id.textViewMain);
+        textView.setText(R.string.newly_inspected_favourite_restaurants_click_the_check_once_done);
 
-            TextView textView = findViewById(R.id.textViewMain);
-            textView.setText(R.string.newly_inspected_favourite_restaurants_click_the_check_once_done);
-            restaurantStrings = new String[1];
-            restaurantStrings[0] = getResources().getString(R.string.greeting_check_update);
+        restaurants = updatedRestaurants;
 
-            // Build Adapter
-            ArrayAdapter<String> adapter = new ArrayAdapter<String> (
-                    this,           // Context for view
-                    R.layout.layout_listview,     // Layout to use
-                    restaurantStrings);               // Items to be displayed
-
-            ListView restaurantList = findViewById(R.id.listViewMain);
-            restaurantList.setAdapter(adapter);
-
-        } else {
-            restaurantStrings = new String[size];
-            TextView textView = findViewById(R.id.textViewMain);
-            textView.setText(R.string.newly_inspected_favourite_restaurants_click_the_check_once_done);
-
-            restaurants = updatedRestaurants;
-
-            for(Restaurant temp: restaurants) {
-                System.out.println("Test> " + temp.getName() + " Favourite: " + temp.getFavourite());
-            }
-
-            ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
-            ListView restaurantList = findViewById(R.id.listViewMain);
-            restaurantList.setAdapter(adapter);
+        for (Restaurant temp : restaurants) {
+            System.out.println("Test> " + temp.getName() + " Favourite: " + temp.getFavourite());
         }
+
+        ArrayAdapter<Restaurant> adapter = new RestaurantAdapter();
+        ListView restaurantList = findViewById(R.id.listViewMain);
+        restaurantList.setAdapter(adapter);
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                okButton.setVisibility(View.INVISIBLE);
+            public void onClick (View v){
+            okButton.setVisibility(View.INVISIBLE);
 
-                // Launch map as soon as we populate the list of restaurants in instance
-                launchMap();
-            }
+            // Launch map as soon as we populate the list of restaurants in instance
+            launchMap();
+        }
         });
     }
 
