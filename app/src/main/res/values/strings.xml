@@ -46,6 +46,7 @@
     <string name = "greeting_check_update">\n\n\n\nNothing to show!
                     \n\nNo updates to favourite restaurants found.\n\n</string>
     <string name="favourite_only">Show Favourite Only</string>
+    <string name="greeting_main_activity">\n\n\n\nWelcome to the Restaurant Inspector!\n\nNothing to show right now!\n\n</string>
     <string-array name="hazard_level_array">
         <item>All</item>
         <item>Low</item>
