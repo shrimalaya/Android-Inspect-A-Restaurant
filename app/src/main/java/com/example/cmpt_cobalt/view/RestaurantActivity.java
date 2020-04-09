@@ -185,7 +185,7 @@ public class RestaurantActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case (R.id.restaurant_map_icon):
                 goToMapsActivity();
-
+                return true;
             case (android.R.id.home):
                 onBackPressed();
                 return true;

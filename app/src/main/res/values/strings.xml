@@ -43,7 +43,7 @@
     <string name="critical_violation_count">Show Critical Violations Count</string>
     <string name="apply">Apply</string>
     <string name="dialog_text">Latest update already installed!</string>
-    <string name = "greeting_check_update">\n\n\n\nNothing to show!
+    <string name="greeting_check_update">\n\n\n\nNothing to show!
                     \n\nNo updates to favourite restaurants found.\n\n</string>
     <string name="favourite_only">Show Favourite Only</string>
     <string name="greeting_main_activity">\n\n\n\nWelcome to the Restaurant Inspector!\n\nNothing to show right now!\n\n</string>
@@ -61,5 +61,8 @@
     </string-array>
     <string name="title_activity_check_update">Check Update Activity</string>
     <string name="newly_inspected_favourite_restaurants_click_the_check_once_done">Following are the newly inspected favourite restaurants: (Click OK once done)</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="fix_greeting_search">Enter your search preferences below:</string>
+    <string name="data_hint_search">Data</string>
 
 </resources>
