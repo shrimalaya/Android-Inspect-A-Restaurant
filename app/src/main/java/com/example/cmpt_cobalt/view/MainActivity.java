@@ -75,10 +75,6 @@ public class MainActivity extends AppCompatActivity {
         registerClickCallback();
     }
 
-    private void launchCheckUpdateActivity() {
-        startActivity(new Intent(this, CheckUpdateActivity.class));
-    }
-
     private void compareForUpdate() {
         manager = RestaurantManager.getInstance();
         mSharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
@@ -519,6 +515,9 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.this.startActivityForResult(i2, 42);
                 }
                 break;
+            case 58:
+                repopulateListView();
+                break;
         }
     }
 
@@ -539,7 +538,11 @@ public class MainActivity extends AppCompatActivity {
             case (R.id.main_map_icon):
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivityForResult(intent, 42);
-
+                return true;
+            case (R.id.main_search_icon):
+                Intent i3 = new Intent(MainActivity.this, SearchActivity.class);
+                startActivityForResult(i3, 58);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

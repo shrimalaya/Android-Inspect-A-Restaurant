@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".view.SearchActivity"
+    tools:showIn="@layout/activity_search">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_bar2"
+        android:layout_width="366dp"
+        android:layout_height="88dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/fix_greeting_search"
+        app:layout_constraintTop_toBottomOf="@+id/fix_greeting_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_field2"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:hint="@string/search_hint" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/fix_text12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/show_violations"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/search_bar2"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox_search" />
+
+    <TextView
+        android:id="@+id/fix_text13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/hazard_level"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/fix_text12"
+        app:layout_constraintTop_toBottomOf="@+id/hazard_spinner_search" />
+
+    <CheckBox
+        android:id="@+id/checkBox_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/favourite_only"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/search_bar2"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar2" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="145dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="116dp"
+        android:text="@string/search"
+        app:layout_constraintStart_toStartOf="@+id/search_bar2"
+        app:layout_constraintTop_toBottomOf="@+id/fix_text13" />
+
+    <TextView
+        android:id="@+id/fix_greeting_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/fix_greeting_search"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/hazard_spinner_search"
+        android:layout_width="137dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="8dp"
+        android:background="#20050505"
+        android:spinnerMode="dropdown"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/search_bar2"
+        app:layout_constraintTop_toBottomOf="@+id/fix_text12"
+        tools:visibility="visible" />
+
+    <Spinner
+        android:id="@+id/count_hazard_spinner_search"
+        android:layout_width="136dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="8dp"
+        android:background="#20050505"
+        app:layout_constraintEnd_toEndOf="@+id/hazard_spinner_search"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/hazard_spinner_search"
+        app:layout_constraintTop_toBottomOf="@+id/fix_text13" />
+
+    <Button
+        android:id="@+id/clear_button_search"
+        android:layout_width="95dp"
+        android:layout_height="48dp"
+        android:text="@string/clear_filter"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_search"
+        app:layout_constraintEnd_toEndOf="@+id/search_bar2"
+        app:layout_constraintTop_toTopOf="@+id/btn_search"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/count_text_search"
+        android:layout_width="139dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/data_hint_search"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/hazard_spinner_search"
+        app:layout_constraintStart_toEndOf="@+id/hazard_spinner_search"
+        app:layout_constraintTop_toTopOf="@+id/hazard_spinner_search" tools:targetApi="o" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

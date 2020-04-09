@@ -3,11 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-
+        android:id="@+id/main_search_icon"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/main_map_icon"
         android:enabled="true"
         android:icon="@drawable/map_icon"
         android:title="Map"
         android:visible="true"
-        app:showAsAction="always|withText" />
+        app:showAsAction="always" />
+
 </menu>
