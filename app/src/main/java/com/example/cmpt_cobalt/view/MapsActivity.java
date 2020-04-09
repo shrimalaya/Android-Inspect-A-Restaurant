@@ -148,14 +148,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String hazardLevelFilter = parent.getItemAtPosition(position).toString();
-                manager.setHazardLevelFilter(hazardLevelFilter);
+                manager.setHazardLevelFilter(position);
                 updateMap();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                manager.setHazardLevelFilter("All");
+                manager.setHazardLevelFilter(0);
             }
         });
 
@@ -168,13 +167,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String comparator = parent.getItemAtPosition(position).toString();
-                manager.setComparator(comparator);
+                manager.setComparator(position);
                 updateMap();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                manager.setComparator("All");
+                manager.setComparator(0);
             }
         });
     }
@@ -208,8 +206,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void clearFilters() {
         manager.setSearchTerm("");
-        manager.setHazardLevelFilter("All");
-        manager.setComparator("All");
+        manager.setHazardLevelFilter(0);
+        manager.setComparator(0);
+        manager.setFavouriteOnly(false);
         updateMap();
     }
 
