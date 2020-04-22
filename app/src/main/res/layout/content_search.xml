@@ -48,7 +48,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/fix_text12"
-        app:layout_constraintTop_toBottomOf="@+id/hazard_spinner_search" />
+        app:layout_constraintTop_toBottomOf="@+id/count_hazard_spinner_search" />
 
     <CheckBox
         android:id="@+id/checkBox_search"
@@ -89,8 +89,10 @@
         android:background="#20050505"
         android:spinnerMode="dropdown"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/search_bar2"
-        app:layout_constraintTop_toBottomOf="@+id/fix_text12"
+        app:layout_constraintEnd_toEndOf="@+id/count_hazard_spinner_search"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/count_hazard_spinner_search"
+        app:layout_constraintTop_toBottomOf="@+id/fix_text13"
         tools:visibility="visible" />
 
     <Spinner
@@ -99,10 +101,8 @@
         android:layout_height="51dp"
         android:layout_marginTop="8dp"
         android:background="#20050505"
-        app:layout_constraintEnd_toEndOf="@+id/hazard_spinner_search"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/hazard_spinner_search"
-        app:layout_constraintTop_toBottomOf="@+id/fix_text13" />
+        app:layout_constraintStart_toStartOf="@+id/search_bar2"
+        app:layout_constraintTop_toBottomOf="@+id/fix_text12" />
 
     <Button
         android:id="@+id/clear_button_search"
@@ -118,15 +118,16 @@
         android:id="@+id/count_text_search"
         android:layout_width="139dp"
         android:layout_height="45dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/data_hint_search"
         android:inputType="number"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/hazard_spinner_search"
-        app:layout_constraintStart_toEndOf="@+id/hazard_spinner_search"
-        app:layout_constraintTop_toTopOf="@+id/hazard_spinner_search" tools:targetApi="o" />
+        app:layout_constraintBottom_toBottomOf="@+id/count_hazard_spinner_search"
+        app:layout_constraintStart_toEndOf="@+id/count_hazard_spinner_search"
+        app:layout_constraintTop_toTopOf="@+id/count_hazard_spinner_search"
+        tools:targetApi="o" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
